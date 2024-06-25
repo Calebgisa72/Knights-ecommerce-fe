@@ -37,7 +37,7 @@ const Router = () => {
         path="/"
         element={
           <MainLayout>
-            <PageTitle title="Knights Store | Register" />
+            <PageTitle title="Knights Store" />
             <Home />
           </MainLayout>
         }

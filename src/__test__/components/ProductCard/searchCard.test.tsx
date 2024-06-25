@@ -64,4 +64,19 @@ describe('SearchCard', () => {
     expect(screen.getByAltText('Product 1')).toHaveAttribute('src', 'image1.jpg');
     expect(screen.getByAltText('Product 2')).toHaveAttribute('src', 'image2.jpg');
   });
+
+  it('renders correctly when productList is empty', () => {
+    render(
+      <Router>
+        <SearchCard productList={[]} />
+      </Router>
+    );
+
+    expect(screen.queryByText('Product 1')).not.toBeInTheDocument();
+    expect(screen.queryByText('Product 2')).not.toBeInTheDocument();
+    expect(screen.queryByText('RWF 100')).not.toBeInTheDocument();
+    expect(screen.queryByText('RWF 200')).not.toBeInTheDocument();
+    expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
+    expect(screen.queryByText('Jane Doe')).not.toBeInTheDocument();
+  });
 });

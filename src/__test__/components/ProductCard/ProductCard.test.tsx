@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { describe, it } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import ProductsCard from '../../../components/Products/ProductCard/ProductsCard';
+import { Provider } from 'react-redux';
+import store from '../../../redux/store';
 
 const mockProduct = {
   id: '1',
@@ -37,9 +39,11 @@ const mockProduct = {
 describe('ProductsCard', () => {
   it('renders the ProductsCard component without crashing', () => {
     render(
-      <MemoryRouter>
-        <ProductsCard data={mockProduct} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <ProductsCard data={mockProduct} />
+        </MemoryRouter>
+      </Provider>
     );
 
     // Check if the product name is displayed
@@ -61,6 +65,42 @@ describe('ProductsCard', () => {
     expect(screen.getByText('10')).toBeInTheDocument();
 
     // Check if the image is rendered
+    expect(screen.getByAltText('product-image')).toBeInTheDocument();
+  });
+
+  it('renders without crashing when no images are provided', () => {
+    const mockProductWithoutImages = { ...mockProduct, images: [] };
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ProductsCard data={mockProductWithoutImages} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(screen.getByAltText('product-image')).toBeInTheDocument();
+  });
+
+  it('renders the correct category name', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ProductsCard data={mockProduct} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByText('Category 1')).toBeInTheDocument();
+  });
+
+  it('renders without crashing when no images are provided', () => {
+    const mockProductWithoutImages = { ...mockProduct, images: [] };
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ProductsCard data={mockProductWithoutImages} />
+        </MemoryRouter>
+      </Provider>
+    );
     expect(screen.getByAltText('product-image')).toBeInTheDocument();
   });
 });

@@ -24,7 +24,7 @@ const DashboardProducts: React.FC = () => {
 
   const getExpiredProductsCount = (products: Product[]): number => {
     const currentDate = new Date();
-    return products.filter((product) => {
+    return products?.filter((product) => {
       const expirationDate = new Date(product.expirationDate);
       return expirationDate < currentDate;
     }).length;
