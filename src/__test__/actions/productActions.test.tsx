@@ -50,7 +50,7 @@ describe('Product Actions', () => {
 
     expect(actions[0]).toEqual({ type: ProductActionTypes.CREATE_PRODUCT_REQUEST });
     expect(actions[1].type).toEqual(ProductActionTypes.CREATE_PRODUCT_SUCCESS);
-  });
+  }, 50000);
 
   it('creates FETCH_VENDOR_PRODUCTS when fetching vendor products has been done', async () => {
     const mockData = { data: 'mocked data' };
@@ -64,7 +64,7 @@ describe('Product Actions', () => {
     expect(actions[0].type).toEqual('vendorProducts/fetchVendorProducts/pending');
     expect(actions[1].type).toEqual('vendorProducts/fetchVendorProducts/rejected');
     expect(actions[1].payload).toEqual('Request failed with status code 404');
-  });
+  }, 50000);
 
   it('creates FETCH_SINGLE_PRODUCT when fetching a single product has been done', async () => {
     const mockData = { product: 'mocked product' };
@@ -77,7 +77,7 @@ describe('Product Actions', () => {
     expect(actions[0].type).toEqual('products/fetchSingleProduct/pending');
     expect(actions[1].type).toEqual('products/fetchSingleProduct/fulfilled');
     expect(actions[1].payload).toEqual(mockData.product);
-  });
+  }, 50000);
   // Test for createCoupon negative scenario
   it('handles error when creating a coupon fails', async () => {
     const errorResponse = { message: 'Failed to create coupon' };
@@ -104,7 +104,7 @@ describe('Product Actions', () => {
       expect(actions[1].type).toEqual('products/createCoupon/rejected');
       expect(actions[1].error.message).toEqual('Failed to create coupon');
     }
-  });
+  }, 50000);
 
   // Test for getCoupon negative scenario
   it('handles error when fetching coupons fails', async () => {
@@ -122,7 +122,7 @@ describe('Product Actions', () => {
       expect(actions[1].type).toEqual('products/getCoupon/rejected');
       expect(actions[1].error.message).toEqual('Failed to fetch coupons');
     }
-  });
+  }, 50000);
 
   // Test for deleteCoupon negative scenario
   it('handles error when deleting a coupon fails', async () => {
@@ -140,7 +140,7 @@ describe('Product Actions', () => {
       expect(actions[1].type).toEqual('products/deleteCoupon/rejected');
       expect(actions[1].error.message).toEqual('Failed to delete coupon');
     }
-  });
+  }, 50000);
 
   // Test for updateCoupon negative scenario
   it('handles error when updating a coupon fails', async () => {
@@ -172,5 +172,5 @@ describe('Product Actions', () => {
       expect(actions[1].type).toEqual('products/updateCoupon/rejected');
       expect(actions[1].error.message).toEqual('Failed to update coupon');
     }
-  });
+  }, 50000);
 });

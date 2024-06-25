@@ -56,7 +56,7 @@ function Navbar() {
       </h1>
 
       {!userToken && (
-        <div className="xmd:hidden flex gap-5">
+        <div className="xmd:hidden flex gap-5" data-testid="userIcon">
           <Search strokeWidth={1.5} className="w-10 h-9 text-black" />
           <img
             onClick={() => setShowMenu((prevState) => !prevState)}
@@ -69,7 +69,7 @@ function Navbar() {
       )}
 
       {userToken && (
-        <div className="xmd:hidden flex justify-between w-[100%]">
+        <div className="xmd:hidden flex justify-between w-[100%]" data-testid="userIcon">
           <Search strokeWidth={1.5} className="w-[25px] h-[25px] text-black" />
           <a href="/notification" className="relative cursor-pointer">
             <img src={notificationBell} className="w-[25px] h-[25px]" alt="Notification Bell" />
@@ -149,7 +149,7 @@ function Navbar() {
             </span>
           </a>
         )}
-        <a href="/cart" className="relative cursor-pointer">
+        <a href="/cart" className="relative cursor-pointer" data-testid="cart">
           <img src={cart} alt="Cart Icon" className="w-7 h-7" />
           <span className="absolute min-w-5 h-5 top-1 right-[5px] mt-[-10px] mr-[-15px] bg-orange text-white text-sm flex items-center justify-center rounded-full leading-none p-1">
             0
@@ -157,7 +157,7 @@ function Navbar() {
         </a>
         {userToken && (
           <div onClick={desktopMenuHandler} className="relative cursor-pointer" data-testid="desktopMenuIcon">
-            <img src={user} alt="User Icon" className="w-7 h-7" />
+            <img src={user} alt="User Icon" className="w-7 h-7" data-testid="userIcon" />
           </div>
         )}
       </div>

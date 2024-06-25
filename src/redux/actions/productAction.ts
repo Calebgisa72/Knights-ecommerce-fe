@@ -117,3 +117,28 @@ export const updateCoupon = createAsyncThunk<any, updateCouponArgs>(
     return response.data;
   }
 );
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async ({ id, formData }: { id: string; formData: FormData }, { rejectWithValue }) => {
+    try {
+      const tokenString = localStorage.getItem('userToken');
+      if (!tokenString) {
+        throw new Error('Token not found');
+      }
+      const { token } = JSON.parse(tokenString);
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      };
+      const response = await axios.put(`${import.meta.env.VITE_APP_API_URL}/product/${id}`, formData, config);
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+      return rejectWithValue(
+        error.response && error.response.data.message ? error.response.data.message : error.message
+      );
+    }
+  }
+);
