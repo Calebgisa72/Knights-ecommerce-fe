@@ -13,7 +13,7 @@ import Popup from '../../Popups/Popup';
 import { decodedToken } from '../../../services';
 import ConfirmDeletePopup from '../../Popups/ConfirmDeletePopup';
 import { DecodedToken } from '../../../pages/Authentication/Login';
-import { testindata } from '../../../test/components/Popups/ProductCoupon.test';
+import { testindata } from '../../../__test__/utils/testPayload';
 
 interface ProductCouponProps {
   vendorId: string;

@@ -6,14 +6,6 @@ import { render } from '../../utils/test-utils';
 import { describe, it } from 'vitest';
 import mockStore from '../../utils/mockStore';
 
-export const testindata = {
-  code: 'string',
-  discountType: 'percentage',
-  discountRate: 0,
-  expirationDate: '',
-  maxUsageLimit: 0,
-  product: 'string'
-};
 describe('ProductCoupon Component', () => {
   it('renders loading state initially', () => {
     render(
