@@ -12,7 +12,7 @@ import { decodedToken } from '../../../services/jwtOperation';
 import ListPopup from '../../Popups/ListPopup';
 import ProductCoupon from '../ProductCoupon/ProductCoupon';
 import { DecodedToken } from '../../../pages/Authentication/Login';
-import { expectedOutput } from '../../../test/utils/jwtOperation.test';
+import { expectedOutput } from '../../../__test__/utils/testPayload';
 
 const DashboardSingleProduct: React.FC = () => {
   const { id, app_env } = useParams<{ id: string; app_env: string }>();

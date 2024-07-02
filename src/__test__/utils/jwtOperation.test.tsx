@@ -3,18 +3,12 @@
 import { cleanup } from './test-utils';
 import '@testing-library/jest-dom';
 import { decodedToken } from '../../services';
-import { DecodedToken } from '../../types/CouponTypes';
+import { expectedOutput } from './testPayload';
 
 afterEach(() => {
   cleanup();
 });
-export const expectedOutput: DecodedToken = {
-  id: 'string',
-  email: 'string',
-  userType: 'string',
-  iat: 5,
-  exp: 8
-};
+
 describe('JWT operation', () => {
   it('should return a passed information', () => {
     expect(decodedToken({ testData: expectedOutput })).toBe(expectedOutput);
