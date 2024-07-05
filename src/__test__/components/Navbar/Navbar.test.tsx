@@ -9,6 +9,7 @@ import PageTitle from '../../../components/PageTitle';
 import store from '../../../redux/store';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../../../redux/reducers/authReducer';
+import cartReducer from '../../../redux/reducers/cartReducer';
 // import mockStore from '../../utils/mockStore';
 
 describe('Navbar', () => {
@@ -65,7 +66,8 @@ describe('Navbar', () => {
     it('renders user-specific elements when user is logged in', () => {
       const store = configureStore({
         reducer: {
-          auth: authReducer
+          auth: authReducer,
+          cart: cartReducer
         },
         preloadedState: {
           auth: { userToken: 'dummy-token' } // Mock store with user token

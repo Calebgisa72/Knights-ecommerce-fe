@@ -45,13 +45,18 @@ export default {
         grey1: '#C9C9C9',
         grey2: '#5C5C5C',
         grey3: '#C7C7C7',
+        grey4: '#7A7A7A',
+        grey5: '#787878',
+        grey6: '#E2E2E2',
+        grey7: '#454545',
         secondary: '#AAB9C5'
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif']
       },
       boxShadow: {
-        navbar: '0px 1px 3px -2px rgba(0, 0, 0, 1)' // Customize the rgba color value as needed
+        navbar: '0px 1px 3px -2px rgba(0, 0, 0, 1)',
+        prodImage: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px'
       },
       animation: {
         'spin-slow': 'spin 1.5s linear infinite',

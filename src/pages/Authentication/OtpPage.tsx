@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { setCredentials } from '../../redux/reducers/authReducer';
 import handleError from '../../utils/errorHandler';
+import { fetchCart } from '../../redux/actions/cartAction';
 
 const OtpPage = () => {
   interface OtpForm {
@@ -57,6 +58,7 @@ const OtpPage = () => {
 
       if (response.status === 200) {
         dispatch(setCredentials(response.data.data.token));
+        dispatch(fetchCart());
       }
     } catch (error) {
       handleError(error);

@@ -17,7 +17,7 @@ const SearchCard: React.FC<ProductProps> = ({ productList }) => {
   return (
     <>
       {productList.map((product) => (
-        <Link key={product.id} to={`/single/${product.id}`}>
+        <Link key={product.id} to={`/product/${product.id}`}>
           <div className="group cursor-pointer flex flex-col gap-y-2 w-[15.6rem] text-sm hover:bg-neutral-200 p-2 rounded relative duration-200">
             <div className="sm:w-full sm:flex md:hidden absolute right-4 top-4 bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
               <i className="fa-solid fa-heart text-lg text-orange"></i>
