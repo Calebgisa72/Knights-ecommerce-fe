@@ -12,6 +12,7 @@ import productSliceReducer from './getVendorProductsReducer';
 import categoryReducer from './categoryReducer';
 import bannerReducer from './bannerReducer';
 import searchReducer from '../reducers/SearchReducer';
+import updateProductReducer from './updateProductReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
   password: passwordReducer,
   category: categoryReducer,
   banner: bannerReducer,
-  search: searchReducer
+  search: searchReducer,
+  updateProduct: updateProductReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

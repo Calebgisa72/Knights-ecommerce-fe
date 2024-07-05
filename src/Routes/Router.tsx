@@ -21,6 +21,7 @@ import DashboardNewProducts from '../components/Products/DashboardNewProducts/Da
 import MainLayout from '../layout/MainLayout';
 import Home from '../pages/LandingPage/Home';
 import SearchPage from '../pages/searchPage';
+import DashboardEditProducts from '../components/Products/DashboardEditProducts/DashboardEditProducts';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -147,8 +148,9 @@ const Router = () => {
       <Route path="/vendor/dashboard" element={<DashboardLayout />}>
         <Route path="products" element={<DashboarInnerLayout />}>
           <Route path="" element={<DashboardProducts />} />
-          <Route path=":id" element={<DashboardSingleProduct />} />
           <Route path="new" element={<DashboardNewProducts />} />
+          <Route path=":id" element={<DashboardSingleProduct />} />
+          <Route path=":id/edit" element={<DashboardEditProducts />} />
         </Route>
       </Route>
 

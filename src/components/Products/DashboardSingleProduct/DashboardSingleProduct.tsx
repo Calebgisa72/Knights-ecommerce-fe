@@ -99,7 +99,7 @@ const DashboardSingleProduct: React.FC = () => {
       </p>
       <div className="bg-white border-[1px] border-[#7c7c7c] rounded-2xl mt-8 w-full p-8 flex flex-col gap-8">
         <Link
-          to={'update'}
+          to={`/vendor/dashboard/products/${id}/edit`}
           className="px-8 py-4 bg-[#070F2B] font-semibold text-white rounded-lg flex gap-4 items-center hover:scale-105 transition-all duration-300 ease-in-out w-max ml-auto"
         >
           Update product <SquarePen />

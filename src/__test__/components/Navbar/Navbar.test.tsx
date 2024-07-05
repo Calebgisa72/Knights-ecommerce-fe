@@ -7,6 +7,9 @@ import { createMemoryHistory } from 'history';
 import Navbar from '../../../components/Navbar/Navbar';
 import PageTitle from '../../../components/PageTitle';
 import store from '../../../redux/store';
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from '../../../redux/reducers/authReducer';
+// import mockStore from '../../utils/mockStore';
 
 describe('Navbar', () => {
   beforeAll(() => {
@@ -57,6 +60,35 @@ describe('Navbar', () => {
       const logo = screen.getByTestId('homePage');
       fireEvent.click(logo);
       expect(history.location.pathname).toBe('/');
+    });
+
+    it('renders user-specific elements when user is logged in', () => {
+      const store = configureStore({
+        reducer: {
+          auth: authReducer
+        },
+        preloadedState: {
+          auth: { userToken: 'dummy-token' } // Mock store with user token
+        }
+      });
+
+      render(
+        <Provider store={store}>
+          <MemoryRouter>
+            <Navbar />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      const userIcon = screen.getByTestId('menuIcon');
+
+      expect(userIcon).toBeInTheDocument();
+
+      const LoginLink = screen.getByTestId('cart');
+      expect(LoginLink).toBeInTheDocument();
+
+      const notificationBell = screen.getByAltText('Knights Store Logo');
+      expect(notificationBell).toBeInTheDocument();
     });
   });
 });
