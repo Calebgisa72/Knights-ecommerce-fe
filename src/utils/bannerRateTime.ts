@@ -20,7 +20,7 @@ export function FormatPosted(createdTime: Date) {
   } else if (days > 0) {
     return `${days} ${days > 1 ? 'Days' : 'Day'} ago`;
   } else if (hours > 0) {
-    return `${hours} Hours ago`;
+    return `${hours} ${hours > 1 ? 'Hours' : 'Hour'} ago`;
   } else if (minutes > 0) {
     return `${minutes} Minute ago`;
   } else {

@@ -10,6 +10,9 @@ import { FormatPosted, calculateRate } from '../../utils/bannerRateTime';
 import Banner from '../../components/Banners/Banner';
 import toast from 'react-hot-toast';
 import { PropagateLoader } from 'react-spinners';
+import { useSwipeable } from 'react-swipeable';
+import BannerIdentifier from '../../components/Banners/BannerIdentifier';
+import fetchWishlist from '../../utils/wishlistFunctions/fetchWishlist';
 
 const Home = () => {
   const [productList, setProductList] = useState<ProductProp[]>([]);
@@ -20,7 +23,9 @@ const Home = () => {
   const { banners, currentBanner } = useSelector((state: RootState) => state.banner);
   const [loading, setLoading] = useState(true);
   const [selectedBanner, setSelectedBanners] = useState<JSX.Element[]>([]);
+  const [dotIdentifies, setDotIdentifiers] = useState<JSX.Element[]>([]);
   const dispatch = useDispatch<AppDispatch>();
+  const { userToken } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     axios
@@ -29,9 +34,9 @@ const Home = () => {
         setProductList(response.data.data.products);
         setLoading(false);
       })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((error) => {
-        toast.error('Something went wrong fetching products.');
+        toast.error('Server issues. Something went wrong');
+        console.log(error);
         setLoading(false);
       });
   }, []);
@@ -92,10 +97,12 @@ const Home = () => {
 
   useEffect(() => {
     const bannerElements: JSX.Element[] = [];
-    banners.forEach((banner) => {
+    const bannerIdentifiers: JSX.Element[] = [];
+    banners.forEach((banner, index) => {
       bannerElements.push(<Banner rate={banner.rate} time={banner.time} image={banner.image} />);
+      bannerIdentifiers.push(<BannerIdentifier key={index} index={index + 1} />);
     });
-
+    setDotIdentifiers(bannerIdentifiers);
     banners.length > 0 && setSelectedBanners(bannerElements);
     const intervalIdentifier = setInterval(() => {
       if (banners.length > currentBanner) {
@@ -107,16 +114,74 @@ const Home = () => {
     return () => clearInterval(intervalIdentifier);
   }, [banners, currentBanner, dispatch]);
 
+  const handleSwipedLeft = () => {
+    if (currentBanner < banners.length) {
+      dispatch(setCurrentBanner(currentBanner + 1));
+    }
+  };
+
+  useEffect(() => {
+    if (userToken) {
+      const fetchData = async () => {
+        try {
+          await fetchWishlist(userToken, dispatch);
+        } catch (error) {
+          console.error('Failed to fetch wishlist', error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [userToken, dispatch]);
+
+  const handleSwipedRight = () => {
+    if (currentBanner > 0) {
+      dispatch(setCurrentBanner(currentBanner - 1));
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleSwipedLeft,
+    onSwipedRight: handleSwipedRight
+  });
+
   return (
     <div className="text-baseBlack">
       <div className="hidden xmd:flex">
         <CategoriesMenu />
       </div>
       <div>
-        <div>{currentBanner === 0 && <HeroSection />}</div>
-        <div className="flex w-[100%] justify-center">{currentBanner > 0 && selectedBanner[currentBanner - 1]}</div>
+        <div className="relative group overflow-hidden" {...swipeHandlers}>
+          <div className="group-hover:flex hidden z-50 animate-fadeInAnimation absolute top-[45%] left-[50px]">
+            {window.innerWidth > 700 && (
+              <i
+                onClick={handleSwipedRight}
+                className={`cursor-pointer fa-solid text-4xl fa-square-caret-left ${currentBanner === 0 ? 'hidden' : 'block'} text-primary hover:text-blue-900`}
+              ></i>
+            )}
+          </div>
+
+          <div className="group-hover:block hidden animate-fadeInAnimation z-50 absolute top-[45%] right-[50px]">
+            {window.innerWidth > 700 && (
+              <i
+                onClick={handleSwipedLeft}
+                className={`cursor-pointer fa-solid text-4xl fa-square-caret-right ${currentBanner === banners.length ? 'hidden' : 'block'} text-primary hover:text-blue-900`}
+              ></i>
+            )}
+          </div>
+          <div>{currentBanner === 0 && <HeroSection />}</div>
+          <div className="flex w-[100%] justify-center">{currentBanner > 0 && selectedBanner[currentBanner - 1]}</div>
+        </div>
+
+        <div className="w-[100%] flex h-5 mt-[10px] mb-[-8px] items-center justify-center gap-2">
+          <div
+            onClick={() => dispatch(setCurrentBanner(0))}
+            className={`${currentBanner === 0 ? 'w-[8px] h-[8px] bg-grey2' : 'w-[5px] h-[5px] bg-grey1'} rounded-full cursor-pointer`}
+          ></div>
+          {dotIdentifies}
+        </div>
       </div>
-      <div className="flex flex-col items-center justify-around gap-y-12 py-12 xmd:px-8 lg:px-16" id="products">
+      <div className="flex flex-col items-center justify-around gap-y-8 py-8 xmd:px-8 lg:px-16" id="products">
         <h1 className="text-2xl font-medium">Explore our collections</h1>
 
         {loading && (
@@ -128,7 +193,6 @@ const Home = () => {
         {!loading && (
           <div className="w-full flex gap-y-10 justify-center flex-wrap gap-x-5 px-6 xmd:px-0">
             {viewProducts.length > 0 ? viewProducts : `${currentCategory} Products sold out !! Come back later`}
-            {/* <ClientProductCard /> */}
           </div>
         )}
       </div>

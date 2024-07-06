@@ -1,6 +1,10 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
+import deleteWishlistProduct from '../../../utils/wishlistFunctions/deleteWishlistProduct';
+import { addProductToWishlist } from '../../../utils/wishlistFunctions/addProduct';
+import ConfirmDeletePopup from '../../Popups/ConfirmDeletePopup';
+
 interface Props {
   product: ProductProp;
 }
@@ -38,11 +42,61 @@ export interface ProductProp {
 const ClientProductCard = (props: Props) => {
   const { userToken } = useSelector((state: RootState) => state.auth);
   const { currentCategory } = useSelector((state: RootState) => state.category);
+  const { products, onWihlistPage } = useSelector((state: RootState) => state.wishlist);
+  const [inWishlist, setInWishlist] = useState(false);
+  const dispatch = useDispatch();
+  const [wishlistId, setWishlistId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const productInWishlist = products.find((product) => product.productInfo.id === props.product.id);
+    if (productInWishlist) {
+      setInWishlist(true);
+      setWishlistId(productInWishlist.wishListDetails.id);
+    } else {
+      setInWishlist(false);
+      setWishlistId(null);
+    }
+  }, [products, props.product.id]);
+
   return (
-    <div className="group cursor-pointer flex flex-col gap-y-2 w-[15.6rem] text-sm hover:bg-neutral-200 p-2 rounded relative duration-200">
+    <div
+      data-testid="productDiv"
+      className="group cursor-pointer flex flex-col gap-y-2 w-[15.6rem] text-sm hover:bg-neutral-200 p-2 rounded relative duration-200"
+    >
       {userToken && (
-        <div className="group-hover:flex sm:flex md:hidden absolute right-4 top-4 bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
-          <i className="fa-regular fa-heart text-lg"></i>
+        <div className="absolute right-4 top-4 z-40">
+          {onWihlistPage ? (
+            <ConfirmDeletePopup
+              trigger={
+                <div className="group-hover:flex sm:flex md:hidden bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
+                  <i className="fa-regular fa-trash-can text-lg text-orange" data-testid="deleteButton"></i>
+                </div>
+              }
+              title={`Confirm ${props.product.name} Deletion from your wishlist`}
+              body={`Are you sure you want to delete ${props.product.name} product from your wishlist?`}
+              onSubmit={() =>
+                deleteWishlistProduct(userToken, dispatch, wishlistId, products, setInWishlist, props.product)
+              }
+            />
+          ) : inWishlist ? (
+            <div className="group-hover:flex sm:flex md:hidden bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
+              <i
+                className="fa-solid fa-heart text-lg text-orange"
+                onClick={() =>
+                  deleteWishlistProduct(userToken, dispatch, wishlistId, products, setInWishlist, props.product)
+                }
+                data-testid="removeButton"
+              ></i>
+            </div>
+          ) : (
+            <div className="group-hover:flex sm:flex md:hidden bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
+              <i
+                className="fa-regular fa-heart text-lg"
+                onClick={() => addProductToWishlist(userToken, dispatch, products, props.product)}
+                data-testid="addButton"
+              ></i>
+            </div>
+          )}
         </div>
       )}
       <div className="bg-neutral-400 h-[19.5rem] p-2">

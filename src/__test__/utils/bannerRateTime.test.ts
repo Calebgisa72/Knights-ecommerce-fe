@@ -32,7 +32,7 @@ describe('Time formatting and Rate calculation test', () => {
 
     it('should return "1 Hours ago" when the date is one hour ago', () => {
       const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-      expect(FormatPosted(oneHourAgo)).toBe('1 Hours ago');
+      expect(FormatPosted(oneHourAgo)).toBe('1 Hour ago');
     });
 
     it('should return "1 Minute ago" when the date is one minute ago', () => {

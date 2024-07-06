@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import Register from '../pages/Authentication/Register';
 import RegisterVendor from '../pages/Authentication/RegisterVendor';
 import VerifyEmail from '../pages/Authentication/VerifyEmail';
 import Login, { DecodedToken } from '../pages/Authentication/Login';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import GoogleLoginSuccess from '../pages/Authentication/GoogleLoginSuccess';
 import { useJwt } from 'react-jwt';
@@ -22,6 +22,9 @@ import MainLayout from '../layout/MainLayout';
 import Home from '../pages/LandingPage/Home';
 import SearchPage from '../pages/searchPage';
 import DashboardEditProducts from '../components/Products/DashboardEditProducts/DashboardEditProducts';
+import WishlistPage from '../pages/WishlistPage/WishlistPage';
+import { setOnWishlistPage } from '../redux/reducers/wishlistReducer';
+import { useLocation } from 'react-router-dom';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -30,6 +33,17 @@ const Router = () => {
   const isAdmin = decodedToken?.role.toLowerCase() === 'admin';
   const isVendor = decodedToken?.role.toLowerCase() === 'vendor';
   const isBuyer = decodedToken?.role.toLowerCase() === 'buyer';
+
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userToken && location.pathname === '/wishlist') {
+      dispatch(setOnWishlistPage(true));
+    } else {
+      dispatch(setOnWishlistPage(false));
+    }
+  }, [location.pathname, dispatch, userToken]);
 
   return (
     <Routes>
@@ -145,6 +159,17 @@ const Router = () => {
           </MainLayout>
         }
       />
+
+      <Route
+        path="/wishlist"
+        element={
+          <MainLayout>
+            <PageTitle title="Knights Store | Wishlist" />
+            {userToken ? <WishlistPage /> : <Home />}
+          </MainLayout>
+        }
+      />
+
       <Route path="/vendor/dashboard" element={<DashboardLayout />}>
         <Route path="products" element={<DashboarInnerLayout />}>
           <Route path="" element={<DashboardProducts />} />
