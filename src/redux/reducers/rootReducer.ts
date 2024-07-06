@@ -13,6 +13,8 @@ import categoryReducer from './categoryReducer';
 import bannerReducer from './bannerReducer';
 import searchReducer from '../reducers/SearchReducer';
 import updateProductReducer from './updateProductReducer';
+import productDelete from './deleteProductReducer';
+import wishlistReducer from './wishlistReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -28,8 +30,9 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   banner: bannerReducer,
   search: searchReducer,
-  updateProduct: updateProductReducer
+  updateProduct: updateProductReducer,
+  delete: productDelete,
+  wishlist: wishlistReducer
 });
-
 export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;

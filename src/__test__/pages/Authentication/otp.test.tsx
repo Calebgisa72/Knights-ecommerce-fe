@@ -1,11 +1,24 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Provider } from 'react-redux';
 import store from '../../../redux/store';
 import Otp from '../../../pages/Authentication/OtpPage';
+import { toast } from 'react-hot-toast';
+
+vi.mock('react-hot-toast', () => ({
+  toast: {
+    error: vi.fn()
+  }
+}));
+
+vi.mock('axios');
 
 describe('OtpPage', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('Renders the OtpPage component with all expected elements', () => {
     render(
       <Provider store={store}>
@@ -20,7 +33,7 @@ describe('OtpPage', () => {
       selector: 'p'
     });
     expect(descriptionElement).toBeInTheDocument();
-    // Verify OTP input fields
+
     const otpInputs = screen.getAllByRole('textbox');
     expect(otpInputs).toHaveLength(6);
     otpInputs.forEach((input) => expect(input).toHaveAttribute('maxLength', '1'));
@@ -42,6 +55,8 @@ describe('OtpPage', () => {
     const verifyButton = screen.getByRole('button', { name: 'Verify' });
 
     fireEvent.click(verifyButton);
+
+    expect(toast.error).toHaveBeenCalledWith('Fill all the OTP fields.');
   });
 });
 
@@ -58,7 +73,6 @@ describe('OtpPage handleChange', () => {
       expect(input).toHaveValue('');
     });
 
-    // Simulate entering a digit in each OTP input
     otpInputs.forEach((input, index) => {
       fireEvent.change(input, { target: { value: `${index + 1}` } });
       expect(input).toHaveValue(`${index + 1}`);
@@ -74,12 +88,10 @@ describe('OtpPage handleChange', () => {
 
     const otpInputs = screen.getAllByRole('textbox');
 
-    // Ensure the inputs are initially empty
     otpInputs.forEach((input) => {
       expect(input).toHaveValue('');
     });
 
-    // Simulate entering a non-digit character
     otpInputs.forEach((input) => {
       fireEvent.change(input, { target: { value: 'a' } });
       expect(input).toHaveValue('');

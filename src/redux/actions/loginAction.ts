@@ -10,6 +10,7 @@ export const loginUser = createAsyncThunk('Login', async (userData: LoginData, {
   } catch (err) {
     // Return a rejected action containing the error message if the request fails
     const error = err as AxiosError;
+    console.log(error);
     return rejectWithValue(error.response?.data || 'An error occurred');
   }
 });

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { setCredentials } from '../../redux/reducers/authReducer';
+import handleError from '../../utils/errorHandler';
 
 const OtpPage = () => {
   interface OtpForm {
@@ -37,12 +38,6 @@ const OtpPage = () => {
     if (/^\d?$/.test(value)) {
       setOtpForm((prevFormData) => ({ ...prevFormData, [name]: value }));
     }
-  };
-
-  const handleError = (error: any) => {
-    axios.isAxiosError(error)
-      ? toast.error(error.response?.data?.message || 'Server Down. Try again later!')
-      : toast.error((error as Error).message);
   };
 
   const handleSubmit = async (event: FormEvent) => {
