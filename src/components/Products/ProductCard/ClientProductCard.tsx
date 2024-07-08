@@ -113,7 +113,7 @@ const ClientProductCard = (props: Props) => {
         </div>
       )}
       <div className="bg-neutral-400 h-[19.5rem] p-2">
-        <img src={props.product.images[0]} alt="" className=" h-full object-contain" />
+        <img src={props.product.images[0]} alt="" className=" h-full w-full object-contain" />
       </div>
       <div className="text-neutral-600">
         <p>{props.product.name}</p>

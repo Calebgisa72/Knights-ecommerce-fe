@@ -27,6 +27,8 @@ import DashboardEditProducts from '../components/Products/DashboardEditProducts/
 import WishlistPage from '../pages/WishlistPage/WishlistPage';
 import { setOnWishlistPage } from '../redux/reducers/wishlistReducer';
 import { useLocation } from 'react-router-dom';
+import BuyerOrders from '../pages/Orders/BuyerOrders';
+import SingleBuyerOrder from '../pages/Orders/SingleBuyerOrder';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -206,6 +208,32 @@ const Router = () => {
           <MainLayout>
             <PageTitle title="Knights Store | Cart" />
             <Cart />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/orders"
+        element={
+          <MainLayout>
+            <PageTitle title="Knights Store | Orders" />
+            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
+            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
+            {userToken && isBuyer && <BuyerOrders />}
+            {!userToken && <Navigate to="/login" />}
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/orders/:orderId"
+        element={
+          <MainLayout>
+            <PageTitle title="Knights Store | Orders" />
+            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
+            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
+            {userToken && isBuyer && <SingleBuyerOrder />}
+            {!userToken && <Navigate to="/login" />}
           </MainLayout>
         }
       />
