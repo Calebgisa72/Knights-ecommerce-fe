@@ -47,7 +47,7 @@ function Login() {
       if (error === 'Your account has been suspended') {
         navigate('/suspended-account');
       } else {
-        navigate('/');
+        navigate('/login');
       }
       dispatch(clearCredentials());
       dispatch(resetState());

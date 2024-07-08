@@ -8,7 +8,6 @@ import HeroSection from '../../components/Banners/HeroSection';
 import { setBanners, setCurrentBanner } from '../../redux/reducers/bannerReducer';
 import { FormatPosted, calculateRate } from '../../utils/bannerRateTime';
 import Banner from '../../components/Banners/Banner';
-import toast from 'react-hot-toast';
 import { PropagateLoader } from 'react-spinners';
 import { useSwipeable } from 'react-swipeable';
 import BannerIdentifier from '../../components/Banners/BannerIdentifier';
@@ -31,11 +30,20 @@ const Home = () => {
     axios
       .get(`${import.meta.env.VITE_APP_API_URL}/product/all`)
       .then((response) => {
-        setProductList(response.data.data.products);
+        const products: ProductProp[] = response.data.data.products;
+        if (products) {
+          setProductList(
+            products.filter((product) => {
+              return (
+                Number(product.quantity) > 0 &&
+                (!product.expirationDate || new Date(product.expirationDate) > new Date())
+              );
+            })
+          );
+        }
         setLoading(false);
       })
       .catch((error) => {
-        toast.error('Server issues. Something went wrong');
         console.log(error);
         setLoading(false);
       });
@@ -152,7 +160,7 @@ const Home = () => {
       </div>
       <div>
         <div className="relative group overflow-hidden" {...swipeHandlers}>
-          <div className="group-hover:flex hidden z-50 animate-fadeInAnimation absolute top-[45%] left-[50px]">
+          <div className="group-hover:flex hidden z-10 animate-fadeInAnimation absolute top-[45%] left-[50px]">
             {window.innerWidth > 700 && (
               <i
                 onClick={handleSwipedRight}
@@ -161,7 +169,7 @@ const Home = () => {
             )}
           </div>
 
-          <div className="group-hover:block hidden animate-fadeInAnimation z-50 absolute top-[45%] right-[50px]">
+          <div className="group-hover:block hidden animate-fadeInAnimation z-10 absolute top-[45%] right-[50px]">
             {window.innerWidth > 700 && (
               <i
                 onClick={handleSwipedLeft}

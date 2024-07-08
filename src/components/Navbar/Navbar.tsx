@@ -172,7 +172,10 @@ function Navbar() {
         )}
       </div>
       {userToken && showDesktopMenu && (
-        <div className="absolute top-[130px] right-[25%] xmd:right-6 xmd:top-[12vh]">
+        <div
+          className="absolute top-[130px] right-[25%] xmd:right-6 xmd:top-[12vh]"
+          onClick={() => setShowDesktopMenu(false)}
+        >
           <DesktopMenu />
         </div>
       )}

@@ -5,14 +5,17 @@ import { Provider } from 'react-redux';
 import store from '../../../redux/store';
 import Otp from '../../../pages/Authentication/OtpPage';
 import { toast } from 'react-hot-toast';
+import { setUser } from '../../../redux/reducers/userReducer';
 
-vi.mock('react-hot-toast', () => ({
-  toast: {
-    error: vi.fn()
-  }
-}));
-
-vi.mock('axios');
+vi.mock('react-hot-toast');
+const mockDispatch = vi.fn();
+vi.mock('react-redux', async () => {
+  const actual = await vi.importActual('react-redux');
+  return {
+    ...actual,
+    useDispatch: () => mockDispatch
+  };
+});
 
 describe('OtpPage', () => {
   beforeEach(() => {
@@ -57,6 +60,43 @@ describe('OtpPage', () => {
     fireEvent.click(verifyButton);
 
     expect(toast.error).toHaveBeenCalledWith('Fill all the OTP fields.');
+  });
+
+  it('Shows an error when there is no email and try submit OTP', () => {
+    render(
+      <Provider store={store}>
+        <Otp />
+      </Provider>
+    );
+    store.dispatch(setUser(''));
+
+    const otpInputs = screen.getAllByRole('textbox');
+
+    otpInputs.forEach((input, index) => {
+      fireEvent.change(input, { target: { value: `${index + 1}` } });
+      expect(input).toHaveValue(`${index + 1}`);
+    });
+
+    const verifyButton = screen.getByRole('button', { name: 'Verify' });
+
+    fireEvent.click(verifyButton);
+
+    expect(toast.error).toHaveBeenCalledWith('Something went wrong, Login again');
+  });
+
+  it('Shows an error when there is no email and try requsting OTP', () => {
+    render(
+      <Provider store={store}>
+        <Otp />
+      </Provider>
+    );
+    store.dispatch(setUser(''));
+
+    const resendButton = screen.getByText(/Resend/i);
+
+    fireEvent.click(resendButton);
+
+    expect(toast.error).toHaveBeenCalledWith('Something went wrong, Login again');
   });
 });
 
