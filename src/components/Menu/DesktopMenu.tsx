@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { clearUser } from '../../redux/reducers/userReducer';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { fetchCart } from '../../redux/actions/cartAction';
 
 function DesktopMenu() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function DesktopMenu() {
     dispatch(clearCredentials());
     dispatch(clearUser());
     navigate('/');
+    dispatch(fetchCart());
   };
 
   return (

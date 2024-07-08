@@ -7,6 +7,7 @@ import axios from 'axios';
 import { vi } from 'vitest';
 import { setOnWishlistPage, setWishlist } from '../../redux/reducers/wishlistReducer';
 import { setCredentials } from '../../redux/reducers/authReducer';
+import { BrowserRouter } from 'react-router-dom';
 
 vi.mock('axios');
 vi.mock('../../utils/errorHandler');
@@ -90,9 +91,11 @@ describe('WishlistPage', () => {
 
   it('should tell if there are no products in wishlist', () => {
     render(
-      <Provider store={store}>
-        <WishlistPage />
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <WishlistPage />
+        </Provider>
+      </BrowserRouter>
     );
 
     const paragraph = screen.getByText(/wishlist is empty/i);
@@ -106,9 +109,11 @@ describe('WishlistPage', () => {
     store.dispatch(setWishlist(mockProducts));
 
     render(
-      <Provider store={store}>
-        <WishlistPage />
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <WishlistPage />
+        </Provider>
+      </BrowserRouter>
     );
 
     const heading = await screen.findByRole('heading', { name: 'Wishlist' });
@@ -130,9 +135,11 @@ describe('WishlistPage', () => {
     store.dispatch(setWishlist(mockProducts));
 
     render(
-      <Provider store={store}>
-        <WishlistPage />
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <WishlistPage />
+        </Provider>
+      </BrowserRouter>
     );
 
     const clearAllButton = await screen.findByText(/Clear All/i);

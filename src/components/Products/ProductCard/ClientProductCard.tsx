@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
+import { useNavigate } from 'react-router-dom';
 import deleteWishlistProduct from '../../../utils/wishlistFunctions/deleteWishlistProduct';
 import { addProductToWishlist } from '../../../utils/wishlistFunctions/addProduct';
 import ConfirmDeletePopup from '../../Popups/ConfirmDeletePopup';
@@ -42,6 +43,13 @@ export interface ProductProp {
 const ClientProductCard = (props: Props) => {
   const { userToken } = useSelector((state: RootState) => state.auth);
   const { currentCategory } = useSelector((state: RootState) => state.category);
+
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/product/${props.product.id}`);
+  };
+
   const { products, onWihlistPage } = useSelector((state: RootState) => state.wishlist);
   const [inWishlist, setInWishlist] = useState(false);
   const dispatch = useDispatch();
@@ -60,6 +68,7 @@ const ClientProductCard = (props: Props) => {
 
   return (
     <div
+      onClick={handleCardClick}
       data-testid="productDiv"
       className="group cursor-pointer flex flex-col gap-y-2 w-[15.6rem] text-sm hover:bg-neutral-200 p-2 rounded relative duration-200"
     >
@@ -82,9 +91,10 @@ const ClientProductCard = (props: Props) => {
             <div className="group-hover:flex sm:flex md:hidden bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
               <i
                 className="fa-solid fa-heart text-lg text-orange"
-                onClick={() =>
-                  deleteWishlistProduct(userToken, dispatch, wishlistId, products, setInWishlist, props.product)
-                }
+                onClick={(event: React.MouseEvent<HTMLElement>) => {
+                  event.stopPropagation();
+                  deleteWishlistProduct(userToken, dispatch, wishlistId, products, setInWishlist, props.product);
+                }}
                 data-testid="removeButton"
               ></i>
             </div>
@@ -92,7 +102,10 @@ const ClientProductCard = (props: Props) => {
             <div className="group-hover:flex sm:flex md:hidden bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
               <i
                 className="fa-regular fa-heart text-lg"
-                onClick={() => addProductToWishlist(userToken, dispatch, products, props.product)}
+                onClick={(event: React.MouseEvent<HTMLElement>) => {
+                  event.stopPropagation();
+                  addProductToWishlist(userToken, dispatch, products, props.product);
+                }}
                 data-testid="addButton"
               ></i>
             </div>
