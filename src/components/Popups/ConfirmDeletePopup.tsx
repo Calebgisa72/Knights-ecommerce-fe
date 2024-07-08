@@ -11,15 +11,18 @@ const ConfirmDeletePopup: React.FC<FormPopupProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const openFormPopup = () => {
+  const openFormPopup = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setIsVisible(true);
   };
 
-  const closeFormPopup = () => {
+  const closeFormPopup = (event?: React.MouseEvent<HTMLElement>) => {
+    event?.stopPropagation();
     setIsVisible(false);
   };
 
   const handleConfirm = (e: any) => {
+    e.stopPropagation();
     if (onSubmit) onSubmit(e);
     closeFormPopup();
   };
@@ -29,8 +32,8 @@ const ConfirmDeletePopup: React.FC<FormPopupProps> = ({
       <span onClick={openFormPopup}>{trigger}</span>
 
       {isVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ease-out">
-          <div className="bg-white z-50 p-6 rounded-lg shadow-lg transform transition-transform duration-500 ease-in-out">
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ease-out">
+          <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-500 ease-in-out">
             <h2 className="text-2xl mb-4 text-start">{title}</h2>
             <div className="mb-4">{body}</div>
             <div className="flex justify-end space-x-4">
