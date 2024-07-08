@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WishlistPage from '../../pages/WishlistPage/WishlistPage';
 import { Provider } from 'react-redux';
 import store from '../../redux/store';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { vi } from 'vitest';
 import { setOnWishlistPage, setWishlist } from '../../redux/reducers/wishlistReducer';
 import { setCredentials } from '../../redux/reducers/authReducer';
+import { BrowserRouter } from 'react-router-dom';
 
 vi.mock('axios');
 vi.mock('../../utils/errorHandler');
@@ -18,7 +19,7 @@ const userToken = 'Testing Login';
 const mockProducts = [
   {
     wishListDetails: {
-      createdAt: new Date(Date.now()),
+      createdAt: new Date(),
       id: 1,
       productId: '1'
     },
@@ -30,7 +31,7 @@ const mockProducts = [
       newPrice: '100',
       oldPrice: '120',
       updatedAt: new Date(),
-      createdAt: new Date(Date.now()),
+      createdAt: new Date(),
       description: '',
       isAvailable: false,
       quantity: ''
@@ -38,7 +39,7 @@ const mockProducts = [
   },
   {
     wishListDetails: {
-      createdAt: new Date(Date.now()),
+      createdAt: new Date(),
       id: 2,
       productId: '2'
     },
@@ -50,7 +51,7 @@ const mockProducts = [
       newPrice: '200',
       oldPrice: '220',
       updatedAt: new Date(),
-      createdAt: new Date(Date.now()),
+      createdAt: new Date(),
       description: '',
       isAvailable: false,
       quantity: ''
@@ -58,7 +59,7 @@ const mockProducts = [
   },
   {
     wishListDetails: {
-      createdAt: new Date(Date.now()),
+      createdAt: new Date(),
       id: 3,
       productId: '3'
     },
@@ -70,7 +71,7 @@ const mockProducts = [
       newPrice: '200',
       oldPrice: '220',
       updatedAt: new Date(),
-      createdAt: new Date(Date.now()),
+      createdAt: new Date(),
       description: '',
       isAvailable: false,
       quantity: ''
@@ -88,14 +89,16 @@ describe('WishlistPage', () => {
     vi.resetAllMocks();
   });
 
-  it('should tell if there are no products in wishlist', () => {
+  it('should tell if there are no products in wishlist', async () => {
     render(
-      <Provider store={store}>
-        <WishlistPage />
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <WishlistPage />
+        </Provider>
+      </BrowserRouter>
     );
 
-    const paragraph = screen.getByText(/wishlist is empty/i);
+    const paragraph = await screen.findByText(/wishlist is empty/i);
     expect(paragraph).toBeInTheDocument();
 
     const clearAllButton = screen.queryByText(/Clear All/i);
@@ -106,33 +109,39 @@ describe('WishlistPage', () => {
     store.dispatch(setWishlist(mockProducts));
 
     render(
-      <Provider store={store}>
-        <WishlistPage />
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <WishlistPage />
+        </Provider>
+      </BrowserRouter>
     );
 
     const heading = await screen.findByRole('heading', { name: 'Wishlist' });
     expect(heading).toBeInTheDocument();
 
-    expect(screen.getAllByTestId('productDiv').length).toBe(3);
+    waitFor(() => {
+      expect(screen.getAllByTestId('productDiv').length).toBe(3);
 
-    mockProducts.forEach((product) => {
-      expect(screen.getByText(product.productInfo.name)).toBeInTheDocument();
+      mockProducts.forEach((product) => {
+        expect(screen.getByText(product.productInfo.name)).toBeInTheDocument();
+      });
+
+      const deleteButtons = screen.getAllByTestId('deleteButton');
+
+      expect(deleteButtons[0]).toBeInTheDocument();
+      fireEvent.click(deleteButtons[0]);
     });
-
-    const deleteButtons = screen.getAllByTestId('deleteButton');
-
-    expect(deleteButtons[0]).toBeInTheDocument();
-    fireEvent.click(deleteButtons[0]);
   });
 
   it('calls clearAll when the "Clear All" button is clicked', async () => {
     store.dispatch(setWishlist(mockProducts));
 
     render(
-      <Provider store={store}>
-        <WishlistPage />
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <WishlistPage />
+        </Provider>
+      </BrowserRouter>
     );
 
     const clearAllButton = await screen.findByText(/Clear All/i);

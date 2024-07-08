@@ -39,7 +39,8 @@ it('fetches and displays products', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '2',
@@ -48,7 +49,8 @@ it('fetches and displays products', async () => {
       categories: [{ name: 'Category 2' }],
       newPrice: 200,
       oldPrice: 240,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     }
   ];
 
@@ -84,7 +86,8 @@ it('displays products based on selected category', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      quantity: 200
     }
   ];
 
@@ -133,7 +136,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '2',
@@ -142,7 +146,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 2' }],
       newPrice: 200,
       oldPrice: 240,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '3',
@@ -151,7 +156,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '4',
@@ -160,7 +166,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 2' }],
       newPrice: 200,
       oldPrice: 240,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '5',
@@ -169,7 +176,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '6',
@@ -178,7 +186,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 2' }],
       newPrice: 200,
       oldPrice: 240,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '7',
@@ -187,7 +196,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '8',
@@ -196,7 +206,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 2' }],
       newPrice: 200,
       oldPrice: 240,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '10',
@@ -205,7 +216,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '11',
@@ -214,7 +226,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 2' }],
       newPrice: 200,
       oldPrice: 240,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '12',
@@ -223,7 +236,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '13',
@@ -232,7 +246,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 2' }],
       newPrice: 200,
       oldPrice: 240,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     },
     {
       id: '14',
@@ -241,7 +256,8 @@ it('loads more products when "Load more" button is clicked', async () => {
       categories: [{ name: 'Category 1' }],
       newPrice: 100,
       oldPrice: 120,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      quantity: 200
     }
   ];
 

@@ -31,7 +31,14 @@ const Home = () => {
     axios
       .get(`${import.meta.env.VITE_APP_API_URL}/product/all`)
       .then((response) => {
-        setProductList(response.data.data.products);
+        const products: ProductProp[] = response.data.data.products;
+        setProductList(
+          products.filter((product) => {
+            return (
+              Number(product.quantity) > 0 && (!product.expirationDate || new Date(product.expirationDate) > new Date())
+            );
+          })
+        );
         setLoading(false);
       })
       .catch((error) => {

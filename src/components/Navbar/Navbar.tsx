@@ -6,12 +6,13 @@ import user from '../../images/user.png';
 import notificationBell from '../../images/bell.png';
 import menuIcon from '../../assets/Menu.svg';
 import closeIcon from '../../assets/Close.svg';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import DesktopMenu from '../Menu/DesktopMenu';
 import Login from './loginComponent';
 import CategoriesMenu from '../Menu/CategoriesMenu';
+import { RootState, AppDispatch } from '../../redux/store';
+import { fetchCart } from '../../redux/actions/cartAction';
 
 function Navbar() {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -38,6 +39,15 @@ function Navbar() {
       navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
     }
   };
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+
+  //cart state
+  const { cartItems } = useSelector((state: RootState) => state.cart);
 
   return (
     <nav
@@ -80,7 +90,7 @@ function Navbar() {
           <a href="/cart" className="relative cursor-pointer">
             <img src={cart} alt="Cart Icon" className="w-[25px] h-[25px]" />
             <span className="absolute min-w-5 h5 top-1 right-[6px] mt-[-10px] mr-[-15px] bg-orange text-white text-xs flex items-center justify-center rounded-full leading-none p-1">
-              0
+              {cartItems.length}
             </span>
           </a>
           <img
@@ -152,7 +162,7 @@ function Navbar() {
         <a href="/cart" className="relative cursor-pointer" data-testid="cart">
           <img src={cart} alt="Cart Icon" className="w-7 h-7" />
           <span className="absolute min-w-5 h-5 top-1 right-[5px] mt-[-10px] mr-[-15px] bg-orange text-white text-sm flex items-center justify-center rounded-full leading-none p-1">
-            0
+            {cartItems.length}
           </span>
         </a>
         {userToken && (
@@ -162,7 +172,10 @@ function Navbar() {
         )}
       </div>
       {userToken && showDesktopMenu && (
-        <div className="absolute top-[130px] right-[25%] xmd:right-6 xmd:top-[12vh]">
+        <div
+          className="absolute top-[130px] right-[25%] xmd:right-6 xmd:top-[12vh]"
+          onClick={() => setShowDesktopMenu(false)}
+        >
           <DesktopMenu />
         </div>
       )}

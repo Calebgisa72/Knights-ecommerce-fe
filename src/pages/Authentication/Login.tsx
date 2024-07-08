@@ -11,6 +11,7 @@ import { clearCredentials, setCredentials } from '../../redux/reducers/authReduc
 import { Link, useNavigate } from 'react-router-dom';
 import { resetState } from '../../redux/reducers/loginReducer';
 import { setUser } from '../../redux/reducers/userReducer';
+import { fetchCart } from '../../redux/actions/cartAction';
 
 export interface DecodedToken {
   id: string;
@@ -60,6 +61,7 @@ function Login() {
         navigate('/otp-verficaton');
       } else {
         dispatch(setCredentials(loginResponse.data?.token));
+        dispatch(fetchCart());
       }
       reset();
       dispatch(resetState());

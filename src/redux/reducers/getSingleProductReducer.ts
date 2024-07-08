@@ -11,13 +11,18 @@ const initialState: SingleProductState = {
 const singleProductSlice = createSlice({
   name: 'singleProduct',
   initialState,
-  reducers: {},
+  reducers: {
+    setProduct: (state, action: PayloadAction<Product>) => {
+      state.product = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSingleProduct.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchSingleProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+        console.log(action.payload);
         state.loading = false;
         state.product = action.payload;
         state.error = null;
@@ -29,4 +34,5 @@ const singleProductSlice = createSlice({
   }
 });
 
+export const { setProduct } = singleProductSlice.actions;
 export default singleProductSlice.reducer;
