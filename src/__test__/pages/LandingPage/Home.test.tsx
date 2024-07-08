@@ -6,6 +6,8 @@ import Home from '../../../pages/LandingPage/Home';
 import store from '../../../redux/store';
 import { Provider } from 'react-redux';
 import axios from 'axios';
+import { setOnWishlistPage } from '../../../redux/reducers/wishlistReducer';
+import { setCredentials } from '../../../redux/reducers/authReducer';
 
 vi.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -288,5 +290,59 @@ it('loads more products when "Load more" button is clicked', async () => {
     expect(screen.getByText('Product 3')).toBeInTheDocument();
     expect(screen.getByText('Product 4')).toBeInTheDocument();
     expect(screen.getByText('Product 5')).toBeInTheDocument();
+  });
+});
+
+const userToken = 'Testing Login';
+describe('logged in user', () => {
+  beforeEach(() => {
+    store.dispatch(setOnWishlistPage(false));
+    store.dispatch(setCredentials(userToken));
+  });
+  it('should have add to wishlist button', async () => {
+    const mockProducts = [
+      {
+        id: '1',
+        name: 'Product 1',
+        images: ['image1.jpg'],
+        categories: [{ name: 'Category 1' }],
+        newPrice: 100,
+        oldPrice: 120,
+        updatedAt: new Date(),
+        quantity: 200
+      },
+      {
+        id: '2',
+        name: 'Product 2',
+        images: ['image2.jpg'],
+        categories: [{ name: 'Category 2' }],
+        newPrice: 200,
+        oldPrice: 240,
+        updatedAt: new Date(),
+        quantity: 200
+      }
+    ];
+
+    const mockCategories = [
+      { id: '1', name: 'Category 1' },
+      { id: '2', name: 'Category 2' }
+    ];
+
+    mockedAxios.get.mockResolvedValueOnce({ data: { categories: mockCategories } });
+
+    (axios.get as jest.Mock).mockResolvedValueOnce({ data: { data: { products: mockProducts } } });
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await waitFor(() => {
+      const addButtons = screen.getAllByTestId('addButton');
+      expect(addButtons[0]).toBeInTheDocument();
+      fireEvent.click(addButtons[0]);
+    });
   });
 });

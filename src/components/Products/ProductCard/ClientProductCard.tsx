@@ -56,7 +56,10 @@ const ClientProductCard = (props: Props) => {
   const [wishlistId, setWishlistId] = useState<number | null>(null);
 
   useEffect(() => {
-    const productInWishlist = products.find((product) => product.productInfo.id === props.product.id);
+    let productInWishlist;
+    if (products) {
+      productInWishlist = products.find((product) => product.productInfo.id === props.product.id);
+    }
     if (productInWishlist) {
       setInWishlist(true);
       setWishlistId(productInWishlist.wishListDetails.id);
