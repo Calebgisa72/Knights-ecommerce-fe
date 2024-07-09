@@ -14,10 +14,10 @@ function ProductBreadcrumbs({ item }: ProductBreadcrumbsProps) {
       <p>Collections</p>
       <ChevronRight strokeWidth={1} height={20} />
       <p>
-        {item.vendor.firstName} {item.vendor.lastName}
+        {item?.vendor?.firstName} {item?.vendor?.lastName}
       </p>
       <ChevronRight strokeWidth={1} height={20} />
-      <p className="overflow-hidden whitespace-nowrap text-ellipsis">{item.name}</p>
+      <p className="overflow-hidden whitespace-nowrap text-ellipsis">{item?.name}</p>
     </div>
   );
 }
