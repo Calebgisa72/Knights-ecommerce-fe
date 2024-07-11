@@ -4,7 +4,7 @@ import { RootState, AppDispatch } from '../../redux/store';
 import { fetchCart, removeFromCart } from '../../redux/actions/cartAction';
 import CartSkeletonLoader from './CartSkeletonLoader';
 import { X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cartData } from '../../types/cartTypes';
 
 function Cart() {
@@ -169,9 +169,12 @@ function Cart() {
                     </div>
 
                     <div className="w-full items-center justify-start mt-4">
-                      <button className="h-[50px] w-full sm:w-[500px] flex items-center justify-center  border border-primary bg-primary text-white font-poppins font-normal px-2">
+                      <Link
+                        to={'/checkout'}
+                        className="h-[50px] w-full sm:w-[500px] flex items-center justify-center  border border-primary bg-primary text-white font-poppins font-normal px-2"
+                      >
                         PROCEED TO CHECKOUT
-                      </button>
+                      </Link>
                     </div>
                   </>
                 )}

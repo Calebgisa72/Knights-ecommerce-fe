@@ -28,7 +28,7 @@ const sampleOrder = {
     }
   ],
 
-  orderStatus: 'order placed',
+  orderStatus: 'awaiting shipment',
   quantity: 2,
   totalPrice: '1010',
   updatedAt: '2024-07-07T10:31:41.977'
@@ -38,6 +38,9 @@ vi.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('Single buyer order test', () => {
+  beforeEach(async () => {
+    vi.restoreAllMocks();
+  });
   afterEach(async () => {
     vi.restoreAllMocks();
   });
@@ -117,6 +120,69 @@ describe('Single buyer order test', () => {
     await waitFor(() => {
       const addressElement = screen.getByText(/rwanda - rwamagana - kk 209st/i);
       expect(addressElement).toBeInTheDocument();
+    });
+  });
+  it('renders order with cancelled status correctly', async () => {
+    mockedAxios.get.mockResolvedValue({
+      data: {
+        data: {
+          order: { ...sampleOrder, orderStatus: 'cancelled' }
+        }
+      }
+    });
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <SingleBuyerOrder />
+        </MemoryRouter>
+      </Provider>
+    );
+    await waitFor(() => {
+      const statusElement = screen.getByText('cancelled', { exact: false });
+      expect(statusElement).toBeInTheDocument();
+    });
+  });
+  it('renders order with order placed status correctly', async () => {
+    mockedAxios.get.mockResolvedValue({
+      data: {
+        data: {
+          order: { ...sampleOrder, orderStatus: 'order placed' }
+        }
+      }
+    });
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <SingleBuyerOrder />
+        </MemoryRouter>
+      </Provider>
+    );
+    await waitFor(() => {
+      const statusElement = screen.getByText('order placed', { exact: false });
+      expect(statusElement).toBeInTheDocument();
+    });
+  });
+  it('renders Qty as quantity on small screen', async () => {
+    mockedAxios.get.mockResolvedValue({
+      data: {
+        data: {
+          order: { ...sampleOrder }
+        }
+      }
+    });
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <SingleBuyerOrder />
+        </MemoryRouter>
+      </Provider>
+    );
+    global.innerWidth = 500;
+    global.dispatchEvent(new Event('resize'));
+
+    await waitFor(() => {
+      const tableHeadElement = screen.getByText('Qty', { exact: false });
+      expect(tableHeadElement).toBeInTheDocument();
     });
   });
 });

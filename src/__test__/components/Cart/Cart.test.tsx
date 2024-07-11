@@ -143,9 +143,7 @@ describe('Cart test', () => {
       const deliveryTypeElement = screen.getByText('Free');
       expect(deliveryTypeElement).toBeInTheDocument();
 
-      const proceedToCheckoutButton = screen.getByText('PROCEED TO CHECKOUT', {
-        selector: 'button'
-      });
+      const proceedToCheckoutButton = screen.getByText('PROCEED TO CHECKOUT');
       expect(proceedToCheckoutButton).toBeInTheDocument();
 
       const tatalP = screen.getAllByText('Total', { selector: 'p' });

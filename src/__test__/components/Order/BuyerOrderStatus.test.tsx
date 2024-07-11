@@ -61,4 +61,15 @@ describe('BuyerOrderStatus component test', () => {
 
     expect(screen.getByText('cancelled', { exact: false })).toBeInTheDocument();
   });
+  it('renders awaiting shipment', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <BuyerOrderStatus status="awaiting shipment" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByText('awaiting shipment', { exact: false })).toBeInTheDocument();
+  });
 });
