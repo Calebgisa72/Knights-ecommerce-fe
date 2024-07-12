@@ -17,6 +17,7 @@ import updateProductReducer from './updateProductReducer';
 import productDelete from './deleteProductReducer';
 import wishlistReducer from './wishlistReducer';
 import buyerOrdersReducer from './buyerOrdersReducer';
+import chatMessageReducer from './chatMessagesReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
   updateProduct: updateProductReducer,
   delete: productDelete,
   wishlist: wishlistReducer,
-  buyerOrders: buyerOrdersReducer
+  buyerOrders: buyerOrdersReducer,
+  chat: chatMessageReducer
 });
 export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;

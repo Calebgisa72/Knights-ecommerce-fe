@@ -154,7 +154,7 @@ const Home = () => {
   });
 
   return (
-    <div className="text-baseBlack">
+    <div className="relative text-baseBlack">
       <div className="hidden xmd:flex">
         <CategoriesMenu />
       </div>
