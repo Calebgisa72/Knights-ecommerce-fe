@@ -38,12 +38,14 @@ const ConfirmDeletePopup: React.FC<FormPopupProps> = ({
             <div className="mb-4">{body}</div>
             <div className="flex justify-end space-x-4">
               <button
+                data-testid="deny"
                 onClick={closeFormPopup}
                 className="px-4 py-2 border border-primary text-primary rounded hover:bg-opacity-40 transition duration-300"
               >
                 {closeText}
               </button>
               <button
+                data-testid="accept"
                 onClick={handleConfirm}
                 className="px-4 py-2 bg-primary text-white rounded hover:bg-opacity-90 transition duration-300"
               >

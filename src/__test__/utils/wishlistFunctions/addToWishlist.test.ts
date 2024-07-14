@@ -36,7 +36,12 @@ describe('addProductToWishlist', () => {
     createdAt: new Date(),
     description: '',
     isAvailable: false,
-    quantity: ''
+    quantity: '',
+    vendor: {
+      firstName: 'seller',
+      lastName: 'sellerLastName',
+      status: 'active'
+    }
   };
   const products: prodInWishlistProps[] = [
     {

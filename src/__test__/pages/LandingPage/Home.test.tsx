@@ -42,7 +42,12 @@ it('fetches and displays products', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '2',
@@ -52,7 +57,12 @@ it('fetches and displays products', async () => {
       newPrice: 200,
       oldPrice: 240,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     }
   ];
 
@@ -89,7 +99,12 @@ it('displays products based on selected category', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date().toISOString(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     }
   ];
 
@@ -139,7 +154,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '2',
@@ -149,7 +169,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 200,
       oldPrice: 240,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '3',
@@ -159,7 +184,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '4',
@@ -169,7 +199,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 200,
       oldPrice: 240,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '5',
@@ -179,7 +214,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '6',
@@ -189,7 +229,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 200,
       oldPrice: 240,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '7',
@@ -199,7 +244,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '8',
@@ -209,7 +259,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 200,
       oldPrice: 240,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '10',
@@ -219,7 +274,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '11',
@@ -229,7 +289,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 200,
       oldPrice: 240,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '12',
@@ -239,7 +304,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '13',
@@ -249,7 +319,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 200,
       oldPrice: 240,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     },
     {
       id: '14',
@@ -259,7 +334,12 @@ it('loads more products when "Load more" button is clicked', async () => {
       newPrice: 100,
       oldPrice: 120,
       updatedAt: new Date(),
-      quantity: 200
+      quantity: 200,
+      vendor: {
+        firstName: 'string',
+        lastName: 'Name',
+        status: 'active'
+      }
     }
   ];
 
@@ -309,7 +389,12 @@ describe('logged in user', () => {
         newPrice: 100,
         oldPrice: 120,
         updatedAt: new Date(),
-        quantity: 200
+        quantity: 200,
+        vendor: {
+          firstName: 'string',
+          lastName: 'Name',
+          status: 'active'
+        }
       },
       {
         id: '2',
@@ -319,7 +404,12 @@ describe('logged in user', () => {
         newPrice: 200,
         oldPrice: 240,
         updatedAt: new Date(),
-        quantity: 200
+        quantity: 200,
+        vendor: {
+          firstName: 'string',
+          lastName: 'Name',
+          status: 'active'
+        }
       }
     ];
 

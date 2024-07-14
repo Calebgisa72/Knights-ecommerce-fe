@@ -25,7 +25,12 @@ const wishlistProduct = [
       createdAt: new Date(Date.now()),
       description: '',
       isAvailable: false,
-      quantity: ''
+      quantity: '',
+      vendor: {
+        firstName: 'seller',
+        lastName: 'sellerLastName',
+        status: 'active'
+      }
     }
   }
 ];
@@ -61,7 +66,8 @@ describe('product card on home page', () => {
       updatedAt: new Date(),
       vendor: {
         firstName: 'seller',
-        lastName: 'sellerLastName'
+        lastName: 'sellerLastName',
+        status: 'active'
       }
     };
 

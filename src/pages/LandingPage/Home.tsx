@@ -35,6 +35,7 @@ const Home = () => {
           setProductList(
             products.filter((product) => {
               return (
+                product.vendor.status === 'active' &&
                 Number(product.quantity) > 0 &&
                 (!product.expirationDate || new Date(product.expirationDate) > new Date())
               );

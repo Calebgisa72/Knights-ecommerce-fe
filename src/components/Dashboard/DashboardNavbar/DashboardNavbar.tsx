@@ -70,14 +70,14 @@ const DashboardNavbar: React.FC<DashboardNavBarProps> = ({ setOpenNav }) => {
 
   return (
     <div
-      className="flex justify-end gap-4 lg:gap-0 flex-col-reverse items-end lg:flex-row lg:justify-between lg:items-center p-8 border-b-[1px] border-[#7c7c7c] text-black relative"
+      className="flex justify-end gap-4 lg:gap-0 flex-col-reverse items-end lg:flex-row lg:justify-between lg:items-center p-7 py-5 border-b-[1px] border-[#D1D1D1] text-black relative"
       data-testid="navbar"
     >
       <Link to={'/vendor/dashboard'} className="lg:hidden text-4xl font-bold text-[#070f2b] absolute left-8 top-8">
         Knight
       </Link>
       <div className="flex flex-col items-end lg:items-start">
-        <p className="font-bold text-xl">Welcome, {userName}</p>
+        <p className="font-bold text-[20px]">Welcome, {userName}</p>
         <p className="text-[#7c7c7c] text-sm">{currentDateTime}</p>
       </div>
       <div className="flex flex-col lg:flex-row gap-4">
