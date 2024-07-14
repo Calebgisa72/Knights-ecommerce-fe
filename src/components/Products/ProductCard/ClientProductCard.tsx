@@ -23,6 +23,7 @@ export interface Category {
 export interface User {
   firstName: string;
   lastName: string;
+  status?: string;
 }
 export interface ProductProp {
   categories: Category[];
@@ -38,7 +39,7 @@ export interface ProductProp {
   oldPrice?: string;
   quantity: string;
   updatedAt: Date;
-  vendor?: User;
+  vendor: User;
 }
 const ClientProductCard = (props: Props) => {
   const { userToken } = useSelector((state: RootState) => state.auth);

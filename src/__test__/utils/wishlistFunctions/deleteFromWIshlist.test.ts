@@ -37,7 +37,12 @@ describe('deleteWishlistProduct', () => {
     createdAt: new Date(Date.now()),
     description: '',
     isAvailable: false,
-    quantity: ''
+    quantity: '',
+    vendor: {
+      firstName: 'seller',
+      lastName: 'sellerLastName',
+      status: 'active'
+    }
   };
   const products: prodInWishlistProps[] = [
     {

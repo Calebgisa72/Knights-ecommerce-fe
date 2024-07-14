@@ -90,7 +90,7 @@ const BuyerOrders = () => {
                   <td className="xmd:table-cell hidden capitalize text-wrap w-[25%] leading-4 pr-5">
                     {order.address.replaceAll(', ', ' - ')}
                   </td>
-                  <td>
+                  <td className="leading-4">
                     <BuyerOrderStatus status={order.orderStatus} />
                   </td>
                 </tr>

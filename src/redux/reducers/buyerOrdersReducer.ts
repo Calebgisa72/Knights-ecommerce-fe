@@ -18,6 +18,7 @@ export interface Order {
   orderStatus: string;
   quantity: string;
   address: string;
+  cartId: string;
   createdAt: Date;
   updatedAt: Date;
   orderItems: OrderItem[];

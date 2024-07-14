@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import Register from '../pages/Authentication/Register';
 import RegisterVendor from '../pages/Authentication/RegisterVendor';
@@ -29,6 +29,9 @@ import { setOnWishlistPage } from '../redux/reducers/wishlistReducer';
 import { useLocation } from 'react-router-dom';
 import BuyerOrders from '../pages/Orders/BuyerOrders';
 import SingleBuyerOrder from '../pages/Orders/SingleBuyerOrder';
+import CreateOrder from '../components/Order/CreateOrder';
+import Users from '../components/Dashboard/adminDashbord/Users';
+import SingleUser from '../components/Dashboard/adminDashbord/SingleUser';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -122,7 +125,7 @@ const Router = () => {
         element={
           <MainLayout>
             <PageTitle title="Knights Store | Login" />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
+            {userToken && isAdmin && <Navigate to="/admin/dashboard/users" />}
             {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
             {userToken && isBuyer && <Navigate to="/" />}
             {!userToken && <Login />}
@@ -169,19 +172,46 @@ const Router = () => {
         element={
           <MainLayout>
             <PageTitle title="Knights Store | Wishlist" />
-            {userToken ? <WishlistPage /> : <Home />}
+            {userToken ? <WishlistPage /> : <Navigate to="/" />}
           </MainLayout>
         }
       />
 
-      <Route path="/vendor/dashboard" element={<DashboardLayout />}>
-        <Route path="products" element={<DashboarInnerLayout />}>
-          <Route path="" element={<DashboardProducts />} />
-          <Route path="new" element={<DashboardNewProducts />} />
-          <Route path=":id" element={<DashboardSingleProduct />} />
-          <Route path=":id/edit" element={<DashboardEditProducts />} />
+      {isVendor && (
+        <Route path="/vendor/dashboard" element={<DashboardLayout />}>
+          <Route path="products" element={<DashboarInnerLayout />}>
+            <Route path="" element={<DashboardProducts />} />
+            <Route path="new" element={<DashboardNewProducts />} />
+            <Route path=":id" element={<DashboardSingleProduct />} />
+            <Route path=":id/edit" element={<DashboardEditProducts />} />
+          </Route>
         </Route>
-      </Route>
+      )}
+
+      {userToken ? (
+        isAdmin ? (
+          <Route path="/Admin/dashboard" element={<DashboardLayout />}>
+            <Route path="users" element={<DashboarInnerLayout />}>
+              <Route path="" element={<Users />} />
+              <Route path=":id" element={<SingleUser />} />
+            </Route>
+          </Route>
+        ) : (
+          <Route
+            path="/Admin/dashboard"
+            element={
+              <div className="flex flex-col gap-3 items-center mt-40">
+                <p className="text-xl">You are not authorized to use this link because you are not an Admin !!</p>
+                <Link to={'/'}>
+                  <p className="underline cursor-pointer">Go to Home page</p>
+                </Link>
+              </div>
+            }
+          />
+        )
+      ) : (
+        <Route path="/Admin/dashboard" element={<Navigate to="/login" />} />
+      )}
 
       <Route
         path="/search"
@@ -233,6 +263,19 @@ const Router = () => {
             {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
             {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
             {userToken && isBuyer && <SingleBuyerOrder />}
+            {!userToken && <Navigate to="/login" />}
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/test"
+        element={
+          <MainLayout>
+            <PageTitle title="Knights Store | Create Order" />
+            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
+            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
+            {userToken && isBuyer && <CreateOrder />}
             {!userToken && <Navigate to="/login" />}
           </MainLayout>
         }

@@ -33,7 +33,12 @@ describe('fetchWishlist', () => {
           categories: [{ name: 'Category 1' }],
           newPrice: 100,
           oldPrice: 120,
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          vendor: {
+            firstName: 'string',
+            lastName: 'Name',
+            status: 'active'
+          }
         }
       },
       {
@@ -49,12 +54,18 @@ describe('fetchWishlist', () => {
           categories: [{ name: 'Category 2' }],
           newPrice: 200,
           oldPrice: 220,
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          vendor: {
+            firstName: 'string',
+            lastName: 'Name',
+            status: 'active'
+          }
         }
       }
     ];
 
     mockedAxios.get.mockResolvedValueOnce({
+      status: 200,
       data: { productsForBuyer: mockProducts }
     });
 

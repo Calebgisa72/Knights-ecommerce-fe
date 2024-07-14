@@ -1,6 +1,6 @@
 import axios from 'axios';
 import handleError from '../errorHandler';
-import { setWishlist } from '../../redux/reducers/wishlistReducer';
+import { prodInWishlistProps, setWishlist } from '../../redux/reducers/wishlistReducer';
 import { AppDispatch } from '../../redux/store';
 
 const fetchWishlist = async (userToken: string, dispatch: AppDispatch) => {
@@ -16,7 +16,16 @@ const fetchWishlist = async (userToken: string, dispatch: AppDispatch) => {
       return;
     }
 
-    dispatch(setWishlist(response.data.productsForBuyer));
+    if (response.status === 200) {
+      const wishlistProducts: prodInWishlistProps[] = response.data.productsForBuyer;
+      dispatch(
+        setWishlist(
+          wishlistProducts.filter((wishlistProd) => {
+            return wishlistProd.productInfo.vendor.status === 'active';
+          })
+        )
+      );
+    }
   } catch (error) {
     handleError(error);
   }
