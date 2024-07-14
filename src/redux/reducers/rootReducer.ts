@@ -18,6 +18,7 @@ import productDelete from './deleteProductReducer';
 import wishlistReducer from './wishlistReducer';
 import buyerOrdersReducer from './buyerOrdersReducer';
 import chatMessageReducer from './chatMessagesReducer';
+import createOrderReducer from './createOrderReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   updateProduct: updateProductReducer,
   delete: productDelete,
   wishlist: wishlistReducer,
+  createOrder: createOrderReducer,
   buyerOrders: buyerOrdersReducer,
   chat: chatMessageReducer
 });
