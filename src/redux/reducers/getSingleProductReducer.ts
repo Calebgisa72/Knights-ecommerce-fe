@@ -22,7 +22,6 @@ const singleProductSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchSingleProduct.fulfilled, (state, action: PayloadAction<Product>) => {
-        console.log(action.payload);
         state.loading = false;
         state.product = action.payload;
         state.error = null;
