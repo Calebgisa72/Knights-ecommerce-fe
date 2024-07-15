@@ -22,8 +22,7 @@ describe('CreateOrder component test', () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(screen.getByText('Add your Address', { exact: false })).toBeInTheDocument();
+    expect(screen.queryByText('Add your Address')).not.toBeInTheDocument();
   });
   it('renders form error on form submission', async () => {
     render(

@@ -5,6 +5,7 @@ import { ProductActionTypes, ProductActions, ResetProductStateAction } from '../
 import { Product, VendorProduct } from '../../types/productTypes';
 import HttpRequest from '../../services/HttpRequest';
 import { CreateCouponArgs, getCouponArgs, updateCouponArgs } from '../../types/CouponTypes';
+import { AddFeedbackArgs } from '../../types/FeedbackTypes';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
   const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/all`);
@@ -149,5 +150,12 @@ export const updateProduct = createAsyncThunk(
         error.response && error.response.data.message ? error.response.data.message : error.message
       );
     }
+  }
+);
+export const addFeedback = createAsyncThunk<any, AddFeedbackArgs>(
+  'products/addFeedback',
+  async ({ productId, data }: AddFeedbackArgs) => {
+    const response = await HttpRequest.post(`${import.meta.env.VITE_APP_API_URL}/feedback/${productId}/new`, data);
+    return response.data;
   }
 );

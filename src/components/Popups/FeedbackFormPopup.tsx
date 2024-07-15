@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { FormPayload, FormPopupProps } from '../../types/CouponTypes';
+import { FeedbackPayload, FeedbackFormPopupProps } from '../../types/FeedbackTypes';
 
-const FormPopup: React.FC<FormPopupProps> = ({ trigger, title, body, onSubmit, onClose, submitText, closeText }) => {
+const FeedbackFormPopup: React.FC<FeedbackFormPopupProps> = ({
+  trigger,
+  title,
+  body,
+  onSubmit,
+  onClose,
+  submitText,
+  closeText
+}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const openFormPopup = () => {
@@ -13,12 +21,12 @@ const FormPopup: React.FC<FormPopupProps> = ({ trigger, title, body, onSubmit, o
     if (onClose) onClose(); // Call onClose to handle any cleanup or state changes outside the component
   };
 
-  const submitHandler = (data: FormPayload) => {
+  const submitHandler = (data: FeedbackPayload) => {
     if (onSubmit) onSubmit(data);
     closeFormPopup();
   };
   return (
-    <div className="relative text-black" data-testid="popup-trigger">
+    <div className="relative text-black">
       {/* Trigger element to open the popup */}
       <span onClick={openFormPopup}>{trigger}</span>
 
@@ -32,6 +40,7 @@ const FormPopup: React.FC<FormPopupProps> = ({ trigger, title, body, onSubmit, o
           if (!isVisible) return; // Prevent unnecessary state updates
           closeFormPopup();
         }}
+        data-testid="dialog"
       >
         <div
           className={`bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-500 ease-in-out ${
@@ -68,4 +77,4 @@ const FormPopup: React.FC<FormPopupProps> = ({ trigger, title, body, onSubmit, o
   );
 };
 
-export default FormPopup;
+export default FeedbackFormPopup;

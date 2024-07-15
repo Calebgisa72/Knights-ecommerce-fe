@@ -29,9 +29,10 @@ import { setOnWishlistPage } from '../redux/reducers/wishlistReducer';
 import { useLocation } from 'react-router-dom';
 import BuyerOrders from '../pages/Orders/BuyerOrders';
 import SingleBuyerOrder from '../pages/Orders/SingleBuyerOrder';
-import CreateOrder from '../components/Order/CreateOrder';
 import Users from '../components/Dashboard/adminDashbord/Users';
 import SingleUser from '../components/Dashboard/adminDashbord/SingleUser';
+import CheckOutMain from '../pages/Cart/checkOutMain';
+import PaymentOk from '../pages/PaymentOk';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -269,14 +270,21 @@ const Router = () => {
       />
 
       <Route
-        path="/test"
+        path="/checkout"
         element={
           <MainLayout>
             <PageTitle title="Knights Store | Create Order" />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <CreateOrder />}
+            {userToken && isBuyer && <CheckOutMain />}
             {!userToken && <Navigate to="/login" />}
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/completion"
+        element={
+          <MainLayout>
+            <PageTitle title="Knights Store | Payment successful" />
+            <PaymentOk />
           </MainLayout>
         }
       />

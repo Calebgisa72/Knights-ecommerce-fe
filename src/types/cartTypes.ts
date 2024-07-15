@@ -13,7 +13,7 @@ interface Product {
 }
 
 export type AddToCartData = {
-  productId: string;
+  productId?: string;
   quantity: number;
 };
 

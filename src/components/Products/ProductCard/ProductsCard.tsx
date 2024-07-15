@@ -71,7 +71,11 @@ const ProductsCard: React.FC<ProductsCardProps> = ({ data }) => {
               <p className="text-black/60">{categories[0].name}</p>
               <p className="font-semibold text-[#232321] mt-4">{newPrice}</p>
             </div>
-            <button className="p-2 rounded border bg-red-100/50 h-max" onClick={handleDeleteClick}>
+            <button
+              className="p-2 rounded border bg-red-100/50 h-max"
+              onClick={handleDeleteClick}
+              data-testid="delete-button"
+            >
               <Trash2 className="text-red-500" />
             </button>
           </div>

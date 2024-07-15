@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, it } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import ProductsCard from '../../../components/Products/ProductCard/ProductsCard';
@@ -102,5 +102,52 @@ describe('ProductsCard', () => {
       </Provider>
     );
     expect(screen.getByAltText('product-image')).toBeInTheDocument();
+  });
+
+  it('renders the correct category name', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ProductsCard data={mockProduct} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByText('Category 1')).toBeInTheDocument();
+  });
+
+  it('handles delete click and shows modal', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ProductsCard data={mockProduct} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Click the delete button
+    fireEvent.click(screen.getByTestId('delete-button'));
+
+    // Check if the modal is displayed
+    expect(screen.getByText(/Are you sure you want to delete the product/i)).toBeInTheDocument();
+  });
+
+  it('closes modal when cancel button is clicked', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ProductsCard data={mockProduct} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Click the delete button
+    fireEvent.click(screen.getByTestId('delete-button'));
+
+    // Click the cancel button
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
+    // Check if the modal is closed
+    expect(screen.queryByText(/Are you sure you want to delete the product/i)).not.toBeInTheDocument();
   });
 });

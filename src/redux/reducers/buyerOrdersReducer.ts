@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { GetOrders } from '../actions/OrdersAction';
 
 interface Product {
   id: string;
@@ -26,10 +27,14 @@ export interface Order {
 
 interface InitialState {
   orders: Order[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: InitialState = {
-  orders: []
+  orders: [],
+  loading: false,
+  error: ''
 };
 
 const ordersSlice = createSlice({
@@ -39,6 +44,21 @@ const ordersSlice = createSlice({
     setOrders: (state, action: PayloadAction<Order[]>) => {
       state.orders = action.payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(GetOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetOrders.fulfilled, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.orders = action.payload?.orders;
+      })
+      .addCase(GetOrders.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload.message || 'Something went wrong, please try again.';
+      });
   }
 });
 
