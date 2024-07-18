@@ -19,6 +19,7 @@ import wishlistReducer from './wishlistReducer';
 import buyerOrdersReducer from './buyerOrdersReducer';
 import chatMessageReducer from './chatMessagesReducer';
 import createOrderReducer from './createOrderReducer';
+import profileReducer from './profileReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -40,7 +41,8 @@ const rootReducer = combineReducers({
   wishlist: wishlistReducer,
   createOrder: createOrderReducer,
   buyerOrders: buyerOrdersReducer,
-  chat: chatMessageReducer
+  chat: chatMessageReducer,
+  profile: profileReducer
 });
 export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;

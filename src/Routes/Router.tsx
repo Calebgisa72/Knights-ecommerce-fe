@@ -33,6 +33,7 @@ import Users from '../components/Dashboard/adminDashbord/Users';
 import SingleUser from '../components/Dashboard/adminDashbord/SingleUser';
 import CheckOutMain from '../pages/Cart/checkOutMain';
 import PaymentOk from '../pages/PaymentOk';
+import DashboardAccount from '../components/Dashboard/DashboardAccount/DashboardAccount';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -186,6 +187,9 @@ const Router = () => {
             <Route path=":id" element={<DashboardSingleProduct />} />
             <Route path=":id/edit" element={<DashboardEditProducts />} />
           </Route>
+          <Route path="account" element={<DashboarInnerLayout />}>
+            <Route path="" element={<DashboardAccount />} />
+          </Route>
         </Route>
       )}
 
@@ -195,6 +199,9 @@ const Router = () => {
             <Route path="users" element={<DashboarInnerLayout />}>
               <Route path="" element={<Users />} />
               <Route path=":id" element={<SingleUser />} />
+            </Route>
+            <Route path="account" element={<DashboarInnerLayout />}>
+              <Route path="" element={<DashboardAccount />} />
             </Route>
           </Route>
         ) : (
