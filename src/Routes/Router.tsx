@@ -36,6 +36,10 @@ import PaymentOk from '../pages/PaymentOk';
 import ProtectedRoute from './ProtectedRoute';
 import NotFound from './NotFound';
 import DashboardAccount from '../components/Dashboard/DashboardAccount/DashboardAccount';
+import VendorOrder from '../pages/Orders/VendorOrder';
+import SingleVendorOrder from '../pages/Orders/SingleVendorOrder';
+import AdminOrders from '../pages/Orders/AdminOrders';
+import SingleAdminOrder from '../pages/Orders/SingleAdminOrder';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -181,6 +185,21 @@ const Router = () => {
         }
       />
 
+      {isVendor && (
+        <Route path="/vendor/dashboard" element={<DashboardLayout />}>
+          <Route path="products" element={<DashboarInnerLayout />}>
+            <Route path="" element={<DashboardProducts />} />
+            <Route path="new" element={<DashboardNewProducts />} />
+            <Route path=":id" element={<DashboardSingleProduct />} />
+            <Route path=":id/edit" element={<DashboardEditProducts />} />
+          </Route>
+          <Route path="orders" element={<DashboarInnerLayout />}>
+            <Route path="" element={<VendorOrder />} />
+            <Route path=":orderId" element={<SingleVendorOrder />} />
+          </Route>
+        </Route>
+      )}
+
       <Route
         path="/search"
         element={
@@ -284,10 +303,17 @@ const Router = () => {
 
       <Route element={<ProtectedRoute requiredRole="admin" />}>
         <Route path="/Admin/dashboard" element={<DashboardLayout />}>
+          <Route path="" element={<DashboarInnerLayout />}>
+            <Route path="" element={<Users />} />
+          </Route>
           <Route path="users" element={<DashboarInnerLayout />}>
             <Route path="" element={<Users />} />
             <Route path=":id" element={<SingleUser />} />
             <Route path="account" element={<DashboardAccount />} />
+          </Route>
+          <Route path="orders" element={<DashboarInnerLayout />}>
+            <Route path="" element={<AdminOrders />} />
+            <Route path=":orderId" element={<SingleAdminOrder />} />
           </Route>
         </Route>
       </Route>

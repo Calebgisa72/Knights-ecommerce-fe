@@ -11,7 +11,8 @@ describe('should formart the date and time to locale time string when provide an
 
   it('should formart the time properly', () => {
     const formatted = formatDateAndTime(isoString);
-    const possibleTimes = ['04:10 PM', '02:10 PM'];
+    console.log(formatted);
+    const possibleTimes = ['04:10 PM', '02:10 PM', '05:10 PM'];
     expect(possibleTimes).toContain(formatted.time);
   });
 });

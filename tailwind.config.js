@@ -84,7 +84,10 @@ export default {
         }
       },
       screens: {
-        xmd: '700px'
+        xsm: '450px',
+        sm: '610px',
+        xmd: '700px',
+        xlg: '1210px'
       }
     }
   },

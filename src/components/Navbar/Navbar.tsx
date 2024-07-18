@@ -91,7 +91,7 @@ function Navbar() {
           <div onClick={handleNotificationPopup} className="relative cursor-pointer">
             <img src={notificationBell} className="w-[25px] h-[25px]" alt="Notification Bell" />
             {unreadNotifications > 0 && (
-              <span className="absolute min-w-5 h-5 top-1 right-[14px] mt-[-10px] mr-[-15px] bg-orange text-white text-xs flex items-center justify-center rounded-full leading-none p-1">
+              <span className="absolute min-w-5 h-5 top-1 right-[14px] mt-[-10px] mr-[-15px] bg-orange text-white text-[.7rem] font-semibold flex items-center justify-center rounded-full leading-none p-1">
                 {unreadNotifications}
               </span>
             )}
