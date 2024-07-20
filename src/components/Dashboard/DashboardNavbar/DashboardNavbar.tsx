@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 import notificationIcon from '/notification.svg';
 import searchIcon from '/search.svg';
 import { Link } from 'react-router-dom';
 import { AlignJustify } from 'lucide-react';
+import { setOpenNotification } from '../../../redux/reducers/notification';
+import NotificationLayout from '../../Notification/NotificationLayout';
+import { AppDispatch, RootState } from '../../../redux/store';
 
 interface DashboardNavBarProps {
   setOpenNav: (open: boolean) => void;
@@ -23,9 +27,15 @@ const DashboardNavbar: React.FC<DashboardNavBarProps> = ({ setOpenNav }) => {
   const [currentDateTime, setCurrentDateTime] = useState('');
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
+  const { openNotification, unreadNotifications } = useSelector((state: RootState) => state.notification);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleNotificationPopup = () => {
+    dispatch(setOpenNotification(!openNotification));
   };
 
   useEffect(() => {
@@ -80,10 +90,16 @@ const DashboardNavbar: React.FC<DashboardNavBarProps> = ({ setOpenNav }) => {
         <p className="font-bold text-[20px]">Welcome, {userName}</p>
         <p className="text-[#7c7c7c] text-sm">{currentDateTime}</p>
       </div>
+      <NotificationLayout />
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="flex gap-4 items-center">
-          <button className="px-4 lg:border-r-2 border-[#7c7c7c]">
+          <button onClick={handleNotificationPopup} className="relative px-4 lg:border-r-2 border-[#7c7c7c]">
             <img src={notificationIcon} alt="Notification" />
+            {unreadNotifications > 0 && (
+              <span className="absolute min-w-5 h-5 top-1 right-[27px] mt-[-10px] mr-[-15px] bg-orange text-white text-sm flex items-center justify-center rounded-full leading-none p-1">
+                {unreadNotifications}
+              </span>
+            )}
           </button>
           <button onClick={() => setOpenNav(true)} className="lg:hidden" name="AlignJustify">
             <AlignJustify />

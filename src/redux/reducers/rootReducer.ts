@@ -20,6 +20,7 @@ import buyerOrdersReducer from './buyerOrdersReducer';
 import chatMessageReducer from './chatMessagesReducer';
 import createOrderReducer from './createOrderReducer';
 import profileReducer from './profileReducer';
+import notificationReducer from './notification';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -42,7 +43,8 @@ const rootReducer = combineReducers({
   createOrder: createOrderReducer,
   buyerOrders: buyerOrdersReducer,
   chat: chatMessageReducer,
-  profile: profileReducer
+  profile: profileReducer,
+  notification: notificationReducer
 });
 export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;

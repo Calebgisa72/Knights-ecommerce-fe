@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { AddToCartData } from '../../types/cartTypes';
 
-const getConfig = () => {
+export const getConfig = () => {
   const tokenString = localStorage.getItem('userToken');
   const token = tokenString ? JSON.parse(tokenString).token : null;
 

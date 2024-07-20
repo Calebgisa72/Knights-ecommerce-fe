@@ -1,9 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, vi } from 'vitest';
-import { MemoryRouter, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import DashboardNavbar from '../../../components/Dashboard/DashboardNavbar/DashboardNavbar';
 import DashboarInnerLayout from '../../../layout/DashboarInnerLayout';
+import store from '../../../redux/store';
+import { Provider } from 'react-redux';
 
 describe('DashboardNavbar', () => {
   const mockedToken = JSON.stringify({
@@ -12,9 +14,11 @@ describe('DashboardNavbar', () => {
   });
   it('renders the DashboardNavbar component without crashing', () => {
     render(
-      <Router>
-        <DashboardNavbar setOpenNav={() => {}} />
-      </Router>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNavbar setOpenNav={() => {}} />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
@@ -22,9 +26,11 @@ describe('DashboardNavbar', () => {
     localStorage.setItem('userToken', mockedToken);
 
     render(
-      <Router>
-        <DashboardNavbar setOpenNav={() => {}} />
-      </Router>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNavbar setOpenNav={() => {}} />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(screen.getByText('Welcome, John')).toBeInTheDocument();
@@ -32,9 +38,11 @@ describe('DashboardNavbar', () => {
 
   it('displays the current date and time', () => {
     render(
-      <Router>
-        <DashboardNavbar setOpenNav={() => {}} />
-      </Router>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNavbar setOpenNav={() => {}} />
+        </MemoryRouter>
+      </Provider>
     );
     // 30 June 2024 at 5:42 pm GMT+2
     expect(screen.getByText(/2024/)).toBeInTheDocument();
@@ -42,9 +50,11 @@ describe('DashboardNavbar', () => {
 
   it('handles the search input correctly', () => {
     render(
-      <Router>
-        <DashboardNavbar setOpenNav={() => {}} />
-      </Router>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNavbar setOpenNav={() => {}} />
+        </MemoryRouter>
+      </Provider>
     );
 
     const searchInput: any = screen.getByPlaceholderText('Search...');
@@ -58,9 +68,11 @@ describe('DashboardNavbar', () => {
     const navigate = vi.fn();
 
     render(
-      <Router>
-        <DashboardNavbar setOpenNav={() => {}} />
-      </Router>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNavbar setOpenNav={() => {}} />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(navigate).toBeTruthy;
@@ -68,9 +80,11 @@ describe('DashboardNavbar', () => {
 
   it('displays the notification icon', () => {
     render(
-      <Router>
-        <DashboardNavbar setOpenNav={() => {}} />
-      </Router>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNavbar setOpenNav={() => {}} />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(screen.getByAltText('Notification')).toBeInTheDocument();
@@ -81,9 +95,11 @@ describe('DashboardNavbar', () => {
     const setOpenNav = vi.fn();
 
     render(
-      <Router>
-        <DashboardNavbar setOpenNav={setOpenNav} />
-      </Router>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNavbar setOpenNav={() => {}} />
+        </MemoryRouter>
+      </Provider>
     );
 
     const toggleButton = screen.getByRole('button', { name: /Notification/i });

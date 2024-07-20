@@ -50,7 +50,7 @@ const DashboardSideBar: React.FC<DashboardSideBarProps> = ({ openNav, setOpenNav
       </button>
       <div className="flex flex-col gap-4 text-[#7c7c7c] items-start w-full pt-8 lg:pt-0">
         <NavLink
-          to="dashboard"
+          to="/vendor/dashboard"
           className={({ isActive }) =>
             `flex gap-4 p-2 w-full rounded transition-all duration-300 ease-in-out ${isActive ? 'bg-[#070f2b] text-white' : ''}`
           }
@@ -67,7 +67,7 @@ const DashboardSideBar: React.FC<DashboardSideBarProps> = ({ openNav, setOpenNav
           <img src={three} alt="Orders" /> Orders
         </NavLink>
         <NavLink
-          to="products"
+          to="/vendor/dashboard/products"
           className={({ isActive }) =>
             `flex gap-4 p-2 w-full rounded transition-all duration-300 ease-in-out ${isActive ? 'bg-[#070f2b] text-white' : ''}`
           }

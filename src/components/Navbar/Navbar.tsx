@@ -13,12 +13,14 @@ import Login from './loginComponent';
 import CategoriesMenu from '../Menu/CategoriesMenu';
 import { RootState, AppDispatch } from '../../redux/store';
 import { fetchCart } from '../../redux/actions/cartAction';
+import { setOpenNotification } from '../../redux/reducers/notification';
+import NotificationLayout from '../Notification/NotificationLayout';
 
 function Navbar() {
   const { userToken } = useSelector((state: RootState) => state.auth);
   const [showDesktopMenu, setShowDesktopMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-
+  const { openNotification, unreadNotifications } = useSelector((state: RootState) => state.notification);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
@@ -39,8 +41,11 @@ function Navbar() {
       navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
     }
   };
-
   const dispatch = useDispatch<AppDispatch>();
+
+  const handleNotificationPopup = () => {
+    dispatch(setOpenNotification(!openNotification));
+  };
 
   useEffect(() => {
     dispatch(fetchCart());
@@ -65,6 +70,8 @@ function Navbar() {
         KNIGHTS STORE
       </h1>
 
+      <NotificationLayout />
+
       {!userToken && (
         <div className="xmd:hidden flex gap-5" data-testid="userIcon">
           <Search strokeWidth={1.5} className="w-10 h-9 text-black" />
@@ -81,12 +88,14 @@ function Navbar() {
       {userToken && (
         <div className="xmd:hidden flex justify-between w-[100%]" data-testid="userIcon">
           <Search strokeWidth={1.5} className="w-[25px] h-[25px] text-black" />
-          <a href="/notification" className="relative cursor-pointer">
+          <div onClick={handleNotificationPopup} className="relative cursor-pointer">
             <img src={notificationBell} className="w-[25px] h-[25px]" alt="Notification Bell" />
-            <span className="absolute min-w-5 h-5 top-1 right-[14px] mt-[-10px] mr-[-15px] bg-orange text-white text-xs flex items-center justify-center rounded-full leading-none p-1">
-              0
-            </span>
-          </a>
+            {unreadNotifications > 0 && (
+              <span className="absolute min-w-5 h-5 top-1 right-[14px] mt-[-10px] mr-[-15px] bg-orange text-white text-xs flex items-center justify-center rounded-full leading-none p-1">
+                {unreadNotifications}
+              </span>
+            )}
+          </div>
           <a href="/cart" className="relative cursor-pointer">
             <img src={cart} alt="Cart Icon" className="w-[25px] h-[25px]" />
             <span className="absolute min-w-5 h5 top-1 right-[6px] mt-[-10px] mr-[-15px] bg-orange text-white text-xs flex items-center justify-center rounded-full leading-none p-1">
@@ -152,12 +161,14 @@ function Navbar() {
           </Link>
         )}
         {userToken && (
-          <a href="/notification" className="relative cursor-pointer">
+          <div onClick={handleNotificationPopup} className="relative cursor-pointer">
             <img src={notificationBell} alt="Notification Bell" className="w-7 h-7" />
-            <span className="absolute min-w-5 h-5 top-1 right-[12px] mt-[-10px] mr-[-15px] bg-orange text-white text-sm flex items-center justify-center rounded-full leading-none p-1">
-              0
-            </span>
-          </a>
+            {unreadNotifications > 0 && (
+              <span className="absolute min-w-5 h-5 top-1 right-[12px] mt-[-10px] mr-[-15px] bg-orange text-white text-sm flex items-center justify-center rounded-full leading-none p-1">
+                {unreadNotifications}
+              </span>
+            )}
+          </div>
         )}
         <a href="/cart" className="relative cursor-pointer" data-testid="cart">
           <img src={cart} alt="Cart Icon" className="w-7 h-7" />

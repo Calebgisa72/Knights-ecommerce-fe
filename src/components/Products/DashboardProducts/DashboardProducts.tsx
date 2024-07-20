@@ -33,7 +33,7 @@ const DashboardProducts: React.FC = () => {
   const expiredProductsCount = products ? getExpiredProductsCount(products.data.products) : 0;
 
   const filteredProducts = products?.data?.products
-    .filter(
+    ?.filter(
       (product) =>
         product.name.toLowerCase().includes(searchTerm) ||
         product.categories.some((category) => category.name.toLowerCase().includes(searchTerm))
@@ -50,7 +50,7 @@ const DashboardProducts: React.FC = () => {
           </p>
         </div>
         <Link
-          to={'new'}
+          to={'/vendor/dashboard/products/new'}
           className="px-8 py-4 bg-[#070F2B] font-semibold text-white rounded-lg flex gap-4 items-center hover:scale-105 transition-all duration-300 ease-in-out"
         >
           New Product
