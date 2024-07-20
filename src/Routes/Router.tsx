@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import Register from '../pages/Authentication/Register';
 import RegisterVendor from '../pages/Authentication/RegisterVendor';
@@ -33,6 +33,8 @@ import Users from '../components/Dashboard/adminDashbord/Users';
 import SingleUser from '../components/Dashboard/adminDashbord/SingleUser';
 import CheckOutMain from '../pages/Cart/checkOutMain';
 import PaymentOk from '../pages/PaymentOk';
+import ProtectedRoute from './ProtectedRoute';
+import NotFound from './NotFound';
 import DashboardAccount from '../components/Dashboard/DashboardAccount/DashboardAccount';
 
 const Router = () => {
@@ -179,48 +181,6 @@ const Router = () => {
         }
       />
 
-      {isVendor && (
-        <Route path="/vendor/dashboard" element={<DashboardLayout />}>
-          <Route path="products" element={<DashboarInnerLayout />}>
-            <Route path="" element={<DashboardProducts />} />
-            <Route path="new" element={<DashboardNewProducts />} />
-            <Route path=":id" element={<DashboardSingleProduct />} />
-            <Route path=":id/edit" element={<DashboardEditProducts />} />
-          </Route>
-          <Route path="account" element={<DashboarInnerLayout />}>
-            <Route path="" element={<DashboardAccount />} />
-          </Route>
-        </Route>
-      )}
-
-      {userToken ? (
-        isAdmin ? (
-          <Route path="/Admin/dashboard" element={<DashboardLayout />}>
-            <Route path="users" element={<DashboarInnerLayout />}>
-              <Route path="" element={<Users />} />
-              <Route path=":id" element={<SingleUser />} />
-            </Route>
-            <Route path="account" element={<DashboarInnerLayout />}>
-              <Route path="" element={<DashboardAccount />} />
-            </Route>
-          </Route>
-        ) : (
-          <Route
-            path="/Admin/dashboard"
-            element={
-              <div className="flex flex-col gap-3 items-center mt-40">
-                <p className="text-xl">You are not authorized to use this link because you are not an Admin !!</p>
-                <Link to={'/'}>
-                  <p className="underline cursor-pointer">Go to Home page</p>
-                </Link>
-              </div>
-            }
-          />
-        )
-      ) : (
-        <Route path="/Admin/dashboard" element={<Navigate to="/login" />} />
-      )}
-
       <Route
         path="/search"
         element={
@@ -240,6 +200,28 @@ const Router = () => {
           </MainLayout>
         }
       />
+      {/*  Protected routes 1 . Vendor pages */}
+      <Route
+        path="/vendor/dashboard/*"
+        element={
+          <ProtectedRoute requiredRole="vendor">
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<DashboardProducts />} />
+        <Route path="account" element={<DashboarInnerLayout />}>
+          <Route index element={<DashboardAccount />} />
+        </Route>
+        <Route path="products" element={<DashboarInnerLayout />}>
+          <Route index element={<DashboardProducts />} />
+          <Route path="new" element={<DashboardNewProducts />} />
+          <Route path=":id" element={<DashboardSingleProduct />} />
+          <Route path=":id/edit" element={<DashboardEditProducts />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Route>
+
       <Route
         path="/cart"
         element={
@@ -249,52 +231,68 @@ const Router = () => {
           </MainLayout>
         }
       />
+      {/*  Protected routes 2 . Buyer pages */}
 
-      <Route
-        path="/orders"
-        element={
-          <MainLayout>
-            <PageTitle title="Knights Store | Orders" />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <BuyerOrders />}
-            {!userToken && <Navigate to="/login" />}
-          </MainLayout>
-        }
-      />
+      <Route element={<ProtectedRoute requiredRole="buyer" />}>
+        <Route
+          path="/checkout"
+          element={
+            <MainLayout>
+              <PageTitle title="Knights Store | Create Order" />
+              {userToken && isBuyer && <CheckOutMain />}
+              {!userToken && <Navigate to="/login" />}
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/completion"
+          element={
+            <MainLayout>
+              <PageTitle title="Knights Store | Payment successful" />
+              <PaymentOk />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <MainLayout>
+              <PageTitle title="Knights Store | Orders" />
+              {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
+              {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
+              {userToken && isBuyer && <BuyerOrders />}
+              {!userToken && <Navigate to="/login" />}
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/orders/:orderId"
-        element={
-          <MainLayout>
-            <PageTitle title="Knights Store | Orders" />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <SingleBuyerOrder />}
-            {!userToken && <Navigate to="/login" />}
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/orders/:orderId"
+          element={
+            <MainLayout>
+              <PageTitle title="Knights Store | Orders" />
+              {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
+              {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
+              {userToken && isBuyer && <SingleBuyerOrder />}
+              {!userToken && <Navigate to="/login" />}
+            </MainLayout>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+      {/*  Protected routes 3 . Admin pages */}
 
-      <Route
-        path="/checkout"
-        element={
-          <MainLayout>
-            <PageTitle title="Knights Store | Create Order" />
-            {userToken && isBuyer && <CheckOutMain />}
-            {!userToken && <Navigate to="/login" />}
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/completion"
-        element={
-          <MainLayout>
-            <PageTitle title="Knights Store | Payment successful" />
-            <PaymentOk />
-          </MainLayout>
-        }
-      />
+      <Route element={<ProtectedRoute requiredRole="admin" />}>
+        <Route path="/Admin/dashboard" element={<DashboardLayout />}>
+          <Route path="users" element={<DashboarInnerLayout />}>
+            <Route path="" element={<Users />} />
+            <Route path=":id" element={<SingleUser />} />
+            <Route path="account" element={<DashboardAccount />} />
+          </Route>
+        </Route>
+      </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
