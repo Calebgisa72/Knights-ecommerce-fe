@@ -10,6 +10,7 @@ import store from '../../../redux/store';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../../../redux/reducers/authReducer';
 import cartReducer from '../../../redux/reducers/cartReducer';
+import notificationReducer from '../../../redux/reducers/notification';
 // import mockStore from '../../utils/mockStore';
 
 describe('Navbar', () => {
@@ -67,10 +68,11 @@ describe('Navbar', () => {
       const store = configureStore({
         reducer: {
           auth: authReducer,
-          cart: cartReducer
+          cart: cartReducer,
+          notification: notificationReducer
         },
         preloadedState: {
-          auth: { userToken: 'dummy-token' } // Mock store with user token
+          auth: { userToken: 'dummy-token' }
         }
       });
 
