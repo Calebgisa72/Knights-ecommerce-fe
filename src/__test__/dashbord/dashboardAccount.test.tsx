@@ -8,8 +8,14 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { Toaster } from 'react-hot-toast';
 import jest from 'jest-mock';
+import { setCredentials } from '../../redux/reducers/authReducer';
 
 const mockAxios = new MockAdapter(axios);
+
+const adminTestToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY4OTFiNDg2LWY0YTUtNGU5Ny05MjBjLWFiOTAyZTU5MTgwZiIsImZpcnN0TmFtZSI6ImtuaWdodCIsImxhc3ROYW1lIjoiam9lIiwiZW1haWwiOiJ0ZXRvYm9ibzJAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzIxNzM3NDAwLCJleHAiOjE3MjE4MjM4MDB9.GLO0gxz17g1Jrkt_VDoEzzhk4RhlWV8ZlnP_GevcPX4';
+const buyerTestToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWJkZjZhLWFmOTgtNDI5Zi1hZDBkLWZhZTM1NzE4OGM2NCIsImZpcnN0TmFtZSI6Impvc2VwaCIsImxhc3ROYW1lIjoiVGV0byIsImVtYWlsIjoidGV0b2JvYm80M0BnbWFpbC5jb20iLCJyb2xlIjoiQlVZRVIiLCJpYXQiOjE3MjE3Mzc4MTksImV4cCI6MTcyMTgyNDIxOX0.-vnYlAzAYAqsamkvYZ0tJ3ZUk6mHYVHc2ANXo23HSyk';
 
 describe('Dashboard Account test', () => {
   beforeEach(() => {
@@ -31,6 +37,7 @@ describe('Dashboard Account test', () => {
   });
 
   it('should render DashboardAccount Component', async () => {
+    store.dispatch(setCredentials(adminTestToken));
     mockAxios.onGet(`${import.meta.env.VITE_APP_API_URL}/user/profile`).reply(200, {
       status: 'success',
       data: {
@@ -490,6 +497,96 @@ describe('Dashboard Account test', () => {
     await waitFor(() => {
       const successToast = screen.getAllByText('Something went wrong, please try again.');
       expect(successToast.length).toBeGreaterThanOrEqual(1);
+    });
+  }, 10000);
+
+  it('should render DashboardAccount Component on buyer side', async () => {
+    store.dispatch(setCredentials(buyerTestToken));
+    mockAxios.onGet(`${import.meta.env.VITE_APP_API_URL}/user/profile`).reply(200, {
+      status: 'success',
+      data: {
+        code: 200,
+        message: 'Profile fetched successfully',
+        profile: {
+          id: '11ad3b04-35e7-4702-974b-e92dd52b3e56',
+          firstName: 'joe',
+          lastName: 'store',
+          email: 'test@gmail.com',
+          gender: 'Male',
+          phoneNumber: '0789412421',
+          photoUrl: null,
+          verified: true,
+          status: 'active',
+          userType: 'Buyer',
+          twoFactorEnabled: false,
+          role: 'BUYER',
+          createdAt: '2024-07-03T09:05:09.447Z',
+          updatedAt: '2024-07-18T19:01:07.295Z',
+          accountBalance: '0.00'
+        }
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <DashboardAccount />
+      </Provider>
+    );
+
+    await waitFor(() => {
+      const h2TitleElement = screen.getByText('Profile Information', { selector: 'h1' });
+      expect(h2TitleElement).toBeInTheDocument();
+
+      const img1 = screen.getByRole('profileTest');
+      expect(img1).toBeInTheDocument();
+
+      const img2 = screen.getByRole('uploadIcon');
+      expect(img2).toBeInTheDocument();
+
+      const h2TitleElement2 = screen.getByText('Basic Info', { selector: 'h2' });
+      expect(h2TitleElement2).toBeInTheDocument();
+
+      const spanElement1 = screen.getByText('Status', { selector: 'span' });
+      expect(spanElement1).toBeInTheDocument();
+
+      const spanElement3 = screen.getByText('Member since', { selector: 'span' });
+      expect(spanElement3).toBeInTheDocument();
+
+      const spanElement4 = screen.getByText('Role', { selector: 'span' });
+      expect(spanElement4).toBeInTheDocument();
+
+      const spanElement5 = screen.getByText('Buyer', { selector: 'span' });
+      expect(spanElement5).toBeInTheDocument();
+
+      const spanElement6 = screen.getByText('03 Jul 2024', { selector: 'span' });
+      expect(spanElement6).toBeInTheDocument();
+
+      const spanElement7 = screen.getByText('No file choosen', { selector: 'span' });
+      expect(spanElement7).toBeInTheDocument();
+
+      const allInputElements = screen.getAllByRole('testRole');
+      expect(allInputElements.length).toBeGreaterThanOrEqual(6);
+
+      const p1Element2 = screen.getByText('Firstname', { selector: 'p' });
+      expect(p1Element2).toBeInTheDocument();
+
+      const p2Element = screen.getByText('Lastname', { selector: 'p' });
+      expect(p2Element).toBeInTheDocument();
+
+      const p3Element = screen.getByText('Email', { selector: 'p' });
+      expect(p3Element).toBeInTheDocument();
+
+      const p4Element = screen.getByText('Gender', { selector: 'p' });
+      expect(p4Element).toBeInTheDocument();
+
+      const p5Element = screen.getByText('Contact No', { selector: 'p' });
+      expect(p5Element).toBeInTheDocument();
+
+      const testSaveChangesBtn = screen.getByRole('testSaveChangesBtn');
+      expect(testSaveChangesBtn).toBeInTheDocument();
+
+      const testChangeImageBtn = screen.getByRole('testChangeImageBtn');
+      expect(testChangeImageBtn).toBeInTheDocument();
     });
   }, 10000);
 });
