@@ -184,6 +184,15 @@ const Router = () => {
           </MainLayout>
         }
       />
+      <Route
+        path="/profile"
+        element={
+          <MainLayout>
+            <PageTitle title="Knights Store | Profile" />
+            {userToken ? <DashboardAccount /> : <Navigate to="/" />}
+          </MainLayout>
+        }
+      />
 
       {isVendor && (
         <Route path="/vendor/dashboard" element={<DashboardLayout />}>
@@ -301,20 +310,27 @@ const Router = () => {
       </Route>
       {/*  Protected routes 3 . Admin pages */}
 
-      <Route element={<ProtectedRoute requiredRole="admin" />}>
-        <Route path="/Admin/dashboard" element={<DashboardLayout />}>
-          <Route path="" element={<DashboarInnerLayout />}>
-            <Route path="" element={<Users />} />
-          </Route>
-          <Route path="users" element={<DashboarInnerLayout />}>
-            <Route path="" element={<Users />} />
-            <Route path=":id" element={<SingleUser />} />
-            <Route path="account" element={<DashboardAccount />} />
-          </Route>
-          <Route path="orders" element={<DashboarInnerLayout />}>
-            <Route path="" element={<AdminOrders />} />
-            <Route path=":orderId" element={<SingleAdminOrder />} />
-          </Route>
+      <Route
+        path="/Admin/dashboard"
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="" element={<DashboarInnerLayout />}>
+          <Route path="" element={<Users />} />
+        </Route>
+        <Route path="users" element={<DashboarInnerLayout />}>
+          <Route path="" element={<Users />} />
+          <Route path=":id" element={<SingleUser />} />
+        </Route>
+        <Route path="orders" element={<DashboarInnerLayout />}>
+          <Route path="" element={<AdminOrders />} />
+          <Route path=":orderId" element={<SingleAdminOrder />} />
+        </Route>
+        <Route path="account" element={<DashboarInnerLayout />}>
+          <Route index element={<DashboardAccount />} />
         </Route>
       </Route>
 

@@ -15,6 +15,8 @@ import {
 } from '../../../redux/actions/profileAction';
 import { ProfileData, UpdateProfileData } from '../../../types/profileTypes';
 import { BeatLoader } from 'react-spinners';
+import { DecodedToken } from '../../../pages/Authentication/Login';
+import { useJwt } from 'react-jwt';
 
 function DashboardAccount() {
   const {
@@ -121,15 +123,23 @@ function DashboardAccount() {
     }
   }, [responseMessage]);
 
+  const { userToken } = useSelector((state: RootState) => state.auth);
+  const { decodedToken } = useJwt<DecodedToken>(userToken);
+
+  const isAdmin = decodedToken?.role.toLowerCase() === 'admin';
+  const isVendor = decodedToken?.role.toLowerCase() === 'vendor';
+
   return (
     <div className="p-7 w-full min-h-[calc(100vh-94px)]  bg-[#EEF5FF] overflow-y-scroll">
       <div className="flex flex-col gap-5">
-        <div>
-          <h1 className="text-[20px] font-semibold">Your Account</h1>
-          <p className="text-[14px] font-light flex items-center">
-            Home &gt; <span className="hover:underline cursor-pointer mx-1">Account</span>
-          </p>
-        </div>
+        {(isAdmin || isVendor) && (
+          <div>
+            <h1 className="text-[20px] font-semibold">Your Account</h1>
+            <p className="text-[14px] font-light flex items-center">
+              Home &gt; <span className="hover:underline cursor-pointer mx-1">Account</span>
+            </p>
+          </div>
+        )}
 
         {loadingGetProfile ? (
           <div
@@ -336,43 +346,45 @@ function DashboardAccount() {
               </div>
             </form>
 
-            <div className="w-full sm:w-auto flex flex-col mt-4">
-              <h1 className="w-full flex items-center justify-start font-poppins font-semibold text-primary text-2xl">
-                Settings
-              </h1>
-              <div className="w-full sm:w-auto flex flex-col gap-y-1 mt-4">
-                <h2 className="w-full flex items-center justify-start font-poppins font-semibold text-primary text-sm sm:text-base">
-                  Two factor authentication
-                </h2>
-                <label
-                  htmlFor="Toggle1"
-                  className="inline-flex items-center space-x-4 cursor-pointer dark:text-gray-800"
-                >
-                  <span className="relative">
-                    <input
-                      id="Toggle1"
-                      data-testid="toggle"
-                      type="checkbox"
-                      className="hidden peer"
-                      checked={twoFactorEnabled}
-                      onChange={handleToggleTwoFactorAuth}
-                      role="testRole"
-                    />
-                    <div className="w-10 h-6 rounded-full shadow-inner bg-gray-600 peer-checked:bg-green-500"></div>
-                    <div className="absolute inset-y-0 left-0 w-4 h-4 m-1 rounded-full shadow peer-checked:right-0 peer-checked:left-auto bg-gray-100"></div>
-                  </span>
-                  <span>
-                    {loadingTwoFactor ? (
-                      <BeatLoader color="#070F2B" />
-                    ) : (profile as ProfileData).twoFactorEnabled ? (
-                      'Enabled'
-                    ) : (
-                      'Disabled'
-                    )}
-                  </span>
-                </label>
+            {(isAdmin || isVendor) && (
+              <div className="w-full sm:w-auto flex flex-col mt-4">
+                <h1 className="w-full flex items-center justify-start font-poppins font-semibold text-primary text-2xl">
+                  Settings
+                </h1>
+                <div className="w-full sm:w-auto flex flex-col gap-y-1 mt-4">
+                  <h2 className="w-full flex items-center justify-start font-poppins font-semibold text-primary text-sm sm:text-base">
+                    Two factor authentication
+                  </h2>
+                  <label
+                    htmlFor="Toggle1"
+                    className="inline-flex items-center space-x-4 cursor-pointer dark:text-gray-800"
+                  >
+                    <span className="relative">
+                      <input
+                        id="Toggle1"
+                        data-testid="toggle"
+                        type="checkbox"
+                        className="hidden peer"
+                        checked={twoFactorEnabled}
+                        onChange={handleToggleTwoFactorAuth}
+                        role="testRole"
+                      />
+                      <div className="w-10 h-6 rounded-full shadow-inner bg-gray-600 peer-checked:bg-green-500"></div>
+                      <div className="absolute inset-y-0 left-0 w-4 h-4 m-1 rounded-full shadow peer-checked:right-0 peer-checked:left-auto bg-gray-100"></div>
+                    </span>
+                    <span>
+                      {loadingTwoFactor ? (
+                        <BeatLoader color="#070F2B" />
+                      ) : (profile as ProfileData).twoFactorEnabled ? (
+                        'Enabled'
+                      ) : (
+                        'Disabled'
+                      )}
+                    </span>
+                  </label>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>

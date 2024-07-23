@@ -27,7 +27,9 @@ function DesktopMenu() {
         <li className="hover:bg-neutral-300 pl-5 py-2 cursor-pointer" onClick={() => navigate('/orders')}>
           My Orders
         </li>
-        <li className="hover:bg-neutral-300 pl-5 py-2 cursor-pointer">Profile</li>
+        <li className="hover:bg-neutral-300 pl-5 py-2 cursor-pointer" onClick={() => navigate('/profile')}>
+          Profile
+        </li>
         <li onClick={logoutHandler} className="hover:bg-neutral-300 pl-5 py-2 cursor-pointer">
           Logout
         </li>
