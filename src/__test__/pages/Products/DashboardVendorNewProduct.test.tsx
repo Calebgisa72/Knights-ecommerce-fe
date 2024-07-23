@@ -86,8 +86,8 @@ describe('DashboardNewProducts', () => {
       expect(mockedAxios.get).toHaveBeenCalledWith(`${import.meta.env.VITE_APP_API_URL}/product/categories`)
     );
 
-    const categorySelect = screen.getByRole('combobox');
-    fireEvent.click(categorySelect);
+    const categoryInput = screen.getByTestId('categoryInput');
+    fireEvent.focus(categoryInput);
     mockCategories.forEach((category) => {
       expect(screen.getByText(category.name)).toBeInTheDocument();
     });

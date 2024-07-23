@@ -8,6 +8,7 @@ import { io } from 'socket.io-client';
 import { DecodedToken } from '../../pages/Authentication/Login';
 import { NotificationProps } from './OneNotification';
 import axios from 'axios';
+import notificaticationBellSound from '../../../public/audios/mixkit-achievement-bell-600.wav';
 
 interface notifications {
   allNotifications: NotificationProps[];
@@ -19,6 +20,7 @@ interface notifications {
 
 interface notificationMessage {
   action: string;
+  sound?: boolean;
   notifications: notifications;
 }
 
@@ -65,7 +67,7 @@ function NotificationLayout() {
         console.log('Failed to fetch notifications');
       }
     };
-    fetchData();
+    userToken && fetchData();
   }, [userToken, dispatch]);
 
   useEffect(() => {
@@ -79,6 +81,9 @@ function NotificationLayout() {
       if (message.action === `${email} notification`) {
         dispatch(setAllNotifications(sortedNotifications(message.notifications.allNotifications)));
         dispatch(setUnreadNotification(message.notifications.unRead));
+        if (message.sound === true) {
+          playNotificationSound();
+        }
       }
     });
 
@@ -93,5 +98,11 @@ function NotificationLayout() {
 
   return <div>{!loading && openNotification && <Notification />}</div>;
 }
+
+const playNotificationSound = () => {
+  const audio = new Audio(notificaticationBellSound);
+  audio.volume = 0.2;
+  audio.play().catch((error) => console.error('Error playing sound:', error));
+};
 
 export default NotificationLayout;

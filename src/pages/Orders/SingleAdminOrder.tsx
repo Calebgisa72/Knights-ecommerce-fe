@@ -262,7 +262,7 @@ const SingleAdminOrder = () => {
                               }
                               rowSpan={vendor.order.orderItems.length}
                             >
-                              <p className="leading-3 capitalize">{vendor.firstName + ' ' + vendor.firstName}</p>
+                              <p className="leading-3 capitalize">{vendor.lastName + ' ' + vendor.firstName}</p>
                               <p className="leading-5 text-[.67rem] xmd:text-[.73rem] lg:text-[.8rem] text-neutral-600">
                                 {vendor.phoneNumber}
                               </p>

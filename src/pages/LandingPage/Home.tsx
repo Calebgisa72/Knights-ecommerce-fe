@@ -108,7 +108,7 @@ const Home = () => {
     const bannerElements: JSX.Element[] = [];
     const bannerIdentifiers: JSX.Element[] = [];
     banners.forEach((banner, index) => {
-      bannerElements.push(<Banner rate={banner.rate} time={banner.time} image={banner.image} />);
+      bannerElements.push(<Banner rate={banner.rate} time={banner.time} id={banner.id} image={banner.image} />);
       bannerIdentifiers.push(<BannerIdentifier key={index} index={index + 1} />);
     });
     setDotIdentifiers(bannerIdentifiers);

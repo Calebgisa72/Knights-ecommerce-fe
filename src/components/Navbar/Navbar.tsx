@@ -41,6 +41,9 @@ function Navbar() {
       navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
     }
   };
+  const handleSearch = () => {
+    navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
+  };
   const dispatch = useDispatch<AppDispatch>();
 
   const handleNotificationPopup = () => {
@@ -151,7 +154,7 @@ function Navbar() {
           onKeyDown={handleSearchSubmit}
           data-testid="searchInput"
         />
-        <Search strokeWidth={1.5} className="text-orange" />
+        <Search onClick={handleSearch} strokeWidth={1.5} className="text-orange cursor-pointer" />
       </div>
 
       <div className="hidden xmd:flex items-center justify-end sm:gap-x-5 lg:gap-x-10">
