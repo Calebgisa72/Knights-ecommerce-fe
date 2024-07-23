@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 import notificationIcon from '/notification.svg';
 import searchIcon from '/search.svg';
-import { Link } from 'react-router-dom';
 import { AlignJustify } from 'lucide-react';
 import { setOpenNotification } from '../../../redux/reducers/notification';
 import NotificationLayout from '../../Notification/NotificationLayout';
 import { AppDispatch, RootState } from '../../../redux/store';
+import { DecodedToken } from '../../../pages/Authentication/Login';
+import { useJwt } from 'react-jwt';
 
 interface DashboardNavBarProps {
   setOpenNav: (open: boolean) => void;
@@ -29,6 +30,9 @@ const DashboardNavbar: React.FC<DashboardNavBarProps> = ({ setOpenNav }) => {
   const navigate = useNavigate();
   const { openNotification, unreadNotifications } = useSelector((state: RootState) => state.notification);
   const dispatch = useDispatch<AppDispatch>();
+
+  const { userToken } = useSelector((state: RootState) => state.auth);
+  const { decodedToken } = useJwt<DecodedToken>(userToken);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -80,36 +84,41 @@ const DashboardNavbar: React.FC<DashboardNavBarProps> = ({ setOpenNav }) => {
 
   return (
     <div
-      className="flex justify-end gap-4 lg:gap-0 flex-col-reverse items-end lg:flex-row lg:justify-between lg:items-center p-7 py-5 border-b-[1px] border-[#D1D1D1] text-black relative"
+      className="flex flex-col-reverse md:flex-row md:justify-between md:items-center gap-1 md:gap-0 items-end px-4 lg:px-10 2xl:px-20 py-1 md:py-4 border-b-[1px] border-neutral-300 text-black"
       data-testid="navbar"
     >
-      <Link to={'/vendor/dashboard'} className="lg:hidden text-4xl font-bold text-[#070f2b] absolute left-8 top-8">
-        Knight
-      </Link>
-      <div className="flex flex-col items-end lg:items-start">
-        <p className="font-bold text-[20px]">Welcome, {userName}</p>
-        <p className="text-[#7c7c7c] text-sm">{currentDateTime}</p>
+      <div className="flex flex-col items-end md:items-start">
+        <p className="font-semibold leading-5 capitalize text-sm lg:text-[.95rem]">Welcome, {userName}</p>
+        <p className="text-[#7c7c7c] text-[.65rem] lg:text-[.8rem]">{currentDateTime}</p>
       </div>
       <NotificationLayout />
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="flex gap-4 items-center">
-          <button onClick={handleNotificationPopup} className="relative px-4 lg:border-r-2 border-[#7c7c7c]">
-            <img src={notificationIcon} alt="Notification" />
-            {unreadNotifications > 0 && (
-              <span className="absolute min-w-5 h-5 top-1 right-[27px] mt-[-10px] mr-[-15px] bg-orange text-white text-sm flex items-center justify-center rounded-full leading-none p-1">
-                {unreadNotifications}
-              </span>
-            )}
-          </button>
-          <button onClick={() => setOpenNav(true)} className="lg:hidden" name="AlignJustify">
-            <AlignJustify />
-          </button>
+      <div className="flex min-w-full md:min-w-5 flex-col md:flex-row gap-4">
+        <div className="flex justify-between">
+          <NavLink
+            to={'/' + decodedToken?.role.toLowerCase() + '/dashboard'}
+            className="md:hidden text-2xl font-bold text-primary py-2"
+          >
+            Knights
+          </NavLink>
+          <div className="flex gap-4 items-center">
+            <button onClick={handleNotificationPopup} className="relative px-5 py-1 md:border-r border-neutral-300">
+              <img src={notificationIcon} alt="Notification" className="w-5" />
+              {unreadNotifications > 0 && (
+                <span className="absolute min-w-5 min-h-4 top-1 right-[27px] mt-[-10px] mr-[-15px] bg-orange text-white text-[.7rem] font-semibold flex items-center justify-center rounded-full leading-none p-1">
+                  {unreadNotifications}
+                </span>
+              )}
+            </button>
+            <button onClick={() => setOpenNav(true)} className="md:hidden" name="AlignJustify">
+              <AlignJustify />
+            </button>
+          </div>
         </div>
-        <div className="hidden lg:flex px-4 py-2 rounded-lg border border-[#d1d1d1] gap-2">
-          <img src={searchIcon} alt="Search" />
+        <div className="hidden md:flex px-4 py-1 rounded-md border border-[#d1d1d1] gap-2">
+          <img src={searchIcon} alt="Search" className="w-4 lg:w-5" />
           <input
             type="text"
-            className="bg-white w-[200px] outline-none"
+            className="bg-white text-[.8rem] lg:text-[.9rem] w-[140px] lg:w-[200px] outline-none"
             placeholder="Search..."
             value={searchTerm}
             onChange={handleSearchChange}

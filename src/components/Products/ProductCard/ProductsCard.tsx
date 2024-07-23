@@ -68,7 +68,7 @@ const ProductsCard: React.FC<ProductsCardProps> = ({ data }) => {
           <div className="flex gap-4 justify-between w-full">
             <div className="flex flex-col">
               <p className="font-bold text-lg">{name}</p>
-              <p className="text-black/60">{categories[0].name}</p>
+              <p className="text-black/60 capitalize">{categories[0] ? categories[0].name : 'knights store'}</p>
               <p className="font-semibold text-[#232321] mt-4">{newPrice}</p>
             </div>
             <button

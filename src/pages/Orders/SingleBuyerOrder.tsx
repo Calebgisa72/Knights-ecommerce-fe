@@ -78,6 +78,7 @@ const SingleBuyerOrder = () => {
     e.preventDefault();
     setSubmitFormLoading(true);
     if (activeStatus.toLowerCase() === 'order placed') {
+      setSubmitFormLoading(false);
       dispatch(setCreatedOrder(order?.cartId));
       navigate('/checkout');
       return;

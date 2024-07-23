@@ -7,11 +7,11 @@ const DashboardLayout: React.FC = () => {
   const [openNav, setOpenNav] = useState(false);
 
   return (
-    <div className="flex relative h-full" data-testid="dashboard-layout">
+    <div className="h-screen flex w-full" data-testid="dashboard-layout">
       <DashboardSideBar setOpenNav={setOpenNav} openNav={openNav} />
-      <div className="w-full">
+      <div className="overflow-scroll w-full ">
         <DashboardNavbar setOpenNav={setOpenNav} />
-        <main data-testid="outlet">
+        <main className="flex-grow overflow-auto" data-testid="outlet">
           <Outlet />
         </main>
       </div>

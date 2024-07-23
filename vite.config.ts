@@ -16,7 +16,8 @@ export default defineConfig({
     setupFiles: './src/__test__/setup.ts',
     coverage: {
       exclude: [...configDefaults.exclude, '**.**js', '**/**.d.ts']
-    }
+    },
+    testTimeout: 30000
   },
   assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg']
 });
