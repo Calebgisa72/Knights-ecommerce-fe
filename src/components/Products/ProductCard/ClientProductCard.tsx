@@ -122,7 +122,14 @@ const ClientProductCard = (props: Props) => {
       <div className="text-neutral-600">
         <p>{props.product.name}</p>
         {!props.product.categories[0] && <p>product</p>}
-        {props.product.categories[0] && <p>{currentCategory ? currentCategory : props.product.categories[0].name}</p>}
+        {props.product.categories[0] && (
+          <p className="text-[13px] ">
+            {currentCategory
+              ? currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1).toLowerCase()
+              : props.product.categories[0].name.charAt(0).toUpperCase() +
+                props.product.categories[0].name.slice(1).toLowerCase()}
+          </p>
+        )}
       </div>
       <p>{props.product.vendor?.lastName + ' ' + props.product.vendor?.firstName}</p>
       <p className="text-error200">RWF {props.product.newPrice}</p>

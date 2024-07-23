@@ -19,6 +19,8 @@ const DashboardNewProducts: React.FC = () => {
   const [expirationDate, setExpirationDate] = useState<string>('');
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [onFocus, setOnFocus] = useState(false);
+  const [filterdCategories, setFilteredCategories] = useState<{ id: string; name: string }[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
   const { error, loading, product: ProductsResponse } = useSelector((state: RootState) => state.productCreate);
@@ -58,6 +60,21 @@ const DashboardNewProducts: React.FC = () => {
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
   };
+
+  useEffect(() => {
+    setFilteredCategories(
+      categories.filter((category) => {
+        return category.name.toLowerCase().includes(category2.toLowerCase());
+      })
+    );
+  }, [categories, category2]);
+
+  const handleCreateCategory = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCategory2(value.charAt(0).toUpperCase() + value.slice(1).toLowerCase());
+  };
+
+  const defaultCategories = ['Women', 'Men', 'Kids', 'Electronics', 'Fashion', 'Accessories', 'Jewelries'];
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
@@ -117,7 +134,7 @@ const DashboardNewProducts: React.FC = () => {
     formData.append('description', description);
     formData.append('quantity', quantity);
     formData.append('newPrice', newPrice);
-    formData.append('categories', selectedOption || category2);
+    formData.append('categories', selectedOption.toLowerCase() || category2.toLowerCase());
     formData.append('expirationDate', expirationDate || '2025-0-0');
 
     images.forEach((image) => {
@@ -162,24 +179,54 @@ const DashboardNewProducts: React.FC = () => {
                 <select
                   value={selectedOption}
                   onChange={handleSelectChange}
-                  className="bg-white border-[1px] rounded px-4 py-2 w-full"
+                  className="bg-white border-[1px] rounded px-1 py-2 w-[40%] cursor-pointer"
                   disabled={categories?.length === 0 || !categories}
                 >
                   <option value="">
                     {categories?.length === 0 || !categories ? 'No categories available' : 'Select an option'}
                   </option>
-                  {categories.map((category) => (
-                    <option key={category?.id} value={category?.name}>
-                      {category?.name}
+                  {defaultCategories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
                     </option>
                   ))}
                 </select>
-                <input
-                  value={category2}
-                  onChange={(e) => setCategory2(e.target.value)}
-                  placeholder="create your own category"
-                  className="bg-white border-[1px] rounded px-4 py-2 w-full"
-                />
+                <div className="w-[60%] relative flex flex-col gap-2">
+                  <input
+                    data-testid="categoryInput"
+                    value={category2}
+                    onFocus={() => setOnFocus(true)}
+                    onBlur={() => setOnFocus(false)}
+                    onChange={(e) => handleCreateCategory(e)}
+                    placeholder="create your own category"
+                    className="bg-white border-[1px] rounded px-4 py-2 w-full"
+                  />
+                  {onFocus && filterdCategories.length > 0 && (
+                    <div className=" absolute top-10 z-[450] max-h-72 overflow-y-scroll w-full bg-neutral-100">
+                      <div className="py-2 px-4 flex flex-col gap-2 w-full">
+                        {filterdCategories.map((category, index) => {
+                          return (
+                            <div
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                setCategory2(
+                                  category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()
+                                );
+                              }}
+                              className="cursor-pointer hover:bg-neutral-200 flex justify-between items-center border-b-[1px] border-[#D1D1D1]"
+                              key={index}
+                            >
+                              <div>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</div>
+                              {category2.toLowerCase() === category.name.toLowerCase() && (
+                                <i className="fa-solid text-green-500 fa-circle-check"></i>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
               {errors.category && <p className="text-red-500">{errors.category}</p>}
             </div>

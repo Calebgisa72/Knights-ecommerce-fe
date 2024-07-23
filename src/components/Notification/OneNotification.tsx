@@ -7,7 +7,7 @@ import user from './assets/User.svg';
 import wishlist from './assets/Wishlist.svg';
 import coupon from './assets/Gift card.svg';
 
-import { setSelectedNotificationsIds } from '../../redux/reducers/notification';
+import { setOpenNotification, setSelectedNotificationsIds } from '../../redux/reducers/notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { Link } from 'react-router-dom';
@@ -73,7 +73,10 @@ function OneNotification({ noficationProp }: OneNotificationProps) {
       </div>
 
       <div className={`flex-1 flex flex-col ${noficationProp.link ? 'hover:cursor-pointer' : ''}`}>
-        <div className={`${noficationProp.link ? 'underline' : ''}`}>
+        <div
+          onClick={() => dispatch(setOpenNotification(false))}
+          className={`${noficationProp.link ? 'underline' : ''}`}
+        >
           {noficationProp.link ? (
             <Link to={noficationProp.link || '/'}>{noficationProp.content}</Link>
           ) : (

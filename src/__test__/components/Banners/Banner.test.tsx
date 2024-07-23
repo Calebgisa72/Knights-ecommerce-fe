@@ -8,7 +8,7 @@ describe('Landing Page Banner', () => {
   it('renders the Banner component', () => {
     render(
       <Router>
-        <Banner rate={50} time="1 Month ago" image="banner.jpg" />
+        <Banner rate={50} time="1 Month ago" id="prodcutId" image="banner.jpg" />
       </Router>
     );
   });
