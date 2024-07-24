@@ -57,7 +57,7 @@ describe('Single buyer order test', () => {
     );
   });
 
-  it('renders PropagateLoader component while loading', () => {
+  it('renders Loader component while loading', () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
@@ -65,7 +65,9 @@ describe('Single buyer order test', () => {
         </MemoryRouter>
       </Provider>
     );
-    const loaderElement = screen.getByTestId('propagateLoader');
+    const loaderElement = screen.getByText('Fetching Order Details, Please wait!', {
+      exact: false
+    });
     expect(loaderElement).toBeInTheDocument();
   });
 

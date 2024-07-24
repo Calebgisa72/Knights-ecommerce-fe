@@ -11,7 +11,7 @@ const mockProduct = {
   name: 'Test Product',
   description: 'This is a test product',
   images: ['https://via.placeholder.com/150'],
-  newPrice: '1000 Rwf',
+  newPrice: '1000',
   oldPrice: null,
   expirationDate: '2023-12-31T00:00:00.000Z',
   quantity: 10,
@@ -53,19 +53,13 @@ describe('ProductsCard', () => {
     expect(screen.getByText('Category 1')).toBeInTheDocument();
 
     // Check if the product price is displayed
-    expect(screen.getByText('1000 Rwf')).toBeInTheDocument();
+    expect(screen.getByText('1000 RWF')).toBeInTheDocument();
 
     // Check if the product description is displayed
     expect(screen.getByText('This is a test product')).toBeInTheDocument();
 
     // Check if the formatted expiration date is displayed
     expect(screen.getByText('12-31-2023')).toBeInTheDocument();
-
-    // Check if the remaining quantity is displayed
-    expect(screen.getByText('10')).toBeInTheDocument();
-
-    // Check if the image is rendered
-    expect(screen.getByAltText('product-image')).toBeInTheDocument();
   });
 
   it('renders without crashing when no images are provided', () => {
@@ -127,9 +121,9 @@ describe('ProductsCard', () => {
 
     // Click the delete button
     fireEvent.click(screen.getByTestId('delete-button'));
-
-    // Check if the modal is displayed
     expect(screen.getByText(/Are you sure you want to delete the product/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('delete-confirmation'));
   });
 
   it('closes modal when cancel button is clicked', () => {

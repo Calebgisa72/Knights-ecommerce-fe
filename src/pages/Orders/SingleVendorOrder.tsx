@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import HeaderOrderManagement from '../../components/Order/DashboardOrderManagement/HeaderOrderManagement';
 import SideBarOrderStatus from '../../components/Order/DashboardOrderManagement/SideBarOrderStatus';
-import { PropagateLoader, PulseLoader } from 'react-spinners';
+import { BeatLoader, PulseLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import axios, { AxiosError } from 'axios';
@@ -266,8 +266,11 @@ const SingleVendorOrder = () => {
           </div>
         )}
         {loading && (
-          <div className="flex justify-center items-center bg-white rounded-lg border border-neutral-300 basis-3/4 py-8 px-4">
-            <PropagateLoader className="ml-[-.5rem] py-14" />
+          <div className="flex flex-col gap-y-2 justify-center items-center bg-white rounded-lg border border-neutral-300 basis-3/4 py-8 px-4">
+            <BeatLoader size={10} className="ml-[-.5rem]" color="#070F2B" />
+            <p className="text-[.7rem] xmd:text-[.76rem] lg:text-[.82rem] text-neutral-800">
+              Fetching Order Details, Please wait!
+            </p>
           </div>
         )}
         <SideBarOrderStatus />

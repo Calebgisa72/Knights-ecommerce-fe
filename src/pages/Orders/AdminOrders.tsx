@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { Order, setAdminOrders } from '../../redux/reducers/adminOrdersReducer';
 import { setOrderStats } from '../../redux/reducers/orderStatsReducer';
-import { PropagateLoader, PulseLoader } from 'react-spinners';
+import { BeatLoader, PulseLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 import { ErrorResponse } from './SingleAdminOrder';
 
@@ -349,16 +349,21 @@ const AdminOrders = () => {
             </table>
           </div>
           {loading && (
-            <div className="flex justify-center items-center">
-              <PropagateLoader className="ml-[-.5rem]" />
+            <div className="flex flex-col gap-y-2 justify-center items-center">
+              <BeatLoader size={10} className="ml-[-.5rem]" color="#070F2B" />
+              <p className="text-[.7rem] xmd:text-[.76rem] lg:text-[.82rem] text-neutral-800">
+                Fetching orders, Please wait!
+              </p>
             </div>
           )}
-          {!orders.length && (
-            <div className="flex justify-center items-center">
+          {!orders.length && !loading && (
+            <div className="flex justify-center items-center text-[.8rem] md:text-[.9rem]">
               <p>Currently, no orders are in the system!</p>
             </div>
           )}
-          <OrderPagination start={pagination.start} end={pagination.end} total={pagination.total} setPage={setPage} />
+          {orders.length && (
+            <OrderPagination start={pagination.start} end={pagination.end} total={pagination.total} setPage={setPage} />
+          )}
         </div>
         <div>
           <SideBarOrderStatus />

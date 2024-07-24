@@ -44,6 +44,19 @@ const sampleOrder: Order | any = {
               price: '10'
             },
             quantity: 1
+          },
+          {
+            id: 'b37b54df-2c47-448f-b72a-7dba8cc85018',
+            price: '10',
+            product: {
+              description: 'product1description',
+              expirationDate: null,
+              id: 'da82e5a4-c30e-47c8-b359-e600e2b4ec57',
+              images: 'https://res.cloudinary.com/dtejb5dwp/image/upload/v1719475815/vtycwuuxmyahsedc4ekr.jpg',
+              name: 'noodles',
+              price: '10'
+            },
+            quantity: 1
           }
         ]
       }

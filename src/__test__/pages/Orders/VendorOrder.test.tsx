@@ -121,6 +121,30 @@ describe('VendorOrders component tests', () => {
       expect(rowElements.length).toBe(5);
     });
   });
+
+  it('renders text for no orders in system, if a there no orders in system', async () => {
+    mockedAxios.get.mockResolvedValue({
+      data: {
+        data: {
+          orders: []
+        }
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <VendorOrder />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await waitFor(() => {
+      const noOrdersElements = screen.getByText('Currently, no orders are in the system!');
+      expect(noOrdersElements).toBeInTheDocument();
+    });
+  });
+
   it('renders only search order', async () => {
     mockedAxios.get.mockResolvedValue({
       data: {

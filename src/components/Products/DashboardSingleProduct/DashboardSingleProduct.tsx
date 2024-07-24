@@ -92,61 +92,73 @@ const DashboardSingleProduct: React.FC = () => {
 
   return (
     <div className="flex bg-[#eef5ff] w-full h-full text-black p-8 flex-col items-start">
-      <p className="font-bold text-2xl">Product Details</p>
-      <p>
+      <p className="font-bold text-base xmd:text-lg lg:text-xl leading-5">Product Details</p>
+      <p className="text-neutral-600 text-[.75rem] lg:text-sm">
         <Link to={'/vendor/dashboard'}>Dashboard</Link> &gt; <Link to={'/vendor/dashboard/products'}>Products</Link>{' '}
         &gt; {product?.name}
       </p>
-      <div className="bg-white border-[1px] border-[#7c7c7c] rounded-2xl mt-8 w-full p-8 flex flex-col gap-8">
+      <div className="bg-white border-[1px] border-neutral-300 rounded-xl mt-8 w-full p-8 flex flex-col gap-8">
         <Link
           to={`/vendor/dashboard/products/${id}/edit`}
-          className="px-8 py-4 bg-[#070F2B] font-semibold text-white rounded-lg flex gap-4 items-center hover:scale-105 transition-all duration-300 ease-in-out w-max ml-auto"
+          className="px-5 py-2 bg-[#070F2B] font-medium text-white rounded-lg flex gap-4 items-center hover:scale-105 transition-all duration-300 ease-in-out w-max ml-auto text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]"
         >
           Update product <SquarePen />
         </Link>
-        <div className="flex gap-8 lg:flex-row flex-col">
+        <div className="flex gap-16 lg:flex-row flex-col">
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
-            <p className="font-bold text-2xl">General Information</p>
+            <p className="font-bold text-xl">General Information</p>
             <div className="flex flex-col items-start gap-1">
               <p className="font-medium">Product Name</p>
-              <p className="py-2 px-4 bg-[#E7EBEF] rounded">{product?.name}</p>
+              <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
+                {product?.name}
+              </p>
             </div>
             <div className="flex flex-col items-start gap-1">
               <p className="font-medium">Description</p>
-              <p className="py-2 px-4 bg-[#E7EBEF] rounded">{product?.description}</p>
+              <div className="w-full bg-[#E7EBEF] rounded py-2 px-4 h-32 text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem] overflow-scroll">
+                <p className="text-justify">{product?.description}</p>
+              </div>
             </div>
             <div className="flex flex-col items-start gap-1">
               <p className="font-medium">Category</p>
-              <p className="py-2 px-4 bg-[#E7EBEF] rounded w-full">
+              <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
                 {product?.categories.map((category) => category.name).join(', ')}
               </p>
             </div>
             <div className="flex justify-between gap-4 w-full">
               <div className="flex flex-col items-start gap-1  w-full">
                 <p className="font-medium">Availability</p>
-                <p className="py-2 px-4 bg-[#E7EBEF] rounded  w-full">{product?.isAvailable ? 'Yes' : 'No'}</p>
+                <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
+                  {product?.isAvailable ? 'Yes' : 'No'}
+                </p>
               </div>
               <div className="flex flex-col items-start gap-1  w-full">
                 <p className="font-medium">Remaining quantity</p>
-                <p className="py-2 px-4 bg-[#E7EBEF] rounded  w-full">{product?.quantity}</p>
+                <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
+                  {product?.quantity}
+                </p>
               </div>
             </div>
             <div className="w-full flex flex-col gap-8">
-              <p className="font-bold text-2xl">Pricing</p>
+              <p className="font-bold text-xl">Pricing</p>
               <div className="flex gap-4">
                 <div className="flex flex-col items-start gap-1  w-full">
                   <p className="font-medium">Price</p>
-                  <p className="py-2 px-4 bg-[#E7EBEF] rounded  w-full">{product?.newPrice}</p>
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
+                    {product?.newPrice}
+                  </p>
                 </div>
                 <div className="flex flex-col items-start gap-1  w-full">
                   <p className="font-medium">Old Price</p>
-                  <p className="py-2 px-4 bg-[#E7EBEF] rounded  w-full h-full">{product?.oldPrice}</p>
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem] h-full">
+                    {product?.oldPrice}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-8">
-              <p className="font-bold text-2xl">Product Media</p>
-              <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
+              <p className="font-bold text-xl">Product Media</p>
+              <div className="flex flex-col gap-1">
                 <p>Product Images</p>
                 <div className="grid grid-cols-2 gap-4">
                   {product?.images.map((image, index) => (
@@ -162,7 +174,7 @@ const DashboardSingleProduct: React.FC = () => {
             </div>
           </div>
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
-            <p className="font-bold text-2xl">Discount</p>
+            <p className="font-bold text-xl">Discount</p>
             <div className="flex flex-col items-start gap-2 py-4">
               <p className="font-medium">Coupons</p>
               <ListPopup
@@ -177,7 +189,7 @@ const DashboardSingleProduct: React.FC = () => {
               <div className="block">
                 <FormPopup
                   trigger={
-                    <button className="px-8 py-4 bg-[#E7EBEF] font-semibold text-black rounded-lg flex gap-4 items-center hover:scale-105 transition-all duration-300 ease-in-out">
+                    <button className="px-4 py-3 bg-[#E7EBEF] font-semibold text-black rounded-lg flex gap-2 items-center hover:scale-105 transition-all duration-300 ease-in-out">
                       Create New Coupon <Plus />
                     </button>
                   }
@@ -193,8 +205,8 @@ const DashboardSingleProduct: React.FC = () => {
               </div>
             </div>
             <div className="flex flex-col">
-              <p className="font-bold text-2xl">Customer Feedback</p>
-              <div className="flex gap-4 flex-col py-8">
+              <p className="font-semibold text-xl">Customer Feedback</p>
+              <div className="flex gap-4 flex-col py-5">
                 {product?.feedbacks && product?.feedbacks.length > 0 ? (
                   product.feedbacks.map((feedback, index) => (
                     <div className="flex gap-5" key={index}>
@@ -211,7 +223,9 @@ const DashboardSingleProduct: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <p className="py-2 px-4 bg-[#E7EBEF] rounded w-full text-black">No feedbacks for this product</p>
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
+                    No feedbacks for this product
+                  </p>
                 )}
               </div>
             </div>
