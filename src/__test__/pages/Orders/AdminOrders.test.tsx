@@ -57,6 +57,16 @@ describe('AdminOrders component tests', () => {
         }
       }
     });
+  });
+
+  it('renders text for no orders in system, if a there no orders in system', async () => {
+    mockedAxios.get.mockResolvedValue({
+      data: {
+        data: {
+          orders: []
+        }
+      }
+    });
 
     render(
       <Provider store={store}>
@@ -67,8 +77,8 @@ describe('AdminOrders component tests', () => {
     );
 
     await waitFor(() => {
-      const rowElements = screen.getAllByRole('row');
-      expect(rowElements.length).toBe(3); // One header row + two order rows
+      const noOrdersElements = screen.getByText('Currently, no orders are in the system!');
+      expect(noOrdersElements).toBeInTheDocument();
     });
   });
 
