@@ -213,7 +213,7 @@ function Users() {
                 <PropagateLoader color="#070f2b" />
               </div>
             ) : selectedUsers.length > 0 ? (
-              <div className="w-full flex flex-col">
+              <div className="w-full flex flex-col ">
                 <div className="w-full overflow-x-auto" key={selectedUsers.length}>
                   <div
                     data-testid="userPropsTable"
@@ -247,7 +247,7 @@ function Users() {
                         data-testid="userDiv"
                         className="hover:bg-neutral-200 hover:cursor-pointer"
                       >
-                        <div className="w-[1000px] px-2 grid h-[60px] grid-cols-12 gap-2 xmd:w-full font-poppins text-[14px]">
+                        <div className="w-[1000px] px-2 grid py-1 grid-cols-12 gap-2 xmd:w-full font-poppins text-[.7rem] xmd:text-[.76rem] lg:text-[.82rem]">
                           <div className="col-span-1 flex items-center justify-start">
                             <p>{(currentPage - 1) * numberOfUsers + index + 1}</p>
                           </div>

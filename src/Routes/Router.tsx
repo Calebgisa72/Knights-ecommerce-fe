@@ -8,7 +8,6 @@ import VerifyEmail from '../pages/Authentication/VerifyEmail';
 import Login, { DecodedToken } from '../pages/Authentication/Login';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import GoogleLoginSuccess from '../pages/Authentication/GoogleLoginSuccess';
 import { useJwt } from 'react-jwt';
 import OtpPage from '../pages/Authentication/OtpPage';
 import SuspendedAccount from '../components/SuspendedAccount/SuspendedAccount';
@@ -42,6 +41,7 @@ import SingleVendorOrder from '../pages/Orders/SingleVendorOrder';
 import AdminOrders from '../pages/Orders/AdminOrders';
 import SingleAdminOrder from '../pages/Orders/SingleAdminOrder';
 import { JSX } from 'react/jsx-runtime';
+import GoogleLogin from '../pages/Authentication/GoogleLogin';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -78,10 +78,16 @@ const Router = () => {
       <Route
         path="/"
         element={
-          <MainLayout>
-            <PageTitle title="Knights Store" />
-            <Home />
-          </MainLayout>
+          <>
+            {!isAdmin && !isVendor ? (
+              <MainLayout>
+                <PageTitle title="Knights Store" />
+                <Home />
+              </MainLayout>
+            ) : (
+              conditionalNavigate('/admin/dashboard', '/vendor/dashboard', '/')
+            )}
+          </>
         }
       />
 
@@ -154,7 +160,7 @@ const Router = () => {
           <MainLayout>
             <PageTitle title="Knights Store | Login" />
             {conditionalNavigate('/admin/dashboard', '/vendor/dashboard', '/')}
-            {!userToken && <GoogleLoginSuccess />}
+            {!userToken && <GoogleLogin />}
           </MainLayout>
         }
       />
@@ -171,7 +177,7 @@ const Router = () => {
       />
 
       <Route
-        path="/otp-verficaton"
+        path="/otp-verification"
         element={
           <MainLayout>
             <PageTitle title="Knights Store | Verify OTP" />

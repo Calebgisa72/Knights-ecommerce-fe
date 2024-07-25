@@ -58,7 +58,7 @@ function Login() {
       });
       if (loginResponse.data!.message === 'Please provide the OTP sent to your email or phone') {
         dispatch(setUser(loginResponse.data!.email));
-        navigate('/otp-verficaton');
+        navigate('/otp-verification');
       } else {
         dispatch(setCredentials(loginResponse.data?.token));
         dispatch(fetchCart());

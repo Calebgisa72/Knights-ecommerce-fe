@@ -75,7 +75,7 @@ function OneNotification({ noficationProp }: OneNotificationProps) {
       <div className={`flex-1 flex flex-col ${noficationProp.link ? 'hover:cursor-pointer' : ''}`}>
         <div
           onClick={() => dispatch(setOpenNotification(false))}
-          className={`${noficationProp.link ? 'underline' : ''}`}
+          className={`${noficationProp.link ? 'underline' : ''} + text-[.85rem] xmd:text-[.9rem] lg:text-[.95rem]`}
         >
           {noficationProp.link ? (
             <Link to={noficationProp.link || '/'}>{noficationProp.content}</Link>

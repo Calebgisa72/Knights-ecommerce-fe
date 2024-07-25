@@ -100,66 +100,71 @@ const DashboardSingleProduct: React.FC = () => {
       <div className="bg-white border-[1px] border-neutral-300 rounded-xl mt-8 w-full p-8 flex flex-col gap-8">
         <Link
           to={`/vendor/dashboard/products/${id}/edit`}
-          className="px-5 py-2 bg-[#070F2B] font-medium text-white rounded-lg flex gap-4 items-center hover:scale-105 transition-all duration-300 ease-in-out w-max ml-auto text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]"
+          className="px-5 py-2 bg-[#070F2B] font-medium rounded-lg flex gap-2 items-center hover:scale-105 transition-all duration-300 ease-in-out w-max ml-auto text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800"
         >
-          Update product <SquarePen />
+          <span className="leading-3">Update product</span>
+          <SquarePen className="w-4" />
         </Link>
-        <div className="flex gap-16 lg:flex-row flex-col">
-          <div className="w-full lg:w-1/2 flex flex-col gap-4">
-            <p className="font-bold text-xl">General Information</p>
-            <div className="flex flex-col items-start gap-1">
-              <p className="font-medium">Product Name</p>
-              <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
-                {product?.name}
-              </p>
-            </div>
-            <div className="flex flex-col items-start gap-1">
-              <p className="font-medium">Description</p>
-              <div className="w-full bg-[#E7EBEF] rounded py-2 px-4 h-32 text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem] overflow-scroll">
-                <p className="text-justify">{product?.description}</p>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-1">
-              <p className="font-medium">Category</p>
-              <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
-                {product?.categories.map((category) => category.name).join(', ')}
-              </p>
-            </div>
-            <div className="flex justify-between gap-4 w-full">
-              <div className="flex flex-col items-start gap-1  w-full">
-                <p className="font-medium">Availability</p>
-                <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
-                  {product?.isAvailable ? 'Yes' : 'No'}
+        <div className="flex gap-16 lg:flex-row flex-col justify-start">
+          <div className="w-full lg:w-1/2 flex flex-col gap-2">
+            <div className="w-full flex flex-col gap-2 mb-10">
+              <p className="font-semibold text-lg mb-3">General Information</p>
+              <div className="flex flex-col items-start gap-1">
+                <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Product Name</p>
+                <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800">
+                  {product?.name}
                 </p>
               </div>
-              <div className="flex flex-col items-start gap-1  w-full">
-                <p className="font-medium">Remaining quantity</p>
-                <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
-                  {product?.quantity}
+              <div className="flex flex-col items-start gap-1">
+                <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Description</p>
+                <div className="w-full bg-[#E7EBEF] rounded py-2 px-4 h-32 text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800 overflow-scroll">
+                  <p className="text-justify">{product?.description}</p>
+                </div>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Category</p>
+                <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800">
+                  {product?.categories.map((category) => category.name).join(' | ')}
                 </p>
               </div>
+              <div className="flex justify-between gap-4 w-full">
+                <div className="flex flex-col items-start gap-1  w-full">
+                  <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Availability</p>
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800">
+                    {product?.isAvailable ? 'Yes' : 'No'}
+                  </p>
+                </div>
+                <div className="flex flex-col items-start gap-1  w-full">
+                  <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">
+                    Remaining quantity
+                  </p>
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800">
+                    {product?.quantity}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="w-full flex flex-col gap-8">
-              <p className="font-bold text-xl">Pricing</p>
+            <div className="w-full flex flex-col gap-2 mb-8">
+              <p className="font-semibold text-lg">Pricing</p>
               <div className="flex gap-4">
                 <div className="flex flex-col items-start gap-1  w-full">
-                  <p className="font-medium">Price</p>
-                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
+                  <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Price</p>
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800">
                     {product?.newPrice}
                   </p>
                 </div>
                 <div className="flex flex-col items-start gap-1  w-full">
-                  <p className="font-medium">Old Price</p>
-                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem] h-full">
+                  <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Old Price</p>
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800 h-full">
                     {product?.oldPrice}
                   </p>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-3">
-              <p className="font-bold text-xl">Product Media</p>
+            <div className="flex flex-col gap-2">
+              <p className="font-semibold text-lg">Product Media</p>
               <div className="flex flex-col gap-1">
-                <p>Product Images</p>
+                <p className="font-medium leading-4 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Product Images</p>
                 <div className="grid grid-cols-2 gap-4">
                   {product?.images.map((image, index) => (
                     <img
@@ -173,13 +178,13 @@ const DashboardSingleProduct: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-1/2 flex flex-col gap-4">
-            <p className="font-bold text-xl">Discount</p>
-            <div className="flex flex-col items-start gap-2 py-4">
-              <p className="font-medium">Coupons</p>
+          <div className="w-full lg:w-1/2 flex flex-col gap-2">
+            <p className="font-semibold text-lg leading-normal mb-3 ">Discount</p>
+            <div className="flex flex-col items-start gap-2">
+              <p className="font-medium leading-3 text-[.82rem] xmd:text-[.86rem] lg:text-[.92rem]">Coupons</p>
               <ListPopup
                 trigger={
-                  <div className="py-2 px-4 bg-[#E7EBEF] rounded  hover:scale-105 transition-all duration-300 ease-in-out">
+                  <div className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800 h-full">
                     List of coupons
                   </div>
                 }
@@ -189,8 +194,9 @@ const DashboardSingleProduct: React.FC = () => {
               <div className="block">
                 <FormPopup
                   trigger={
-                    <button className="px-4 py-3 bg-[#E7EBEF] font-semibold text-black rounded-lg flex gap-2 items-center hover:scale-105 transition-all duration-300 ease-in-out">
-                      Create New Coupon <Plus />
+                    <button className="text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] py-2 px-4 bg-[#E7EBEF] font-medium text-black rounded-lg flex gap-1 items-center hover:scale-105 transition-all duration-300 ease-in-out">
+                      <span>Create New Coupon</span>
+                      <Plus className="w-5" />
                     </button>
                   }
                   title="Create a Coupon"
@@ -204,9 +210,9 @@ const DashboardSingleProduct: React.FC = () => {
                 {showPopup && <Popup {...popupProps} onClose={() => setShowPopup(false)} />}
               </div>
             </div>
-            <div className="flex flex-col">
-              <p className="font-semibold text-xl">Customer Feedback</p>
-              <div className="flex gap-4 flex-col py-5">
+            <div className="flex flex-col mt-8">
+              <p className="font-semibold text-lg">Customer Feedback</p>
+              <div className="flex gap-4 flex-col py-3">
                 {product?.feedbacks && product?.feedbacks.length > 0 ? (
                   product.feedbacks.map((feedback, index) => (
                     <div className="flex gap-5" key={index}>
@@ -223,7 +229,7 @@ const DashboardSingleProduct: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.8rem] xmd:text-[.85rem] lg:text-[.9rem]">
+                  <p className="py-2 px-4 w-full bg-[#E7EBEF] rounded text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800">
                     No feedbacks for this product
                   </p>
                 )}
