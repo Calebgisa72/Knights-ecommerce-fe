@@ -18,27 +18,34 @@ const DashboardEditProducts: React.FC = () => {
   const [quantity, setQuantity] = useState('');
   const [newPrice, setNewPrice] = useState('');
   const [oldPrice, setOldPrice] = useState('');
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [expirationDate, setExpirationDate] = useState<string>('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<any[]>();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [newCategory, setNewCategory] = useState<string>('');
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/categories`);
-        setCategories(response.data.categories);
+        const productfetchedCategories = product?.categories.map((category: any) => category.name);
+        const fetchedCategories = response.data?.categories?.map((category: any) => category.name);
+        setCategories(fetchedCategories);
+        const matchedCategories = fetchedCategories.filter((category: any) =>
+          productfetchedCategories?.includes(category)
+        );
+        setSelectedCategories(matchedCategories);
       } catch (error) {
-        console.error('Error fetching categories:', error);
         setFetchError('Error fetching categories');
         toast.error('Error fetching categories');
       }
     };
     fetchCategories();
-  }, []);
+  }, [product?.categories]);
 
   useEffect(() => {
     if (id) {
@@ -66,10 +73,31 @@ const DashboardEditProducts: React.FC = () => {
     setImagePreviews((prevPreviews) => [...prevPreviews, ...previewUrls]);
   };
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(e.target.value);
-  };
+  const handleAddCategory = () => {
+    const trimmedCategory = newCategory.trim();
+    if (trimmedCategory.length === 0) {
+      toast.error('Category name cannot be empty');
+      return;
+    }
 
+    const categoryExists = categories?.some((category) => category.toLowerCase() === trimmedCategory.toLowerCase());
+    if (categoryExists) {
+      toast.error('Category already exists');
+    } else {
+      setCategories((prevCategories: any) => [...prevCategories, trimmedCategory]);
+      setNewCategory('');
+      toast.success('Category added');
+    }
+  };
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories((prevSelectedCategories) => {
+      if (prevSelectedCategories.includes(category)) {
+        return prevSelectedCategories.filter((selectedCategory) => selectedCategory !== category);
+      } else {
+        return [...prevSelectedCategories, category];
+      }
+    });
+  };
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
     if (productName.trim().length < 3) {
@@ -114,7 +142,9 @@ const DashboardEditProducts: React.FC = () => {
     formData.append('quantity', quantity);
     formData.append('newPrice', newPrice);
     formData.append('oldPrice', oldPrice);
-    formData.append('categories', selectedOption);
+    selectedCategories.forEach((item) => {
+      formData.append('categories', item);
+    });
     formData.append('expirationDate', expirationDate);
     images.forEach((image) => {
       formData.append('images', image);
@@ -166,24 +196,37 @@ const DashboardEditProducts: React.FC = () => {
               />
               {errors.description && <p className="text-red-500">{errors.description}</p>}
             </div>
-            <div className="flex flex-col items-start gap-1">
+            <div className="flex flex-col items-start gap-1 w-full">
               <p className="font-medium">Category</p>
-              <select
-                value={selectedOption}
-                onChange={handleSelectChange}
-                className="bg-white border-[1px] rounded px-4 py-2 w-full"
-                disabled={categories?.length === 0 || !categories}
-                data-testid="category"
-              >
-                <option value="">
-                  {categories?.length === 0 || !categories ? 'No categories available' : 'Select an option'}
-                </option>
-                {categories.map((category) => (
-                  <option key={category?.id} value={category?.name}>
-                    {category?.name}
-                  </option>
+              <div className="flex flex-col gap-2 w-full">
+                {categories?.map((category, index) => (
+                  <label key={index} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox"
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryChange(category)}
+                    />
+                    <span>{category}</span>
+                  </label>
                 ))}
-              </select>
+                <div className="flex flex-row items-center gap-4">
+                  <input
+                    data-testid="categoryInput"
+                    placeholder="Create your own category"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    className="bg-white border-[1px] rounded px-4 py-2 w-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCategory}
+                    className=" h-8 w-8  flex items-center justify-center rounded-lg text-white bg-[#070f2b] hover:scale-105 transition-all"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
               {errors.category && <p className="text-red-500">{errors.category}</p>}
             </div>
             <div className="flex flex-col items-start gap-1">

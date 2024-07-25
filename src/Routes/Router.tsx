@@ -1,5 +1,6 @@
+/* eslint-disable*/
 import React, { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, To } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import Register from '../pages/Authentication/Register';
 import RegisterVendor from '../pages/Authentication/RegisterVendor';
@@ -40,17 +41,17 @@ import VendorOrder from '../pages/Orders/VendorOrder';
 import SingleVendorOrder from '../pages/Orders/SingleVendorOrder';
 import AdminOrders from '../pages/Orders/AdminOrders';
 import SingleAdminOrder from '../pages/Orders/SingleAdminOrder';
+import { JSX } from 'react/jsx-runtime';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
   const { decodedToken } = useJwt<DecodedToken>(userToken);
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const isAdmin = decodedToken?.role.toLowerCase() === 'admin';
   const isVendor = decodedToken?.role.toLowerCase() === 'vendor';
   const isBuyer = decodedToken?.role.toLowerCase() === 'buyer';
-
-  const location = useLocation();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (userToken && location.pathname === '/wishlist') {
@@ -59,6 +60,18 @@ const Router = () => {
       dispatch(setOnWishlistPage(false));
     }
   }, [location.pathname, dispatch, userToken]);
+
+  const conditionalNavigate = (
+    adminPath: To,
+    vendorPath: To,
+    buyerPath: JSX.Element | To | any
+  ) => (
+    <>
+      {userToken && isAdmin && <Navigate to={adminPath} />}
+      {userToken && isVendor && <Navigate to={vendorPath} />}
+      {userToken && isBuyer && <Navigate to={buyerPath} />}
+    </>
+  );
 
   return (
     <Routes>
@@ -108,9 +121,7 @@ const Router = () => {
           <MainLayout>
             <PageTitle title="Knights Store | Forgot Password" />
             <ForgotPassword />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <Navigate to="/" />}
+            {conditionalNavigate('/admin/dashboard', '/vendor/dashboard', '/')}
           </MainLayout>
         }
       />
@@ -121,9 +132,7 @@ const Router = () => {
           <MainLayout>
             <PageTitle title="Knights Store | Reset Password" />
             <ResetPassword />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <Navigate to="/" />}
+            {conditionalNavigate('/admin/dashboard', '/vendor/dashboard', '/')}
           </MainLayout>
         }
       />
@@ -133,25 +142,23 @@ const Router = () => {
         element={
           <MainLayout>
             <PageTitle title="Knights Store | Login" />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard/users" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <Navigate to="/" />}
+            {conditionalNavigate('/admin/dashboard/users', '/vendor/dashboard', '/')}
             {!userToken && <Login />}
           </MainLayout>
         }
       />
+
       <Route
         path="/login/google-auth"
         element={
           <MainLayout>
             <PageTitle title="Knights Store | Login" />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <Navigate to="/" />}
+            {conditionalNavigate('/admin/dashboard', '/vendor/dashboard', '/')}
             {!userToken && <GoogleLoginSuccess />}
           </MainLayout>
         }
       />
+
       <Route
         path="/suspended-account"
         element={
@@ -162,15 +169,14 @@ const Router = () => {
           </MainLayout>
         }
       />
+
       <Route
         path="/otp-verficaton"
         element={
           <MainLayout>
             <PageTitle title="Knights Store | Verify OTP" />
             <OtpPage />
-            {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-            {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-            {userToken && isBuyer && <Navigate to="/" />}
+            {conditionalNavigate('/admin/dashboard', '/vendor/dashboard', '/')}
           </MainLayout>
         }
       />
@@ -184,6 +190,7 @@ const Router = () => {
           </MainLayout>
         }
       />
+
       <Route
         path="/profile"
         element={
@@ -193,21 +200,6 @@ const Router = () => {
           </MainLayout>
         }
       />
-
-      {isVendor && (
-        <Route path="/vendor/dashboard" element={<DashboardLayout />}>
-          <Route path="products" element={<DashboarInnerLayout />}>
-            <Route path="" element={<DashboardProducts />} />
-            <Route path="new" element={<DashboardNewProducts />} />
-            <Route path=":id" element={<DashboardSingleProduct />} />
-            <Route path=":id/edit" element={<DashboardEditProducts />} />
-          </Route>
-          <Route path="orders" element={<DashboarInnerLayout />}>
-            <Route path="" element={<VendorOrder />} />
-            <Route path=":orderId" element={<SingleVendorOrder />} />
-          </Route>
-        </Route>
-      )}
 
       <Route
         path="/search"
@@ -223,12 +215,12 @@ const Router = () => {
         path="/product/:id"
         element={
           <MainLayout>
-            <PageTitle title="Knights Store | View Product " />
+            <PageTitle title="Knights Store | View Product" />
             <SingleProduct />
           </MainLayout>
         }
       />
-      {/*  Protected routes 1 . Vendor pages */}
+
       <Route
         path="/vendor/dashboard/*"
         element={
@@ -240,6 +232,10 @@ const Router = () => {
         <Route index element={<DashboardProducts />} />
         <Route path="account" element={<DashboarInnerLayout />}>
           <Route index element={<DashboardAccount />} />
+        </Route>
+        <Route path="orders" element={<Outlet />}>
+          <Route path="" element={<VendorOrder />} />
+          <Route path=":orderId" element={<SingleVendorOrder />} />
         </Route>
         <Route path="products" element={<DashboarInnerLayout />}>
           <Route index element={<DashboardProducts />} />
@@ -259,7 +255,6 @@ const Router = () => {
           </MainLayout>
         }
       />
-      {/*  Protected routes 2 . Buyer pages */}
 
       <Route element={<ProtectedRoute requiredRole="buyer" />}>
         <Route
@@ -267,8 +262,7 @@ const Router = () => {
           element={
             <MainLayout>
               <PageTitle title="Knights Store | Create Order" />
-              {userToken && isBuyer && <CheckOutMain />}
-              {!userToken && <Navigate to="/login" />}
+              {userToken && isBuyer ? <CheckOutMain /> : <Navigate to="/login" />}
             </MainLayout>
           }
         />
@@ -282,36 +276,20 @@ const Router = () => {
           }
         />
         <Route
-          path="/orders"
-          element={
-            <MainLayout>
-              <PageTitle title="Knights Store | Orders" />
-              {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-              {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-              {userToken && isBuyer && <BuyerOrders />}
-              {!userToken && <Navigate to="/login" />}
-            </MainLayout>
-          }
-        />
-
-        <Route
           path="/orders/:orderId"
           element={
             <MainLayout>
               <PageTitle title="Knights Store | Orders" />
-              {userToken && isAdmin && <Navigate to="/admin/dashboard" />}
-              {userToken && isVendor && <Navigate to="/vendor/dashboard" />}
-              {userToken && isBuyer && <SingleBuyerOrder />}
+              {conditionalNavigate('/admin/dashboard', '/vendor/dashboard', <SingleBuyerOrder />)}
               {!userToken && <Navigate to="/login" />}
             </MainLayout>
           }
         />
         <Route path="*" element={<NotFound />} />
       </Route>
-      {/*  Protected routes 3 . Admin pages */}
 
       <Route
-        path="/Admin/dashboard"
+        path="/admin/dashboard"
         element={
           <ProtectedRoute requiredRole="admin">
             <DashboardLayout />

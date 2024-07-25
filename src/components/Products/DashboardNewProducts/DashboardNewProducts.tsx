@@ -7,21 +7,20 @@ import { createProduct, resetProductState } from '../../../redux/actions/product
 import { Link } from 'react-router-dom';
 import { CircleCheck } from 'lucide-react';
 
+const defaultCategories = ['Megatronics', 'Fashion'];
+
 const DashboardNewProducts: React.FC = () => {
   const [productName, setProductName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [category2, setCategory2] = useState<string>('');
   const [quantity, setQuantity] = useState<string>('');
   const [newPrice, setNewPrice] = useState<string>('');
-  const [selectedOption, setSelectedOption] = useState<string>('');
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [expirationDate, setExpirationDate] = useState<string>('');
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [categories, setCategories] = useState<any[]>(defaultCategories);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [onFocus, setOnFocus] = useState(false);
-  const [filterdCategories, setFilteredCategories] = useState<{ id: string; name: string }[]>([]);
-
+  const [newCategory, setNewCategory] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
   const { error, loading, product: ProductsResponse } = useSelector((state: RootState) => state.productCreate);
 
@@ -40,7 +39,16 @@ const DashboardNewProducts: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/categories`);
-        setCategories(response.data.categories);
+        const fetchedCategories = response.data?.categories?.map((category: any) => category.name);
+
+        setCategories((prevCategories) => {
+          const newCategories = fetchedCategories.filter((categoryName: string) => {
+            return !prevCategories.some(
+              (existingCategory) => existingCategory.toLowerCase() === categoryName.toLowerCase()
+            );
+          });
+          return [...prevCategories, ...newCategories];
+        });
       } catch (error) {
         console.error('Error fetching categories:', error);
         toast.error('Error fetching categories');
@@ -49,32 +57,48 @@ const DashboardNewProducts: React.FC = () => {
 
     fetchCategories();
   }, []);
-
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setImages((prevImages) => [...prevImages, ...files]);
+
     const previewUrls = files.map((file) => URL.createObjectURL(file));
     setImagePreviews((prevPreviews) => [...prevPreviews, ...previewUrls]);
+
+    const uploadImages = async () => {
+      return new Promise((resolve) => setTimeout(resolve, 3000));
+    };
+
+    toast.promise(uploadImages(), {
+      loading: 'Uploading images...',
+      success: 'Images uploaded successfully!',
+      error: 'Error uploading images'
+    });
   };
+  const handleAddCategory = () => {
+    const trimmedCategory = newCategory.trim();
+    if (trimmedCategory.length === 0) {
+      toast.error('Category name cannot be empty');
+      return;
+    }
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(e.target.value);
+    const categoryExists = categories.some((category) => category.toLowerCase() === trimmedCategory.toLowerCase());
+    if (categoryExists) {
+      toast.error('Category already exists');
+    } else {
+      setCategories((prevCategories) => [...prevCategories, trimmedCategory]);
+      setNewCategory('');
+      toast.success('Category added');
+    }
   };
-
-  useEffect(() => {
-    setFilteredCategories(
-      categories.filter((category) => {
-        return category.name.toLowerCase().includes(category2.toLowerCase());
-      })
-    );
-  }, [categories, category2]);
-
-  const handleCreateCategory = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setCategory2(value.charAt(0).toUpperCase() + value.slice(1).toLowerCase());
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories((prevSelectedCategories) => {
+      if (prevSelectedCategories.includes(category)) {
+        return prevSelectedCategories.filter((selectedCategory) => selectedCategory !== category);
+      } else {
+        return [...prevSelectedCategories, category];
+      }
+    });
   };
-
-  const defaultCategories = ['Women', 'Men', 'Kids', 'Electronics', 'Fashion', 'Accessories', 'Jewelries'];
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
@@ -84,7 +108,7 @@ const DashboardNewProducts: React.FC = () => {
     if (description.trim().length < 3) {
       errors.description = 'Description must be at least 3 characters long.';
     }
-    if (!selectedOption && category2.trim().length < 1) {
+    if (selectedCategories.length === 0) {
       errors.category = 'Please select or enter a category.';
     }
     if (!quantity || isNaN(Number(quantity))) {
@@ -114,10 +138,9 @@ const DashboardNewProducts: React.FC = () => {
   const resetForm = () => {
     setProductName('');
     setDescription('');
-    setCategory2('');
     setQuantity('');
     setNewPrice('');
-    setSelectedOption('');
+    setSelectedCategories([]);
     setImages([]);
     setImagePreviews([]);
     setErrors({});
@@ -133,14 +156,14 @@ const DashboardNewProducts: React.FC = () => {
     formData.append('name', productName);
     formData.append('description', description);
     formData.append('quantity', quantity);
-    formData.append('newPrice', newPrice);
-    formData.append('categories', selectedOption.toLowerCase() || category2.toLowerCase());
     formData.append('expirationDate', expirationDate || '2025-0-0');
-
+    formData.append('newPrice', newPrice);
     images.forEach((image) => {
       formData.append('images', image);
     });
-
+    selectedCategories.forEach((item) => {
+      formData.append('categories', item);
+    });
     dispatch(createProduct(formData) as any);
   };
 
@@ -175,57 +198,33 @@ const DashboardNewProducts: React.FC = () => {
             </div>
             <div className="flex flex-col items-start gap-1 w-full">
               <p className="font-medium">Category</p>
-              <div className="flex justify-between gap-4 w-full">
-                <select
-                  value={selectedOption}
-                  onChange={handleSelectChange}
-                  className="bg-white border-[1px] rounded px-1 py-2 w-[40%] cursor-pointer"
-                  disabled={categories?.length === 0 || !categories}
-                >
-                  <option value="">
-                    {categories?.length === 0 || !categories ? 'No categories available' : 'Select an option'}
-                  </option>
-                  {defaultCategories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                <div className="w-[60%] relative flex flex-col gap-2">
+              <div className="flex flex-col gap-2 w-full">
+                {categories.map((category, index) => (
+                  <label key={index} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox"
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryChange(category)}
+                    />
+                    <span>{category}</span>
+                  </label>
+                ))}
+                <div className="flex flex-row items-center gap-4">
                   <input
                     data-testid="categoryInput"
-                    value={category2}
-                    onFocus={() => setOnFocus(true)}
-                    onBlur={() => setOnFocus(false)}
-                    onChange={(e) => handleCreateCategory(e)}
-                    placeholder="create your own category"
+                    placeholder="Create your own category"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
                     className="bg-white border-[1px] rounded px-4 py-2 w-full"
                   />
-                  {onFocus && filterdCategories.length > 0 && (
-                    <div className=" absolute top-10 z-[450] max-h-72 overflow-y-scroll w-full bg-neutral-100">
-                      <div className="py-2 px-4 flex flex-col gap-2 w-full">
-                        {filterdCategories.map((category, index) => {
-                          return (
-                            <div
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                setCategory2(
-                                  category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()
-                                );
-                              }}
-                              className="cursor-pointer hover:bg-neutral-200 flex justify-between items-center border-b-[1px] border-[#D1D1D1]"
-                              key={index}
-                            >
-                              <div>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</div>
-                              {category2.toLowerCase() === category.name.toLowerCase() && (
-                                <i className="fa-solid text-green-500 fa-circle-check"></i>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                  <button
+                    type="button"
+                    onClick={handleAddCategory}
+                    className=" h-8 w-8  flex items-center justify-center rounded-lg text-white bg-[#070f2b] hover:scale-105 transition-all"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
               {errors.category && <p className="text-red-500">{errors.category}</p>}

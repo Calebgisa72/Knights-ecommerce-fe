@@ -114,9 +114,8 @@ describe('DashboardNewProducts', () => {
       expect(mockedAxios.get).toHaveBeenCalledWith(`${import.meta.env.VITE_APP_API_URL}/product/categories`)
     );
 
-    const categorySelect = screen.getByRole('combobox');
-    fireEvent.change(categorySelect, { target: { value: 'Category 1' } });
-
+    const categoryInput = screen.getByTestId('categoryInput');
+    fireEvent.focus(categoryInput);
     const submitButton = screen.getByText('New Product') as HTMLButtonElement;
     fireEvent.click(submitButton);
   });
@@ -152,5 +151,82 @@ describe('DashboardNewProducts', () => {
     expect(screen.getByTestId('navbar')).toBeInTheDocument();
     expect(screen.getByTestId('footer')).toBeInTheDocument();
     expect(screen.getByTestId('content')).toBeInTheDocument();
+  });
+
+  it('renders default categories', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNewProducts />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByText('Megatronics')).toBeInTheDocument();
+    expect(screen.getByText('Fashion')).toBeInTheDocument();
+  });
+
+  it('adds a new category', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNewProducts />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const categoryInput = screen.getByPlaceholderText('Create your own category');
+    const addButton = screen.getByText('+');
+
+    fireEvent.change(categoryInput, { target: { value: 'New Category' } });
+    fireEvent.click(addButton);
+
+    expect(await screen.findByText('New Category')).toBeInTheDocument();
+  });
+
+  it('handles category selection', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNewProducts />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const categoryCheckbox = screen.getByLabelText('Megatronics');
+    fireEvent.click(categoryCheckbox);
+
+    expect(categoryCheckbox).toBeChecked();
+  });
+
+  it('prevents adding duplicate categories', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNewProducts />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const categoryInput = screen.getByPlaceholderText('Create your own category');
+    const addButton = screen.getByText('+');
+
+    fireEvent.change(categoryInput, { target: { value: 'Megatronics' } });
+    fireEvent.click(addButton);
+
+    expect(await screen.findByText('Megatronics')).toBeInTheDocument;
+  });
+
+  it('displays an error message when trying to add an empty category', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DashboardNewProducts />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const addButton = screen.getByText('+');
+    fireEvent.click(addButton);
   });
 });
