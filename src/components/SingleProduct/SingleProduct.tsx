@@ -297,7 +297,7 @@ function SingleProduct() {
                     <div className="w-full flex items-center justify-start gap-x-1 mt-4 sm:mt-0">
                       <p className="font-poppins font-semibold text-primary text-lg sm:text-base">Category:</p>
                       <p className="font-poppins font-normal text-grey2 text-lg sm:text-base">
-                        {product?.categories[0]?.name}
+                        {product?.categories.map((category) => category.name).join(', ')}
                       </p>
                     </div>
                   </div>

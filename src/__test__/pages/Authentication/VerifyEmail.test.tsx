@@ -44,7 +44,7 @@ describe('VerifyEmail', () => {
       }
     });
 
-    const successMessage = screen.getByText('Email verified successfully!', { selector: 'p' });
+    const successMessage = screen.getByText('Email verified successfully!');
     expect(successMessage).toBeInTheDocument();
     const loginLink = screen.getByText('Login', { selector: 'a' });
     expect(loginLink).toBeInTheDocument();

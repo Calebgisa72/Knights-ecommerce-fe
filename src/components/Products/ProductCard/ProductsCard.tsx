@@ -62,7 +62,10 @@ const ProductsCard: React.FC<ProductsCardProps> = ({ data }) => {
   };
   return (
     <>
-      <Link to={`${id}`} className="w-full p-4 rounded-md shadow-lg bg-[#E7EBEF] flex flex-col gap-8">
+      <Link
+        to={`/vendor/dashboard/products/${id}`}
+        className="w-full p-4 rounded-md shadow-lg bg-[#E7EBEF] flex flex-col gap-8"
+      >
         <div className="flex items-center gap-5">
           <img src={images[0]} alt="product-image" className="w-[84px] h-[84px] object-cover rounded-lg" />
           <div className="flex gap-4 justify-between w-full">
