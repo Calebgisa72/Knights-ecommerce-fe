@@ -126,10 +126,13 @@ describe('WishlistPage', () => {
         expect(screen.getByText(product.productInfo.name)).toBeInTheDocument();
       });
 
+      const beatLoader = screen.getByTestId('loaderDiv');
       const deleteButtons = screen.getAllByTestId('deleteButton');
 
       expect(deleteButtons[0]).toBeInTheDocument();
+      expect(beatLoader).not.toBeInTheDocument();
       fireEvent.click(deleteButtons[0]);
+      expect(beatLoader).toBeInTheDocument();
     });
   });
 
