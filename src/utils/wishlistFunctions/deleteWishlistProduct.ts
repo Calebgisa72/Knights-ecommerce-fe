@@ -11,20 +11,21 @@ const deleteWishlistProduct = async (
   id: number | null,
   products: prodInWishlistProps[],
   setInWishlist: React.Dispatch<React.SetStateAction<boolean>>,
-  product: ProductProp
+  product: ProductProp,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
     if (id === null) {
       return;
     }
-
+    setLoading(true);
     const response = await axios.delete(`${import.meta.env.VITE_APP_API_URL}/wish-list/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json'
       }
     });
-
+    setLoading(false);
     if (response.status === 200) {
       const wishlistProducts: prodInWishlistProps[] = products.filter((product) => product.wishListDetails.id != id);
       dispatch(setWishlist(wishlistProducts));

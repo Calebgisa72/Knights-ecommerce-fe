@@ -13,6 +13,7 @@ vi.mock('../../../redux/reducers/wishlistReducer');
 vi.mock('react-hot-toast');
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockSetLoading = vi.fn();
 
 describe('addProductToWishlist', () => {
   const mockDispatch = vi.fn();
@@ -69,7 +70,7 @@ describe('addProductToWishlist', () => {
       data: { data: { wishlistAdded } }
     });
 
-    await addProductToWishlist(userToken, mockDispatch, products, product);
+    await addProductToWishlist(userToken, mockDispatch, products, product, mockSetLoading);
 
     expect(mockDispatch).toHaveBeenCalledWith(
       setWishlist([
@@ -87,7 +88,7 @@ describe('addProductToWishlist', () => {
     const mockError = new Error('Network Error');
     mockedAxios.post.mockRejectedValueOnce(mockError);
 
-    await addProductToWishlist(userToken, mockDispatch, products, product);
+    await addProductToWishlist(userToken, mockDispatch, products, product, mockSetLoading);
 
     expect(handleError).toHaveBeenCalledWith(mockError);
     expect(mockDispatch).not.toHaveBeenCalled();

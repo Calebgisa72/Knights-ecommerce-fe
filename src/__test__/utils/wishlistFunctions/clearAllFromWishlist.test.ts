@@ -15,6 +15,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe('clearAll', () => {
   const mockDispatch = vi.fn();
   const userToken = 'mockToken';
+  const mockSetLoading = vi.fn();
 
   beforeEach(() => {
     vi.resetAllMocks();
@@ -25,7 +26,7 @@ describe('clearAll', () => {
       status: 200
     });
 
-    await clearAll(userToken, mockDispatch);
+    await clearAll(userToken, mockDispatch, mockSetLoading);
 
     expect(mockDispatch).toHaveBeenCalledWith(setWishlist([]));
     expect(toast.success).toHaveBeenCalledWith('Removed all products from wishlist');
@@ -35,7 +36,7 @@ describe('clearAll', () => {
     const mockError = new Error('Network Error');
     mockedAxios.delete.mockRejectedValueOnce(mockError);
 
-    await clearAll(userToken, mockDispatch);
+    await clearAll(userToken, mockDispatch, mockSetLoading);
 
     expect(handleError).toHaveBeenCalledWith(mockError);
     expect(mockDispatch).not.toHaveBeenCalledWith(setWishlist([]));

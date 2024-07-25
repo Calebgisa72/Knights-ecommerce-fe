@@ -9,16 +9,18 @@ export const addProductToWishlist = async (
   userToken: string,
   dispatch: AppDispatch,
   products: prodInWishlistProps[],
-  product: ProductProp
+  product: ProductProp,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
+    setLoading(true);
     const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/wish-list/add/${product.id}`, undefined, {
       headers: {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json'
       }
     });
-
+    setLoading(false);
     if (response.status === 201) {
       dispatch(
         setWishlist([

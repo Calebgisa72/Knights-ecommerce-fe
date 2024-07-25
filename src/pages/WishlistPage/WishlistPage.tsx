@@ -48,7 +48,7 @@ function WishlistPage() {
                 trigger={<p className=" text-[16px] hover:underline cursor-pointer">Clear All</p>}
                 title={`Confirm removing all products from your wishlist`}
                 body={`Are you sure you want to remove all products from your from wishlist?`}
-                onSubmit={() => clearAll(userToken, dispatch)}
+                onSubmit={() => clearAll(userToken, dispatch, setLoading)}
               />
             </div>
           )}
