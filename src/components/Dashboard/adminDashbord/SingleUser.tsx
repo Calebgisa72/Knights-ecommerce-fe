@@ -78,7 +78,7 @@ function SingleUser() {
         </div>
 
         <div>
-          <div className="w-full p-7 bg-white">
+          <div className="w-full max-w-[1200px] p-7 bg-white">
             {loading ? (
               <div className="w-full flex justify-center px-6 py-20" data-testid="loading-spinner">
                 <PropagateLoader color="#070f2b" />

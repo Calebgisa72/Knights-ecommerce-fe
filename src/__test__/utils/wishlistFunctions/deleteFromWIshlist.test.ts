@@ -17,6 +17,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe('deleteWishlistProduct', () => {
   const mockDispatch = vi.fn();
   const mockSetInWishlist = vi.fn();
+  const mockSetLoading = vi.fn();
   const userToken = 'mockToken';
   const product: ProductProp = {
     id: '1',
@@ -64,7 +65,7 @@ describe('deleteWishlistProduct', () => {
       status: 200
     });
 
-    await deleteWishlistProduct(userToken, mockDispatch, 1, products, mockSetInWishlist, product);
+    await deleteWishlistProduct(userToken, mockDispatch, 1, products, mockSetInWishlist, product, mockSetLoading);
 
     expect(mockDispatch).toHaveBeenCalledWith(setWishlist([]));
     expect(mockSetInWishlist).toHaveBeenCalledWith(false);
@@ -72,7 +73,7 @@ describe('deleteWishlistProduct', () => {
   });
 
   it('does not delete product if id is null', async () => {
-    await deleteWishlistProduct(userToken, mockDispatch, null, products, mockSetInWishlist, product);
+    await deleteWishlistProduct(userToken, mockDispatch, null, products, mockSetInWishlist, product, mockSetLoading);
 
     expect(mockDispatch).not.toHaveBeenCalled();
     expect(mockSetInWishlist).not.toHaveBeenCalled();
@@ -84,7 +85,7 @@ describe('deleteWishlistProduct', () => {
     const mockError = new Error('Network Error');
     mockedAxios.delete.mockRejectedValueOnce(mockError);
 
-    await deleteWishlistProduct(userToken, mockDispatch, 1, products, mockSetInWishlist, product);
+    await deleteWishlistProduct(userToken, mockDispatch, 1, products, mockSetInWishlist, product, mockSetLoading);
 
     expect(handleError).toHaveBeenCalledWith(mockError);
     expect(mockDispatch).not.toHaveBeenCalled();

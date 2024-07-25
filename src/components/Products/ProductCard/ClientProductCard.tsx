@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import deleteWishlistProduct from '../../../utils/wishlistFunctions/deleteWishlistProduct';
 import { addProductToWishlist } from '../../../utils/wishlistFunctions/addProduct';
 import ConfirmDeletePopup from '../../Popups/ConfirmDeletePopup';
+import { BeatLoader } from 'react-spinners';
 
 interface Props {
   product: ProductProp;
@@ -44,6 +45,7 @@ export interface ProductProp {
 const ClientProductCard = (props: Props) => {
   const { userToken } = useSelector((state: RootState) => state.auth);
   const { currentCategory } = useSelector((state: RootState) => state.category);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -78,7 +80,14 @@ const ClientProductCard = (props: Props) => {
     >
       {userToken && (
         <div className="absolute right-4 top-4 z-40">
-          {onWihlistPage ? (
+          {loading ? (
+            <div
+              data-testid="beatLoaderDiv"
+              className="flex bg-baseWhite w-15 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-sm text-sm"
+            >
+              <BeatLoader size={10} color="#073001" />
+            </div>
+          ) : onWihlistPage ? (
             <ConfirmDeletePopup
               trigger={
                 <div className="group-hover:flex sm:flex md:hidden bg-baseWhite w-8 h-8 pt-[2px] justify-center xmd:items-center text-center rounded-full">
@@ -88,7 +97,15 @@ const ClientProductCard = (props: Props) => {
               title={`Confirm ${props.product.name} Deletion from your wishlist`}
               body={`Are you sure you want to delete ${props.product.name} product from your wishlist?`}
               onSubmit={() =>
-                deleteWishlistProduct(userToken, dispatch, wishlistId, products, setInWishlist, props.product)
+                deleteWishlistProduct(
+                  userToken,
+                  dispatch,
+                  wishlistId,
+                  products,
+                  setInWishlist,
+                  props.product,
+                  setLoading
+                )
               }
             />
           ) : inWishlist ? (
@@ -97,7 +114,15 @@ const ClientProductCard = (props: Props) => {
                 className="fa-solid fa-heart text-lg text-orange"
                 onClick={(event: React.MouseEvent<HTMLElement>) => {
                   event.stopPropagation();
-                  deleteWishlistProduct(userToken, dispatch, wishlistId, products, setInWishlist, props.product);
+                  deleteWishlistProduct(
+                    userToken,
+                    dispatch,
+                    wishlistId,
+                    products,
+                    setInWishlist,
+                    props.product,
+                    setLoading
+                  );
                 }}
                 data-testid="removeButton"
               ></i>
@@ -108,7 +133,7 @@ const ClientProductCard = (props: Props) => {
                 className="fa-regular fa-heart text-lg"
                 onClick={(event: React.MouseEvent<HTMLElement>) => {
                   event.stopPropagation();
-                  addProductToWishlist(userToken, dispatch, products, props.product);
+                  addProductToWishlist(userToken, dispatch, products, props.product, setLoading);
                 }}
                 data-testid="addButton"
               ></i>
