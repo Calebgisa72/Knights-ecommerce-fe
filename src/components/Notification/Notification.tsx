@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { setOpenNotification, setSelectedNotificationsIds } from '../../redux/reducers/notification';
+import {
+  setOpenNotification,
+  setSelectedNotificationsIds,
+  setAllNotifications
+} from '../../redux/reducers/notification';
 import { useDispatch, useSelector } from 'react-redux';
 import OneNotification from './OneNotification';
 import { RootState } from '../../redux/store';
@@ -36,6 +40,10 @@ function Notification() {
     if (selectedNotificationsIds.length === 0) {
       toast.error('Please select notifications to delete before deleting');
     } else {
+      const updatedNotifications = allNotifications.filter((notification) => {
+        return !selectedNotificationsIds.includes(notification.id);
+      });
+      dispatch(setAllNotifications(updatedNotifications));
       deleteNotifications(userToken, selectedNotificationsIds);
       dispatch(setSelectedNotificationsIds([]));
     }
@@ -44,6 +52,14 @@ function Notification() {
   const updateSelectedNotifications = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (selectedNotificationsIds.length > 0) {
+      const updatedNotifications = allNotifications.map((notification) => {
+        if (selectedNotificationsIds.includes(notification.id)) {
+          return { ...notification, isRead: true };
+        } else {
+          return notification;
+        }
+      });
+      dispatch(setAllNotifications(updatedNotifications));
       try {
         const updateSelectedNotifications = await axios.put(
           `${import.meta.env.VITE_APP_API_URL}/notification`,
@@ -53,7 +69,6 @@ function Notification() {
 
         if (updateSelectedNotifications.data.status === 'success') {
           toast.success('Selected notifications marked as read');
-          dispatch(setSelectedNotificationsIds([]));
         } else {
           toast.error('Failed to update selected notifications');
         }
@@ -61,6 +76,7 @@ function Notification() {
         console.log('Failed to update selected notifications', error);
         toast.error('Failed to update selected notifications');
       }
+      dispatch(setSelectedNotificationsIds([]));
     } else {
       toast.error('No notifications selected');
     }

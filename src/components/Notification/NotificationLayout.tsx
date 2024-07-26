@@ -8,7 +8,7 @@ import { io } from 'socket.io-client';
 import { DecodedToken } from '../../pages/Authentication/Login';
 import { NotificationProps } from './OneNotification';
 import axios from 'axios';
-import notificaticationBellSound from '../../../public/audios/mixkit-achievement-bell-600.wav';
+import notificaticationBellSound from './assets/audios/mixkit-achievement-bell-600.wav';
 
 interface notifications {
   allNotifications: NotificationProps[];
@@ -26,7 +26,9 @@ interface notificationMessage {
 
 function NotificationLayout() {
   const { userToken } = useSelector((state: RootState) => state.auth);
-  const { openNotification, unreadNotifications } = useSelector((state: RootState) => state.notification);
+  const { openNotification, unreadNotifications, allNotifications } = useSelector(
+    (state: RootState) => state.notification
+  );
   const { decodedToken } = useJwt<DecodedToken>(userToken);
   const socketUrl = import.meta.env.VITE_APP_API_URL;
   const [loading, setLoading] = useState(true);
@@ -69,6 +71,16 @@ function NotificationLayout() {
     };
     userToken && fetchData();
   }, [userToken, dispatch]);
+
+  useEffect(() => {
+    let unread: number = 0;
+    allNotifications.forEach((notification) => {
+      if (notification.isRead === false) {
+        unread += 1;
+      }
+    });
+    dispatch(setUnreadNotification(unread));
+  }, [allNotifications, dispatch]);
 
   useEffect(() => {
     const socket = io(socketUrl);

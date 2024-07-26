@@ -16,6 +16,10 @@ function WishlistPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (userToken) {
       const fetchData = async () => {
         try {

@@ -25,7 +25,7 @@ export interface user {
   createdAt: Date;
   updatedAt?: Date;
 }
-export const numberOfUsers = 6;
+export const numberOfUsers = 10;
 
 function Users() {
   const navigate = useNavigate();
