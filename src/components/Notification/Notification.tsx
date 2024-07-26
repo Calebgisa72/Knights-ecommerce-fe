@@ -75,7 +75,7 @@ function Notification() {
   }, [allNotifications]);
 
   return (
-    <div className="fixed animate-slideInFromTop inset-0 z-40 flex pt-[90px] px-4 xmd:pt-[70px] xmd:px-16 lg:pt-[80px] lg:px-36 items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ease-out">
+    <div className="fixed animate-slideInFromTop inset-0 z-40 flex pt-[60px] xmd:pt-[30px] px-6 xmd:px-16 md:px-36 lg:px-48 items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ease-out">
       <div className="bg-white h-[550px] w-full p-8 pb-2 rounded-lg shadow-lg transform transition-transform duration-500 ease-in-out flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <div className="text-[18px] font-bold">Notification</div>

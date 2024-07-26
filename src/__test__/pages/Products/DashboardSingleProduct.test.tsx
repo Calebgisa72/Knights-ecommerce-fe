@@ -25,7 +25,7 @@ describe('DashboardSingleProduct', () => {
       expect(screen.getByText('Product Details')).toBeInTheDocument();
       expect(screen.getByText('Test Product')).toBeInTheDocument();
       expect(screen.getByText('Test Description')).toBeInTheDocument();
-      expect(screen.getByText('Category 1, Category 2')).toBeInTheDocument();
+      expect(screen.getByText('Category 1 | Category 2')).toBeInTheDocument();
       expect(screen.getByText('Yes')).toBeInTheDocument();
       expect(screen.getByText('100')).toBeInTheDocument();
       expect(screen.getByAltText('Product Image 1')).toBeInTheDocument();
