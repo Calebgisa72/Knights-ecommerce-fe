@@ -1,4 +1,3 @@
-/* eslint-disable*/
 import React, { useEffect } from 'react';
 import { Navigate, Outlet, Route, Routes, To } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
@@ -42,6 +41,7 @@ import AdminOrders from '../pages/Orders/AdminOrders';
 import SingleAdminOrder from '../pages/Orders/SingleAdminOrder';
 import { JSX } from 'react/jsx-runtime';
 import GoogleLogin from '../pages/Authentication/GoogleLogin';
+import Transctions from '../pages/Transactions/Transctions';
 
 const Router = () => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -61,11 +61,7 @@ const Router = () => {
     }
   }, [location.pathname, dispatch, userToken]);
 
-  const conditionalNavigate = (
-    adminPath: To,
-    vendorPath: To,
-    buyerPath: JSX.Element | To | any
-  ) => (
+  const conditionalNavigate = (adminPath: To, vendorPath: To, buyerPath: JSX.Element | To | any) => (
     <>
       {userToken && isAdmin && <Navigate to={adminPath} />}
       {userToken && isVendor && <Navigate to={vendorPath} />}
@@ -324,6 +320,9 @@ const Router = () => {
         </Route>
         <Route path="account" element={<DashboarInnerLayout />}>
           <Route index element={<DashboardAccount />} />
+        </Route>
+        <Route path="transaction" element={<DashboarInnerLayout />}>
+          <Route index element={<Transctions />} />
         </Route>
       </Route>
 
