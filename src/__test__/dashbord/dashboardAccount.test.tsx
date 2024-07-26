@@ -136,7 +136,7 @@ describe('Dashboard Account test', () => {
       const h1TitleElement2 = screen.getByText('Settings', { selector: 'h1' });
       expect(h1TitleElement2).toBeInTheDocument();
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onGet(`${import.meta.env.VITE_APP_API_URL}/user/profile`).reply(200, {
@@ -178,7 +178,7 @@ describe('Dashboard Account test', () => {
       expect(checkBoxInputElement).toBeInTheDocument();
       expect(checkBoxInputElement).not.toBeChecked();
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPut(`${import.meta.env.VITE_APP_API_URL}/user/update`).reply(200, {
@@ -231,7 +231,7 @@ describe('Dashboard Account test', () => {
       expect(checkBoxInputElement).toBeInTheDocument();
       expect(checkBoxInputElement).toBeChecked();
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPut(`${import.meta.env.VITE_APP_API_URL}/user/update`).reply(400, {
@@ -261,7 +261,7 @@ describe('Dashboard Account test', () => {
       const successToast = screen.getAllByText('Something went wrong, please try again.');
       expect(successToast.length).toBeGreaterThanOrEqual(1);
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPut(`${import.meta.env.VITE_APP_API_URL}/user/profile`).reply(400, {
@@ -291,7 +291,7 @@ describe('Dashboard Account test', () => {
       const errorToast = screen.getAllByText('Please upload an image');
       expect(errorToast.length).toBeGreaterThanOrEqual(1);
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPut(`${import.meta.env.VITE_APP_API_URL}/user/profile`).reply(200, {
@@ -340,7 +340,7 @@ describe('Dashboard Account test', () => {
       const successToast = screen.getAllByText('Profile picture updated successfully');
       expect(successToast.length).toBeGreaterThanOrEqual(1);
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPost(`${import.meta.env.VITE_APP_API_URL}/user/disable-2fa`).reply(200, {
@@ -389,7 +389,7 @@ describe('Dashboard Account test', () => {
       const successToast = screen.getAllByText('2fa disabled successfully');
       expect(successToast.length).toBeGreaterThanOrEqual(1);
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPost(`${import.meta.env.VITE_APP_API_URL}/user/enable-2fa`).reply(200, {
@@ -438,7 +438,7 @@ describe('Dashboard Account test', () => {
       const successToast = screen.getAllByText('2fa enabled successfully');
       expect(successToast.length).toBeGreaterThanOrEqual(1);
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPost(`${import.meta.env.VITE_APP_API_URL}/user/disable-2fa`).reply(400, {
@@ -468,7 +468,7 @@ describe('Dashboard Account test', () => {
       const successToast = screen.getAllByText('Something went wrong, please try again.');
       expect(successToast.length).toBeGreaterThanOrEqual(1);
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component', async () => {
     mockAxios.onPost(`${import.meta.env.VITE_APP_API_URL}/user/enable-2fa`).reply(400, {
@@ -498,7 +498,7 @@ describe('Dashboard Account test', () => {
       const successToast = screen.getAllByText('Something went wrong, please try again.');
       expect(successToast.length).toBeGreaterThanOrEqual(1);
     });
-  }, 10000);
+  });
 
   it('should render DashboardAccount Component on buyer side', async () => {
     store.dispatch(setCredentials(buyerTestToken));
@@ -588,5 +588,5 @@ describe('Dashboard Account test', () => {
       const testChangeImageBtn = screen.getByRole('testChangeImageBtn');
       expect(testChangeImageBtn).toBeInTheDocument();
     });
-  }, 10000);
+  });
 });

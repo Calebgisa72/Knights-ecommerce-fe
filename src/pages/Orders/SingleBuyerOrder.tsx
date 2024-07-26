@@ -269,8 +269,8 @@ const SingleBuyerOrder = () => {
             </p>
           </div>
         )}
+        {notFound && <OrderNotFound link="/orders" />}
       </div>
-      {notFound && <OrderNotFound link="/orders" />}
     </div>
   );
 };

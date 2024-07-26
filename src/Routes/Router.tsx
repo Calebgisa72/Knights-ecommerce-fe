@@ -291,7 +291,11 @@ const Router = () => {
           element={
             <MainLayout>
               <PageTitle title="Knights Store | Orders" />
-              {conditionalNavigate('/admin/dashboard', '/vendor/dashboard', <SingleBuyerOrder />)}
+              {userToken && isBuyer ? (
+                <SingleBuyerOrder />
+              ) : (
+                <Navigate to={`/${decodedToken?.role.toLowerCase()}` + '/dashboard'} />
+              )}
               {!userToken && <Navigate to="/login" />}
             </MainLayout>
           }

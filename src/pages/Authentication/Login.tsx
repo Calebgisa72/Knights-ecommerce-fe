@@ -38,7 +38,9 @@ function Login() {
   const onSubmit: SubmitHandler<LoginData> = (userData: LoginData) => {
     dispatch(loginUser(userData));
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     if (error) {
       toast.error(error, {
