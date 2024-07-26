@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { fetchCart, removeFromCart } from '../../redux/actions/cartAction';
@@ -6,11 +6,16 @@ import CartSkeletonLoader from './CartSkeletonLoader';
 import { X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { cartData } from '../../types/cartTypes';
+import { applyCoupon } from '../../utils/couponFunctions/applyCoupon';
+import { BeatLoader } from 'react-spinners';
 
 function Cart() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { cart, cartItems, loading } = useSelector((state: RootState) => state.cart);
+  const { userToken } = useSelector((state: RootState) => state.auth);
+  const [loadingCoupon, setLoading] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
 
   const navigate = useNavigate();
 
@@ -20,6 +25,11 @@ function Cart() {
 
   const handleRemoveFormCart = (id: string) => {
     dispatch(removeFromCart(id));
+  };
+
+  const handleUseCouponCode = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setCouponCode(value);
   };
 
   useEffect(() => {
@@ -129,10 +139,22 @@ function Cart() {
                         type="text"
                         placeholder="COUPONCODE"
                         className="h-[50px] w-[70%] sm:w-[350px] border border-grey3 px-2 py-2 outline-none font-poppins font-normal"
+                        value={couponCode}
+                        onChange={handleUseCouponCode}
                       />
-                      <button className="h-[50px] w-[150px] flex items-center justify-center  border border-primary bg-primary text-white text-sm sm:text-base font-poppins font-normal px-2">
-                        Apply Coupon
-                      </button>
+                      {!loadingCoupon && (
+                        <button
+                          onClick={() => applyCoupon(userToken, couponCode, setLoading)}
+                          className="h-[50px] w-[150px] flex items-center justify-center  border border-primary bg-primary text-white text-sm sm:text-base font-poppins font-normal px-2"
+                        >
+                          Apply Coupon
+                        </button>
+                      )}
+                      {loadingCoupon && (
+                        <button className="h-[50px] w-[150px] flex items-center justify-center  border border-primary bg-primary px-2">
+                          <BeatLoader size={10} color="#ffffff" />
+                        </button>
+                      )}
                     </div>
 
                     <div className="w-full flex items-center justify-start text-primary mt-8">
