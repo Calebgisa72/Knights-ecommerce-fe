@@ -155,7 +155,11 @@ export const updateProduct = createAsyncThunk(
 export const addFeedback = createAsyncThunk<any, AddFeedbackArgs>(
   'products/addFeedback',
   async ({ productId, data }: AddFeedbackArgs) => {
-    const response = await HttpRequest.post(`${import.meta.env.VITE_APP_API_URL}/feedback/${productId}/new`, data);
-    return response.data;
+    try {
+      const response = await HttpRequest.post(`${import.meta.env.VITE_APP_API_URL}/feedback/${productId}/new`, data);
+      return response.data;
+    } catch (error: any) {
+      return { type: 'error', data: error };
+    }
   }
 );

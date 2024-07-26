@@ -41,6 +41,7 @@ function SingleProduct() {
 
   const { product, loading, error } = useSelector((state: RootState) => state.singleProduct);
   const { orders } = useSelector((state: RootState) => state.buyerOrders);
+  const { userToken } = useSelector((state: RootState) => state.auth);
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -158,15 +159,22 @@ function SingleProduct() {
     setOrderId(orderId);
     try {
       await dispatch(addFeedback({ data, productId: id as string })).then((response) => {
-        toast.success(response.payload.message);
+        if (response.payload.type) {
+          toast.error(response.payload.data.message, {
+            duration: 7000,
+            style: { maxWidth: '360px', fontSize: '.9rem' }
+          });
+        } else {
+          toast.success(response.payload.message);
+        }
         dispatch(fetchSingleProduct(id as string));
       });
     } catch (error: any) {
       setPopupProps({
         title: 'Failure',
-        subtitle: `${error.message}`,
+        subtitle: `${error}`,
         responseType: 'fail',
-        duration: 3000,
+        duration: 5000,
         onClose: () => setShowPopup(false)
       });
 
@@ -268,15 +276,16 @@ function SingleProduct() {
                     >
                       {addToCartloading ? <BeatLoader color="#ffffff" /> : 'Add to Cart'}
                     </button>
-                    {orderId && (
+                    {userToken && orderId && (
                       <div className="block">
                         <FeedbackFormPopup
                           trigger={
                             <button
-                              className="px-8 py-4 bg-[#E7EBEF] font-semibold text-black rounded-lg flex gap-4 items-center hover:scale-105 transition-all duration-300 ease-in-out"
+                              className="flex w-full items-center justify-center sm:w-[180px] h-[45px] bg-[#E7EBEF] font-semibold text-black rounded-lg hover:scale-105 transition-all duration-300 ease-in-out"
                               role="feedback-button"
                             >
-                              Feedback <Plus />
+                              <span>Feedback</span>
+                              <Plus className="w-5" />
                             </button>
                           }
                           title="Share with us your review"
@@ -298,7 +307,7 @@ function SingleProduct() {
                     )}
                     <div className="w-full flex items-center justify-start gap-x-1 mt-4 sm:mt-0">
                       <p className="font-poppins font-semibold text-primary text-lg sm:text-base">Category:</p>
-                      <p className="font-poppins font-normal text-grey2 text-lg sm:text-base">
+                      <p className="font-poppins font-normal text-grey2 text-lg sm:text-base capitalize">
                         {product?.categories.map((category) => category.name).join(', ')}
                       </p>
                     </div>
