@@ -100,7 +100,7 @@ const DashboardSingleProduct: React.FC = () => {
       <div className="bg-white border-[1px] border-neutral-300 rounded-xl mt-8 w-full p-8 flex flex-col gap-8">
         <Link
           to={`/vendor/dashboard/products/${id}/edit`}
-          className="px-5 py-2 bg-[#070F2B] font-medium rounded-lg flex gap-2 items-center hover:scale-105 transition-all duration-300 ease-in-out w-max ml-auto text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-neutral-800"
+          className="px-5 py-2 bg-[#070F2B] font-medium rounded-lg flex gap-2 items-center hover:scale-105 transition-all duration-300 ease-in-out w-max ml-auto text-[.77rem] xmd:text-[.82rem] lg:text-[.87rem] text-white"
         >
           <span className="leading-3">Update product</span>
           <SquarePen className="w-4" />
