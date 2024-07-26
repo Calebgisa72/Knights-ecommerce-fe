@@ -88,7 +88,9 @@ function SingleProduct() {
     }
 
     if (!addToCartloading && !addToCartError) {
-      toast.success('Product added to cart');
+      setTimeout(() => {
+        toast.success('Product added to cart');
+      }, 5000);
     }
   };
 
