@@ -67,14 +67,16 @@ const DashboardSideBar: React.FC<DashboardSideBarProps> = ({ openNav, setOpenNav
         >
           <img src={three} alt="Orders" className="w-5 lg:w-6" /> Orders
         </NavLink>
-        <NavLink
-          to={'/' + decodedToken?.role.toLowerCase() + '/dashboard/products'}
-          className={({ isActive }) =>
-            `flex items-center gap-1 px-3 py-2 w-full rounded transition-all duration-300 ease-in-out hover:bg-primary hover:text-white ${isActive ? 'bg-primary text-white' : ''}`
-          }
-        >
-          <img src={one} alt="Products" className="w-5 lg:w-6" /> Products
-        </NavLink>
+        {decodedToken?.role.toLowerCase() !== 'admin' && (
+          <NavLink
+            to={'/' + decodedToken?.role.toLowerCase() + '/dashboard/products'}
+            className={({ isActive }) =>
+              `flex items-center gap-1 px-3 py-2 w-full rounded transition-all duration-300 ease-in-out hover:bg-primary hover:text-white ${isActive ? 'bg-primary text-white' : ''}`
+            }
+          >
+            <img src={one} alt="Products" className="w-5 lg:w-6" /> Products
+          </NavLink>
+        )}
         {decodedToken?.role.toLowerCase() === 'admin' && (
           <NavLink
             to="users"

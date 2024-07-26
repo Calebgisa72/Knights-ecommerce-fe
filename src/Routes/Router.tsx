@@ -282,6 +282,15 @@ const Router = () => {
           }
         />
         <Route
+          path="/orders"
+          element={
+            <MainLayout>
+              <PageTitle title="Knights Store | Buyer  orders" />
+              <BuyerOrders />
+            </MainLayout>
+          }
+        />
+        <Route
           path="/orders/:orderId"
           element={
             <MainLayout>
